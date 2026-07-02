@@ -18,11 +18,11 @@ export const reportSchema = z.object({
 
 export const alertSchema = z.object({
   wardId: z.string().min(1, "Choose a ward"),
-  channel: z.enum(["sms", "ussd"]),
-  phoneHint: z
+  channel: z.enum(["sms", "ussd", "whatsapp"]),
+  phoneNumber: z
     .string()
-    .min(3, "Add the last three digits only")
-    .max(4, "Do not enter a full phone number"),
+    .min(9, "Enter a valid phone number")
+    .max(15, "Phone number is too long"),
 });
 
 export type VoteInput = z.infer<typeof voteSchema>;

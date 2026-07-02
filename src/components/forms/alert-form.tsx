@@ -26,7 +26,7 @@ export function AlertForm() {
     defaultValues: {
       wardId: selectedWardId,
       channel: "sms",
-      phoneHint: "",
+      phoneNumber: "",
     },
   });
 
@@ -51,19 +51,21 @@ export function AlertForm() {
         options={[
           { value: "sms", label: t("channelSms") },
           { value: "ussd", label: t("channelUssd") },
+          { value: "whatsapp", label: "WhatsApp Message" },
         ]}
         value={channel}
       />
       <label className="grid gap-2 text-sm font-bold">
-        {t("lastDigits")}
+        Phone Number
         <input
-          className="min-h-12 rounded-md border border-[var(--color-line)] bg-[var(--color-bg)] px-3 text-base font-semibold outline-none focus-visible:border-[var(--color-bead-red)] focus-visible:ring-3 focus-visible:ring-[var(--color-bead-red)]/25"
-          inputMode="numeric"
-          maxLength={4}
-          {...register("phoneHint")}
+          className="min-h-12 rounded-md border border-[var(--color-line)] bg-white/50 px-3 text-base font-semibold outline-none transition-all focus-visible:border-[var(--color-maize)] focus-visible:ring-4 focus-visible:ring-[var(--color-maize)]/30"
+          inputMode="tel"
+          type="tel"
+          placeholder="e.g. 0712 345 678"
+          {...register("phoneNumber")}
         />
       </label>
-      {errors.phoneHint ? <p className="text-sm font-bold text-[var(--color-bead-red)]">{errors.phoneHint.message}</p> : null}
+      {errors.phoneNumber ? <p className="text-sm font-bold text-[var(--color-bead-red)]">{errors.phoneNumber.message}</p> : null}
       <Button type="submit">
         <BellRing aria-hidden="true" size={18} />
         {t("submit")}
