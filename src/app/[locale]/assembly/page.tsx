@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import { Download, FileText } from "lucide-react";
+
 import { notFound } from "next/navigation";
-import { Button } from "@/components/ui/button";
+import { CsvExportButton, PdfExportButton } from "@/components/export-buttons";
 import { SectionHeader } from "@/components/ui/section-header";
 import { getWard, projects, reports, wards } from "@/lib/data";
 import { isLocale, type Locale } from "@/lib/locales";
@@ -37,22 +37,36 @@ export default async function AssemblyPage({
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
       <div className="grid gap-6 lg:grid-cols-[1fr_auto]">
         <SectionHeader title={messages.assembly.title}>{messages.assembly.intro}</SectionHeader>
-        <div className="rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] p-4">
+        <div className="rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] p-4 print:border-none print:shadow-none">
           <p className="text-sm font-black">{messages.assembly.compliance}</p>
-          <Button className="mt-3" type="button">
-            <FileText aria-hidden="true" size={18} />
-            {messages.assembly.export}
-          </Button>
+          <div className="print:hidden">
+            <PdfExportButton label={messages.assembly.export} />
+          </div>
         </div>
       </div>
 
-      <section className="mt-8 rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] p-4">
+      <section className="mt-8 rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] p-4 print:break-inside-avoid">
         <div className="flex items-center justify-between gap-3">
           <h2 className="text-2xl font-black">{messages.assembly.comparison}</h2>
-          <Button variant="secondary" type="button">
-            <Download aria-hidden="true" size={18} />
-            CSV
-          </Button>
+          <div className="print:hidden">
+            <CsvExportButton
+              csvData={[
+                ["Ward", "Allocated", "Spent", "Completion", "Open Reports", "Avg Resolution"].join(","),
+                ...topWards.map((ward, index) => {
+                  const allocated = 12_000_000 + index * 1_150_000;
+                  const spent = allocated * (0.46 + (index % 5) * 0.08);
+                  return [
+                    `"${ward.name}"`,
+                    allocated,
+                    spent,
+                    `"${Math.round(42 + (index * 7) % 51)}%"`,
+                    ward.openReports,
+                    `"${18 + (index % 7) * 5}h"`
+                  ].join(",");
+                })
+              ].join("\n")}
+            />
+          </div>
         </div>
         <div className="mt-4 overflow-x-auto">
           <table className="w-full min-w-[760px] border-collapse text-left text-sm">
@@ -87,7 +101,7 @@ export default async function AssemblyPage({
       </section>
 
       <section className="mt-6 grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
-        <div className="rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] p-4">
+        <div className="rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] p-4 print:break-inside-avoid">
           <h2 className="text-2xl font-black">{messages.assembly.queue}</h2>
           <div className="mt-4 grid gap-3">
             {reports.map((report) => (
@@ -107,7 +121,7 @@ export default async function AssemblyPage({
             ))}
           </div>
         </div>
-        <div className="rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] p-4">
+        <div className="rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] p-4 print:break-inside-avoid">
           <h2 className="text-2xl font-black">Project delivery risk</h2>
           <div className="mt-4 grid gap-3">
             {projects.map((project) => (

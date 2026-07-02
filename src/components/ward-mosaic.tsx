@@ -102,16 +102,21 @@ export function WardMosaic({
       <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
         <div>
           <p className="text-xs font-black uppercase tracking-[0.12em] text-[var(--color-muted)]">
-            {layer === "trust" ? "Ward Trust Index" : "Participation rate"}
+            Selected Ward Details
           </p>
           <p className="text-lg font-black">
             {activeWard?.name ?? "Choose a ward"}
           </p>
         </div>
-        <div className="rounded-md bg-[var(--color-charcoal)] px-3 py-2 font-data text-xl font-black text-white">
-          {activeWard
-            ? `${layer === "trust" ? activeWard.trustIndex : activeWard.participationRate}%`
-            : "--"}
+        <div className="flex flex-wrap gap-2">
+          <div className="rounded-md bg-[var(--color-bg)] border border-[var(--color-line)] px-3 py-1.5 shadow-sm">
+            <p className="text-[10px] font-black uppercase text-[var(--color-muted)]">Trust Index</p>
+            <p className="font-data text-xl font-black text-[var(--color-charcoal)]">{activeWard ? `${activeWard.trustIndex}%` : "--"}</p>
+          </div>
+          <div className="rounded-md bg-[var(--color-bg)] border border-[var(--color-line)] px-3 py-1.5 shadow-sm">
+            <p className="text-[10px] font-black uppercase text-[var(--color-muted)]">Participation</p>
+            <p className="font-data text-xl font-black text-[var(--color-charcoal)]">{activeWard ? `${activeWard.participationRate}%` : "--"}</p>
+          </div>
         </div>
       </div>
     </div>

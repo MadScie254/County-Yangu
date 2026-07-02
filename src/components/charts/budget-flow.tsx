@@ -100,7 +100,8 @@ export function BudgetFlow({ locale }: { locale: Locale }) {
                 x={position.x > 74 ? position.x - 5 : position.x + 5}
                 y={position.y - 1}
               >
-                {node.label}
+                <title>{node.label}</title>
+                {node.label.length > 13 ? node.label.slice(0, 12) + "…" : node.label}
               </text>
               <text
                 fill="var(--color-muted)"
@@ -110,7 +111,10 @@ export function BudgetFlow({ locale }: { locale: Locale }) {
                 x={position.x > 74 ? position.x - 5 : position.x + 5}
                 y={position.y + 3}
               >
-                {formatCurrency(node.amount, locale).replace("Ksh", "KES")}
+                <title>{formatCurrency(node.amount, locale)}</title>
+                {formatCurrency(node.amount, locale).replace("Ksh", "KES").length > 15
+                  ? formatCurrency(node.amount, locale).replace("Ksh", "KES").slice(0, 14) + "…"
+                  : formatCurrency(node.amount, locale).replace("Ksh", "KES")}
               </text>
             </g>
           );
