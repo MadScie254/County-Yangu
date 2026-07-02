@@ -3,7 +3,6 @@
 import { AnimatePresence, motion } from "motion/react";
 import {
   AlertTriangle,
-  Bell,
   Briefcase,
   CheckCircle2,
   TrendingUp,
@@ -75,34 +74,26 @@ const EVENT_POOL: Omit<LiveEvent, "id">[] = [
   },
 ];
 
-const typeStyles: Record<
-  LiveEvent["type"],
-  { border: string; bg: string; Icon: typeof Bell }
-> = {
+const typeStyles: Record<LiveEvent["type"], { border: string; bg: string }> = {
   bid: {
     border: "border-[var(--color-charcoal)]/20",
     bg: "bg-[var(--color-charcoal)]/5",
-    Icon: Briefcase,
   },
   delay: {
     border: "border-[var(--color-maize)]",
     bg: "bg-[var(--color-maize)]/10",
-    Icon: AlertTriangle,
   },
   vote: {
     border: "border-[var(--color-cane)]/30",
     bg: "bg-[var(--color-cane)]/5",
-    Icon: TrendingUp,
   },
   milestone: {
     border: "border-[var(--color-cane)]/40",
     bg: "bg-[var(--color-cane)]/10",
-    Icon: CheckCircle2,
   },
   flag: {
     border: "border-[var(--color-bead-red)]/40",
     bg: "bg-[var(--color-bead-red)]/10",
-    Icon: AlertTriangle,
   },
 };
 
@@ -167,10 +158,7 @@ export function LiveEcosystem() {
               transition={{ type: "spring", stiffness: 380, damping: 30 }}
               className={`flex w-[min(330px,calc(100vw-2rem))] items-start gap-3 rounded-xl border ${style.border} ${style.bg} p-4 shadow-lg backdrop-blur-lg`}
             >
-              <span
-                className="shrink-0 text-lg leading-none"
-                aria-hidden="true"
-              >
+              <span className="shrink-0 text-lg leading-none" aria-hidden="true">
                 {toast.emoji}
               </span>
               <p className="flex-1 text-xs font-semibold leading-relaxed text-[var(--color-charcoal)]">

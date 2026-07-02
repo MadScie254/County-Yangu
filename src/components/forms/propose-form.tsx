@@ -13,7 +13,6 @@ import { useCountyStore } from "@/lib/store";
 
 export function ProposeForm({ locale }: { locale: Locale }) {
   const t = useTranslations("propose");
-  const common = useTranslations("common");
   const proposeProject = useCountyStore((state) => state.proposeProject);
   const selectedWardId = useCountyStore((state) => state.selectedWardId);
   const [success, setSuccess] = useState(false);
@@ -110,7 +109,7 @@ export function ProposeForm({ locale }: { locale: Locale }) {
           </div>
         </div>
 
-        <Button className="mt-4" size="lg" type="submit">
+        <Button className="mt-4" type="submit">
           <Upload size={18} />
           {t("submit")}
         </Button>
