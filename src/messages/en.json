@@ -20,11 +20,11 @@
     "contractor": "Contractor",
     "source": "Source"
   },
-  "nav": {
     "home": "Home",
     "vote": "Vote",
     "report": "Report",
     "track": "Track",
+    "tenders": "Tenders",
     "pulse": "County Pulse",
     "alerts": "Get alerts",
     "how": "How it works",
@@ -135,5 +135,17 @@
     "comparison": "Ward comparison",
     "compliance": "Compliance export",
     "export": "Generate PFM evidence pack"
+  },
+  "tenders": {
+    "title": "Open Tenders",
+    "intro": "Live tracking of county procurement, evaluation status, and contract awards.",
+    "active": "Active tenders",
+    "value": "Total value",
+    "flagged": "Flagged contractors",
+    "anomaliesTitle": "Procurement Red Flags",
+    "anomaliesIntro": "Contractors awarded more than 2 active tenders.",
+    "statusOpen": "Open",
+    "statusEvaluating": "Evaluating",
+    "statusAwarded": "Awarded"
   }
 }

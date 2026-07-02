@@ -20,11 +20,11 @@
     "contractor": "Mkandarasi",
     "source": "Chanzo"
   },
-  "nav": {
     "home": "Nyumbani",
     "vote": "Piga kura",
     "report": "Ripoti",
     "track": "Fuatilia",
+    "tenders": "Zabuni",
     "pulse": "Mapigo ya Kaunti",
     "alerts": "Pata taarifa",
     "how": "Inavyofanya kazi",
@@ -135,5 +135,17 @@
     "comparison": "Ulinganisho wa wadi",
     "compliance": "Pakua ushahidi wa sheria",
     "export": "Tengeneza kifurushi cha ushahidi wa PFM"
+  },
+  "tenders": {
+    "title": "Zabuni Wazi",
+    "intro": "Fuatilia moja kwa moja ununuzi wa kaunti, tathmini, na utoaji wa mikataba.",
+    "active": "Zabuni hai",
+    "value": "Thamani ya jumla",
+    "flagged": "Wakandarasi wenye onyo",
+    "anomaliesTitle": "Tahadhari za Ununuzi",
+    "anomaliesIntro": "Wakandarasi waliopewa zabuni zaidi ya 2 hai.",
+    "statusOpen": "Wazi",
+    "statusEvaluating": "Inatathminiwa",
+    "statusAwarded": "Imetolewa"
   }
 }

@@ -13,6 +13,8 @@ export type ReportStatus =
   | "routed"
   | "resolved";
 
+export type TenderStatus = "open" | "evaluating" | "awarded";
+
 export type Ward = {
   id: string;
   name: string;
@@ -83,6 +85,20 @@ export type BudgetNode = {
   label: string;
   kind: "county" | "sector" | "ward" | "project";
   amount: number;
+};
+
+export type Tender = {
+  id: string;
+  reference: string;
+  title: string;
+  wardId: string;
+  sector: string;
+  status: TenderStatus;
+  estimatedBudget: number;
+  applicantsCount: number;
+  contractor: string | null;
+  publishedAt: string;
+  closesAt: string;
 };
 
 export type BudgetLink = {
@@ -452,6 +468,87 @@ export const dataSources = [
     label: "Kenya ward boundary GeoJSON/shapefile starting point",
     url: "https://data.humdata.org/dataset/administrative-wards-in-kenya-1450",
   },
+];
+
+export const tenders: Tender[] = [
+  {
+    id: "t-001",
+    reference: "BGM/T/001/2026",
+    title: "Construction of Lwandanyi ECDE block",
+    wardId: "lwandanyi",
+    sector: "Education",
+    status: "awarded",
+    estimatedBudget: 11500000,
+    applicantsCount: 4,
+    contractor: "Nabuyole Builders Ltd",
+    publishedAt: "2026-02-10",
+    closesAt: "2026-03-01",
+  },
+  {
+    id: "t-002",
+    reference: "BGM/T/002/2026",
+    title: "Renovation of Ndalu Health Center maternity wing",
+    wardId: "ndalu-tabani",
+    sector: "Health",
+    status: "awarded",
+    estimatedBudget: 8500000,
+    applicantsCount: 6,
+    contractor: "Nabuyole Builders Ltd",
+    publishedAt: "2026-03-15",
+    closesAt: "2026-04-05",
+  },
+  {
+    id: "t-003",
+    reference: "BGM/T/003/2026",
+    title: "Fencing of Tongaren market",
+    wardId: "tongaren",
+    sector: "Trade",
+    status: "awarded",
+    estimatedBudget: 4200000,
+    applicantsCount: 3,
+    contractor: "Nabuyole Builders Ltd",
+    publishedAt: "2026-04-20",
+    closesAt: "2026-05-10",
+  },
+  {
+    id: "t-004",
+    reference: "BGM/T/004/2026",
+    title: "Chwele market drainage repair",
+    wardId: "kabuchai-chwele",
+    sector: "Roads",
+    status: "evaluating",
+    estimatedBudget: 9400000,
+    applicantsCount: 7,
+    contractor: null,
+    publishedAt: "2026-06-01",
+    closesAt: "2026-06-21",
+  },
+  {
+    id: "t-005",
+    reference: "BGM/T/005/2026",
+    title: "Mbakalo footbridge repair",
+    wardId: "mbakalo",
+    sector: "Roads",
+    status: "open",
+    estimatedBudget: 4900000,
+    applicantsCount: 2,
+    contractor: null,
+    publishedAt: "2026-07-01",
+    closesAt: "2026-07-22",
+  },
+  {
+    id: "t-006",
+    reference: "BGM/T/006/2026",
+    title: "Kimilili market water point solar system",
+    wardId: "kimilili",
+    sector: "Water",
+    status: "awarded",
+    estimatedBudget: 6800000,
+    applicantsCount: 5,
+    contractor: "Chebukwabi Works Cooperative",
+    publishedAt: "2026-04-10",
+    closesAt: "2026-05-02",
+  }
 ];
 
 export function getWard(id: string) {

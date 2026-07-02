@@ -3,6 +3,7 @@
 import * as Switch from "@radix-ui/react-switch";
 import {
   Bell,
+  Briefcase,
   ChartNoAxesCombined,
   FileSearch,
   Home,
@@ -26,6 +27,7 @@ const icons = {
   vote: Vote,
   report: MessageSquareWarning,
   track: FileSearch,
+  tenders: Briefcase,
   pulse: ChartNoAxesCombined,
   alerts: Bell,
   how: PanelTop,
@@ -74,6 +76,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     { key: "vote", href: `/${locale}/vote`, icon: icons.vote },
     { key: "report", href: `/${locale}/report`, icon: icons.report },
     { key: "track", href: `/${locale}/track`, icon: icons.track },
+    { key: "tenders", href: `/${locale}/tenders`, icon: icons.tenders },
     { key: "pulse", href: `/${locale}/pulse`, icon: icons.pulse },
     { key: "alerts", href: `/${locale}/alerts`, icon: icons.alerts },
     { key: "how", href: `/${locale}/how-it-works`, icon: icons.how },
