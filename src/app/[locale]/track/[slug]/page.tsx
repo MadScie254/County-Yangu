@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ButtonLink } from "@/components/ui/button";
+import { ContractorProfileTrigger } from "@/components/tenders/contractor-trigger";
 import { getProjectBySlug, getWard, reports, projects, projectStatusLabel } from "@/lib/data";
 import { isLocale, type Locale } from "@/lib/locales";
 import { getMessages } from "@/lib/messages";
@@ -77,7 +78,9 @@ export default async function ProjectPage({
             </div>
             <div>
               <dt className="text-sm font-bold text-[var(--color-muted)]">{messages.common.contractor}</dt>
-              <dd className="font-black">{project.contractor}</dd>
+              <dd className="font-black">
+                <ContractorProfileTrigger name={project.contractor} />
+              </dd>
             </div>
             <div>
               <dt className="text-sm font-bold text-[var(--color-muted)]">{messages.track.expected}</dt>
