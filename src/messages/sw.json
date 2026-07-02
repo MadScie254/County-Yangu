@@ -26,6 +26,7 @@
     "report": "Ripoti",
     "track": "Fuatilia",
     "tenders": "Zabuni",
+    "propose": "Pendekeza",
     "pulse": "Mapigo ya Kaunti",
     "alerts": "Pata taarifa",
     "how": "Inavyofanya kazi",
@@ -148,5 +149,15 @@
     "statusOpen": "Wazi",
     "statusEvaluating": "Inatathminiwa",
     "statusAwarded": "Imetolewa"
+  },
+  "propose": {
+    "title": "Pendekeza Mradi",
+    "intro": "Weka wazo jipya la mradi kwa wadi yako.",
+    "projectTitle": "Jina la Mradi",
+    "description": "Maelezo",
+    "ward": "Wadi",
+    "photo": "Weka Picha",
+    "submit": "Wasilisha",
+    "success": "Mradi umependekezwa kikamilifu!"
   }
 }

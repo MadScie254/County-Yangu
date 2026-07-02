@@ -25,6 +25,13 @@ export const alertSchema = z.object({
     .max(15, "Phone number is too long"),
 });
 
+export const proposeSchema = z.object({
+  title: z.string().min(5, "Title must be at least 5 characters"),
+  description: z.string().min(10, "Provide a longer description"),
+  wardId: z.string().min(1, "Choose the ward"),
+});
+
 export type VoteInput = z.infer<typeof voteSchema>;
 export type ReportInput = z.infer<typeof reportSchema>;
 export type AlertInput = z.infer<typeof alertSchema>;
+export type ProposeInput = z.infer<typeof proposeSchema>;

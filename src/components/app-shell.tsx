@@ -12,6 +12,7 @@ import {
   MessageSquareWarning,
   PanelTop,
   Vote,
+  Lightbulb,
 } from "lucide-react";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
@@ -25,6 +26,7 @@ import { cn } from "@/lib/utils";
 const icons = {
   home: Home,
   vote: Vote,
+  propose: Lightbulb,
   report: MessageSquareWarning,
   track: FileSearch,
   tenders: Briefcase,
@@ -74,6 +76,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const navItems = [
     { key: "home", href: `/${locale}`, icon: icons.home },
     { key: "vote", href: `/${locale}/vote`, icon: icons.vote },
+    { key: "propose", href: `/${locale}/propose`, icon: icons.propose },
     { key: "report", href: `/${locale}/report`, icon: icons.report },
     { key: "track", href: `/${locale}/track`, icon: icons.track },
     { key: "tenders", href: `/${locale}/tenders`, icon: icons.tenders },

@@ -2,7 +2,7 @@
 
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import type { ReportInput, VoteInput } from "@/lib/schemas";
+import type { ReportInput, VoteInput, ProposeInput } from "@/lib/schemas";
 
 export type QueueKind = "vote" | "report";
 export type QueueStatus = "waiting" | "syncing" | "synced";
@@ -16,12 +16,22 @@ export type QueuedAction = {
   reference?: string;
 };
 
+export type ProposedProject = {
+  id: string;
+  title: string;
+  description: string;
+  wardId: string;
+  createdAt: string;
+  status: "proposed";
+};
+
 type CountyState = {
   simpleMode: boolean;
   highContrast: boolean;
   textScale: number;
   selectedWardId: string;
   queuedActions: QueuedAction[];
+  proposedProjects: ProposedProject[];
   votesCastCount: number;
   reportsSubmittedCount: number;
   setSelectedWard: (wardId: string) => void;
@@ -30,6 +40,7 @@ type CountyState = {
   setTextScale: (scale: number) => void;
   enqueueVote: (payload: VoteInput) => QueuedAction;
   enqueueReport: (payload: ReportInput) => QueuedAction;
+  proposeProject: (payload: ProposeInput) => void;
   markSynced: (id: string) => void;
   simulateSync: () => void;
 };
@@ -47,6 +58,7 @@ export const useCountyStore = create<CountyState>()(
       textScale: 1,
       selectedWardId: "kimilili",
       queuedActions: [],
+      proposedProjects: [],
       votesCastCount: 0,
       reportsSubmittedCount: 0,
       setSelectedWard: (wardId) => set({ selectedWardId: wardId }),
@@ -80,6 +92,17 @@ export const useCountyStore = create<CountyState>()(
         window.setTimeout(() => get().markSynced(action.id), navigator.onLine ? 900 : 3200);
         return action;
       },
+      proposeProject: (payload) => {
+        const project: ProposedProject = {
+          id: crypto.randomUUID(),
+          title: payload.title,
+          description: payload.description,
+          wardId: payload.wardId,
+          createdAt: new Date().toISOString(),
+          status: "proposed",
+        };
+        set((state) => ({ proposedProjects: [project, ...state.proposedProjects] }));
+      },
       markSynced: (id) =>
         set((state) => ({
           queuedActions: state.queuedActions.map((action) =>
@@ -110,6 +133,7 @@ export const useCountyStore = create<CountyState>()(
         textScale: state.textScale,
         selectedWardId: state.selectedWardId,
         queuedActions: state.queuedActions,
+        proposedProjects: state.proposedProjects,
         votesCastCount: state.votesCastCount,
         reportsSubmittedCount: state.reportsSubmittedCount,
       }),

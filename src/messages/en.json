@@ -26,6 +26,7 @@
     "report": "Report",
     "track": "Track",
     "tenders": "Tenders",
+    "propose": "Propose",
     "pulse": "County Pulse",
     "alerts": "Get alerts",
     "how": "How it works",
@@ -148,5 +149,15 @@
     "statusOpen": "Open",
     "statusEvaluating": "Evaluating",
     "statusAwarded": "Awarded"
+  },
+  "propose": {
+    "title": "Propose a Project",
+    "intro": "Upload a new community project idea for your ward.",
+    "projectTitle": "Project Title",
+    "description": "Description",
+    "ward": "Ward",
+    "photo": "Upload Site Photo",
+    "submit": "Submit Proposal",
+    "success": "Project proposed successfully!"
   }
 }
