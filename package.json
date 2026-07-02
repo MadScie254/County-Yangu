@@ -6,9 +6,13 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "smoke": "node scripts/smoke.mjs"
   },
   "dependencies": {
+    "@fontsource/barrio": "^5.2.8",
+    "@fontsource/public-sans": "^5.2.7",
+    "@fontsource/roboto-mono": "^5.2.9",
     "@hookform/resolvers": "^5.4.0",
     "@nivo/bar": "^0.99.0",
     "@nivo/core": "^0.99.0",
@@ -44,6 +48,7 @@
     "esbuild": "^0.28.1",
     "eslint": "^9",
     "eslint-config-next": "16.2.10",
+    "playwright-core": "^1.61.1",
     "serwist": "^9.5.11",
     "tailwindcss": "^4",
     "typescript": "^5"

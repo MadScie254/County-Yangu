@@ -12,6 +12,9 @@
   --color-cane: #285a3a;
   --color-elgon: #425466;
   --color-bead-red: #b93336;
+  --font-public: "Public Sans";
+  --font-roboto-mono: "Roboto Mono";
+  --font-barrio: "Barrio";
   --text-scale: 1;
   color-scheme: light;
 }

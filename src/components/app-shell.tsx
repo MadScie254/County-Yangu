@@ -15,7 +15,7 @@ import {
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ButtonLink } from "@/components/ui/button";
 import { localeLabels, locales, type Locale, localizePath } from "@/lib/locales";
 import { useCountyStore } from "@/lib/store";
@@ -67,10 +67,6 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const toggleHighContrast = useCountyStore((state) => state.toggleHighContrast);
   const setTextScale = useCountyStore((state) => state.setTextScale);
 
-  useEffect(() => {
-    setOpen(false);
-  }, [pathname]);
-
   const navItems = [
     { key: "home", href: `/${locale}`, icon: icons.home },
     { key: "vote", href: `/${locale}/vote`, icon: icons.vote },
@@ -116,6 +112,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   )}
                   href={item.href}
                   key={item.key}
+                  onClick={() => setOpen(false)}
                 >
                   <Icon aria-hidden="true" size={18} />
                   {tNav(item.key)}
@@ -176,7 +173,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         </div>
 
         {open ? (
-          <nav className="grid gap-1 border-t border-[var(--color-line)] bg-[var(--color-bg)] p-3 lg:hidden" aria-label="Mobile">
+          <nav className="grid gap-1 border-t border-[var(--color-line)] bg-[var(--color-bg)] p-3 lg:hidden" aria-label="Mobile" key={pathname}>
             {navItems.map((item) => {
               const Icon = item.icon;
               return (
@@ -184,6 +181,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   className="flex min-h-12 items-center gap-3 rounded-md px-3 text-base font-black hover:bg-[var(--color-maize-soft)]"
                   href={item.href}
                   key={item.key}
+                  onClick={() => setOpen(false)}
                 >
                   <Icon aria-hidden="true" />
                   {tNav(item.key)}
@@ -196,6 +194,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   className="rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-3 text-center text-sm font-black"
                   href={localizePath(pathname, targetLocale)}
                   key={targetLocale}
+                  onClick={() => setOpen(false)}
                 >
                   {localeLabels[targetLocale]}
                 </Link>

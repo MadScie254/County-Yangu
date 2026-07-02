@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { CheckCircle2, CloudOff, Vote } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { SelectField } from "@/components/ui/select-field";
 import { getVoteTotals, projectOptions, wards } from "@/lib/data";
@@ -22,8 +22,8 @@ export function VoteForm({ locale }: { locale: Locale }) {
 
   const {
     handleSubmit,
+    control,
     setValue,
-    watch,
     formState: { errors },
   } = useForm<VoteInput>({
     resolver: zodResolver(voteSchema),
@@ -36,8 +36,8 @@ export function VoteForm({ locale }: { locale: Locale }) {
     },
   });
 
-  const wardId = watch("wardId");
-  const optionId = watch("optionId");
+  const wardId = useWatch({ control, name: "wardId" });
+  const optionId = useWatch({ control, name: "optionId" });
   const optionsForWard = useMemo(
     () => projectOptions.filter((option) => option.wardId === wardId),
     [wardId],

@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { BellRing } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { SelectField } from "@/components/ui/select-field";
 import { wards } from "@/lib/data";
@@ -17,9 +17,9 @@ export function AlertForm() {
   const [done, setDone] = useState(false);
   const {
     handleSubmit,
+    control,
     register,
     setValue,
-    watch,
     formState: { errors },
   } = useForm<AlertInput>({
     resolver: zodResolver(alertSchema),
@@ -34,13 +34,16 @@ export function AlertForm() {
     setDone(true);
   }
 
+  const wardId = useWatch({ control, name: "wardId" });
+  const channel = useWatch({ control, name: "channel" });
+
   return (
     <form className="grid gap-5 rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-sm sm:p-5" onSubmit={handleSubmit(onSubmit)}>
       <SelectField
         label="Ward"
         onValueChange={(value) => setValue("wardId", value, { shouldValidate: true })}
         options={wards.map((ward) => ({ value: ward.id, label: ward.name }))}
-        value={watch("wardId")}
+        value={wardId}
       />
       <SelectField
         label="Channel"
@@ -49,7 +52,7 @@ export function AlertForm() {
           { value: "sms", label: t("channelSms") },
           { value: "ussd", label: t("channelUssd") },
         ]}
-        value={watch("channel")}
+        value={channel}
       />
       <label className="grid gap-2 text-sm font-bold">
         {t("lastDigits")}

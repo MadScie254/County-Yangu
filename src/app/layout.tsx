@@ -1,26 +1,14 @@
 import type { Metadata, Viewport } from "next";
-import { Barrio, Public_Sans, Roboto_Mono } from "next/font/google";
 import { Providers } from "@/components/providers";
+import "@fontsource/public-sans/latin-400.css";
+import "@fontsource/public-sans/latin-600.css";
+import "@fontsource/public-sans/latin-700.css";
+import "@fontsource/public-sans/latin-800.css";
+import "@fontsource/public-sans/latin-900.css";
+import "@fontsource/roboto-mono/latin-400.css";
+import "@fontsource/roboto-mono/latin-700.css";
+import "@fontsource/barrio/latin-400.css";
 import "./globals.css";
-
-const publicSans = Public_Sans({
-  variable: "--font-public",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const robotoMono = Roboto_Mono({
-  variable: "--font-roboto-mono",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const barrio = Barrio({
-  variable: "--font-barrio",
-  subsets: ["latin"],
-  weight: "400",
-  display: "swap",
-});
 
 const description =
   "County Yangu is Bungoma County's citizen-first public participation platform for votes, anonymous reports, project tracking, alerts, and public analytics.";
@@ -68,7 +56,8 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      className={`${publicSans.variable} ${robotoMono.variable} ${barrio.variable} h-full`}
+      className="h-full"
+      data-scroll-behavior="smooth"
       lang="en"
     >
       <body>

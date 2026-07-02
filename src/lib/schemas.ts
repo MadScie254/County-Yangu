@@ -3,7 +3,7 @@ import { z } from "zod";
 export const voteSchema = z.object({
   wardId: z.string().min(1, "Choose your ward"),
   optionId: z.string().min(1, "Choose one project"),
-  channel: z.enum(["web", "ussd", "ivr"]).default("web"),
+  channel: z.enum(["web", "ussd", "ivr"]),
 });
 
 export const reportSchema = z.object({
@@ -13,7 +13,7 @@ export const reportSchema = z.object({
     .string()
     .min(12, "Add a short description")
     .max(420, "Keep it under 420 characters"),
-  channel: z.enum(["web", "ussd", "ivr"]).default("web"),
+  channel: z.enum(["web", "ussd", "ivr"]),
 });
 
 export const alertSchema = z.object({

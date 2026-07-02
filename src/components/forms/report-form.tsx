@@ -5,7 +5,7 @@ import { CloudOff, ShieldCheck } from "lucide-react";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { SelectField } from "@/components/ui/select-field";
 import { wards } from "@/lib/data";
@@ -23,9 +23,9 @@ export function ReportForm() {
   const [reference, setReference] = useState<string | null>(null);
   const {
     handleSubmit,
+    control,
     register,
     setValue,
-    watch,
     formState: { errors },
   } = useForm<ReportInput>({
     resolver: zodResolver(reportSchema),
@@ -42,8 +42,8 @@ export function ReportForm() {
     setReference(queued.reference ?? null);
   }
 
-  const wardId = watch("wardId");
-  const category = watch("category");
+  const wardId = useWatch({ control, name: "wardId" });
+  const category = useWatch({ control, name: "category" });
 
   return (
     <form className="grid gap-5 rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-sm sm:p-5" onSubmit={handleSubmit(onSubmit)}>

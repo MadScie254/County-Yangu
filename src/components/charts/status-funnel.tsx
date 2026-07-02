@@ -21,8 +21,7 @@ export function StatusFunnel() {
         axisBottom={{ tickSize: 0, tickPadding: 8 }}
         axisLeft={{ tickSize: 0, tickPadding: 8 }}
         theme={{
-          fontFamily: "var(--font-public)",
-          text: { fill: "#17211c" },
+          text: { fill: "#17211c", fontFamily: "var(--font-public)" },
           grid: { line: { stroke: "#d8d2bf", strokeDasharray: "4 6" } },
         }}
       />

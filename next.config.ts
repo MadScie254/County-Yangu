@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import createNextIntlPlugin from "next-intl/plugin";
 import { withSerwist } from "@serwist/turbopack";
 
 const nextConfig: NextConfig = {
@@ -26,4 +27,6 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default withSerwist(nextConfig);
+const withNextIntl = createNextIntlPlugin();
+
+export default withSerwist(withNextIntl(nextConfig));

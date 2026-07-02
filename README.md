@@ -1,36 +1,57 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# County Yangu
 
-## Getting Started
+County Yangu means "My County" in Swahili. This is a citizen-first public participation platform prototype for Bungoma County, Kenya.
 
-First, run the development server:
+The first screen is the public ward mosaic, not an admin dashboard. The app supports English and Swahili, public voting, anonymous-by-design issue reports, project tracking, public analytics, an oversight dashboard, installable PWA behavior, and offline queue states for votes and reports.
+
+## Stack
+
+- Next.js 16 App Router, React 19.2, Turbopack
+- Tailwind CSS 4.3 with County Yangu tokens
+- Radix UI unstyled primitives, reskinned locally
+- Motion from `motion/react`
+- MapLibre GL JS with OpenStreetMap raster tiles
+- Nivo charts and a custom SVG/D3 budget flow
+- TanStack Query, Zustand, React Hook Form, Zod
+- next-intl with `/en` and `/sw` locale routes
+- Serwist Turbopack service worker
+- Supabase schema reference in `supabase/schema.sql`
+
+## Routes
+
+- `/en` and `/sw`: public home with live ward mosaic
+- `/en/vote`: current budget-cycle vote flow with offline queue state
+- `/en/report`: anonymous report flow with clear privacy explainer
+- `/en/report/[reference]`: status lookup without report text or PII
+- `/en/track`: searchable project tracker with list and map views
+- `/en/track/[slug]`: project detail with milestones, budget, reports, and OG image
+- `/en/pulse`: public analytics dashboard
+- `/en/alerts`: SMS/USSD ward alert subscription
+- `/en/how-it-works`: web, USSD, and IVR parity explanation
+- `/en/assembly`: oversight dashboard demo
+
+Switch `en` to `sw` for Swahili.
+
+## Data Notes
+
+`src/lib/data.ts` seeds all 45 Bungoma wards with real ward names and realistic civic metrics. The current mosaic uses a tessellated ward representation for the local demo. The intended production path is to source ward boundary GeoJSON/shapefiles from Kenya open boundary datasets, verify them against Bungoma County political units, then store canonical ward geometry in Supabase/PostGIS or Supabase Storage.
+
+The Supabase SQL reference enables RLS, keeps public reads to safe tables/views, and does not expose raw phone numbers, report phone hashes, or individual report content to anonymous clients.
+
+## Run
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then open `http://localhost:3000/en`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Verify
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run lint
+npm run build
+```
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The production build generates the Serwist service worker at `/serwist/sw.js`.
