@@ -1,6 +1,7 @@
 import { AlertTriangle, Briefcase, Calculator, CheckCircle2, CircleDashed, Users } from "lucide-react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { ContractorProfileTrigger } from "@/components/tenders/contractor-trigger";
 import { SectionHeader } from "@/components/ui/section-header";
 import { getWard, tenders } from "@/lib/data";
 import { isLocale, type Locale } from "@/lib/locales";
@@ -104,7 +105,7 @@ export default async function TendersPage({
             {flaggedContractors.map((contractor) => (
               <div key={contractor.name} className="flex flex-col sm:flex-row justify-between rounded-xl border border-[var(--color-bead-red)]/40 bg-[var(--color-bead-red)]/10 p-5 shadow-md">
                 <div>
-                  <h4 className="text-lg font-black text-[var(--color-charcoal)]">{contractor.name}</h4>
+                  <ContractorProfileTrigger name={contractor.name} />
                   <p className="mt-1 text-sm font-bold text-[var(--color-bead-red)]">
                     FLAG: Awarded {contractor.count} active tenders
                   </p>
@@ -153,7 +154,7 @@ export default async function TendersPage({
                   {tender.contractor ? (
                     <div>
                       <p className="text-xs font-bold uppercase tracking-wider text-[var(--color-muted)]">Contractor</p>
-                      <p className="text-base font-black truncate" title={tender.contractor}>{tender.contractor}</p>
+                      <ContractorProfileTrigger name={tender.contractor} />
                     </div>
                   ) : (
                     <div>
