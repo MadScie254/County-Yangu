@@ -101,6 +101,16 @@ export type Tender = {
   closesAt: string;
 };
 
+export type Contractor = {
+  id: string;
+  name: string;
+  reliabilityScore: number;
+  projectsCompleted: number;
+  projectsLate: number;
+  projectsStalled: number;
+  flags: string[];
+};
+
 export type BudgetLink = {
   source: string;
   target: string;
@@ -551,6 +561,45 @@ export const tenders: Tender[] = [
   }
 ];
 
+export const contractors: Contractor[] = [
+  {
+    id: "c-001",
+    name: "Nabuyole Builders Ltd",
+    reliabilityScore: 42,
+    projectsCompleted: 4,
+    projectsLate: 3,
+    projectsStalled: 1,
+    flags: ["Excessive active tenders (3)", "History of delayed milestones"],
+  },
+  {
+    id: "c-002",
+    name: "Chebukwabi Works Cooperative",
+    reliabilityScore: 88,
+    projectsCompleted: 12,
+    projectsLate: 1,
+    projectsStalled: 0,
+    flags: [],
+  },
+  {
+    id: "c-003",
+    name: "Elgon Sun Systems",
+    reliabilityScore: 95,
+    projectsCompleted: 8,
+    projectsLate: 0,
+    projectsStalled: 0,
+    flags: [],
+  },
+  {
+    id: "c-004",
+    name: "Bungoma Technical Supplies",
+    reliabilityScore: 76,
+    projectsCompleted: 5,
+    projectsLate: 1,
+    projectsStalled: 0,
+    flags: [],
+  }
+];
+
 export function getWard(id: string) {
   return wards.find((ward) => ward.id === id);
 }
@@ -563,6 +612,10 @@ export function getReport(reference: string) {
   return reports.find(
     (report) => report.reference.toLowerCase() === reference.toLowerCase(),
   );
+}
+
+export function getContractor(name: string) {
+  return contractors.find((c) => c.name === name);
 }
 
 export function projectStatusLabel(status: ProjectStatus) {
