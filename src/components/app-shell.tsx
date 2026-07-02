@@ -19,6 +19,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { ButtonLink } from "@/components/ui/button";
+import { LiveEcosystem } from "@/components/live-ecosystem";
 import { localeLabels, locales, type Locale, localizePath } from "@/lib/locales";
 import { useCountyStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
@@ -221,6 +222,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         ) : null}
       </header>
       <main id="main">{children}</main>
+      <LiveEcosystem />
     </div>
   );
 }
