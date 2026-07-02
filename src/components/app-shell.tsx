@@ -85,7 +85,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       >
         Skip to content
       </a>
-      <header className="sticky top-0 z-30 border-b border-[var(--color-line)] bg-[var(--color-bg)]/92 backdrop-blur">
+      <header className="sticky top-0 z-30 border-b border-white/20 bg-[var(--color-bg)]/60 backdrop-blur-xl shadow-sm">
         <div className="mx-auto flex min-h-16 w-full max-w-7xl items-center gap-3 px-4 sm:px-6">
           <Link className="flex items-center gap-3" href={`/${locale}`} aria-label="County Yangu home">
             <span className="grid size-11 place-items-center rounded-md bg-[var(--color-charcoal)] font-display text-xl text-[var(--color-maize)]">
@@ -106,8 +106,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               return (
                 <Link
                   className={cn(
-                    "inline-flex min-h-11 items-center gap-2 rounded-md px-3 text-sm font-bold text-[var(--color-muted)] hover:bg-black/5 hover:text-[var(--color-charcoal)] focus-visible:outline focus-visible:outline-3 focus-visible:outline-[var(--color-bead-red)]",
-                    active && "bg-[var(--color-maize-soft)] text-[var(--color-charcoal)]",
+                    "inline-flex min-h-11 items-center gap-2 rounded-md px-3 text-sm font-bold text-[var(--color-muted)] transition-all duration-300 hover:bg-black/5 hover:text-[var(--color-charcoal)] focus-visible:outline focus-visible:outline-3 focus-visible:outline-[var(--color-bead-red)]",
+                    active && "bg-[var(--color-maize-soft)] text-[var(--color-charcoal)] shadow-sm",
                     simpleMode && "px-4 text-base",
                   )}
                   href={item.href}

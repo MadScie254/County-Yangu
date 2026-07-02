@@ -19,7 +19,7 @@ export function SectionHeader({
           {eyebrow}
         </p>
       ) : null}
-      <h1 className="font-display text-4xl leading-[1.04] text-[var(--color-charcoal)] sm:text-6xl">
+      <h1 className="font-display text-4xl font-bold tracking-tight leading-[1.04] text-[var(--color-charcoal)] sm:text-6xl">
         {title}
       </h1>
       {children ? (

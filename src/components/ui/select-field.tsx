@@ -35,7 +35,7 @@ export function SelectField({
       <Select.Root value={value} onValueChange={onValueChange}>
         <Select.Trigger
           aria-labelledby={id}
-          className="flex min-h-12 w-full items-center justify-between gap-3 rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-left text-base font-semibold text-[var(--color-charcoal)] shadow-sm outline-none focus-visible:border-[var(--color-bead-red)] focus-visible:ring-3 focus-visible:ring-[var(--color-bead-red)]/25"
+          className="flex min-h-12 w-full items-center justify-between gap-3 rounded-md border border-[var(--color-line)] bg-white/80 backdrop-blur-sm px-3 text-left text-base font-semibold text-[var(--color-charcoal)] shadow-sm outline-none transition-all focus-visible:border-[var(--color-maize)] focus-visible:ring-4 focus-visible:ring-[var(--color-maize)]/30"
         >
           <Select.Value placeholder={placeholder} />
           <Select.Icon>

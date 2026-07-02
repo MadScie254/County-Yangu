@@ -53,7 +53,7 @@ export function ProjectExplorer() {
               const ward = getWard(project.wardId);
               return (
                 <Link
-                  className="grid gap-4 rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] p-4 transition hover:border-[var(--color-cane)] focus-visible:outline focus-visible:outline-3 focus-visible:outline-[var(--color-bead-red)] md:grid-cols-[1fr_auto]"
+                  className="grid gap-4 rounded-xl border border-[var(--color-line)] bg-white/60 backdrop-blur-sm p-4 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-[var(--color-cane)] focus-visible:outline focus-visible:outline-3 focus-visible:outline-[var(--color-bead-red)] md:grid-cols-[1fr_auto]"
                   href={`/${locale}/track/${project.slug}`}
                   key={project.id}
                 >
