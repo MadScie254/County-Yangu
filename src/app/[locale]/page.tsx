@@ -106,7 +106,7 @@ export default async function HomePage({
           <p className="mt-3 max-w-2xl leading-7 text-white/78">
             Every public number shown here is built from the same vote, project, and report records used by the oversight view.
           </p>
-          <ButtonLink className="mt-5 bg-white text-[var(--color-charcoal)] hover:bg-[var(--color-maize)]" href={`/${locale}/pulse`}>
+          <ButtonLink className="mt-5 bg-[var(--color-maize)] text-[var(--color-charcoal)] hover:bg-[var(--color-maize-soft)] shadow-md hover:shadow-lg transition-all duration-300 active:scale-95 border-none" href={`/${locale}/pulse`}>
             County Pulse
             <ArrowRight aria-hidden="true" size={18} />
           </ButtonLink>

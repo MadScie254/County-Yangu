@@ -62,8 +62,9 @@ export default function RootLayout({
       className="h-full"
       data-scroll-behavior="smooth"
       lang="en"
+      suppressHydrationWarning
     >
-      <body>
+      <body suppressHydrationWarning>
         <Providers>{children}</Providers>
       </body>
     </html>
