@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="County Yangu icon">
+  <rect width="512" height="512" rx="72" fill="#17211c"/>
+  <path d="M72 384 256 72l184 312H72Z" fill="#285a3a"/>
+  <path d="M118 355h276L256 122 118 355Z" fill="#f2b33d"/>
+  <path d="M166 328h180L256 176l-90 152Z" fill="#fffdf5"/>
+  <circle cx="256" cy="302" r="34" fill="#b93336"/>
+  <path d="M120 411h272" stroke="#fffdf5" stroke-width="22" stroke-linecap="round"/>
+  <path d="M162 433h188" stroke="#f2b33d" stroke-width="12" stroke-linecap="round"/>
+</svg>
