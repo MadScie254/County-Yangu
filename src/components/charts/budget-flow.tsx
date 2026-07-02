@@ -40,6 +40,20 @@ export function BudgetFlow({ locale }: { locale: Locale }) {
         className="aspect-[1.55] w-full"
         viewBox="0 0 100 100"
       >
+        <defs>
+          <linearGradient id="linkGradient" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stopColor="var(--color-cane)" stopOpacity="0.4" />
+            <stop offset="100%" stopColor="var(--color-maize)" stopOpacity="0.8" />
+          </linearGradient>
+          <linearGradient id="activeLinkGradient" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stopColor="var(--color-cane)" />
+            <stop offset="100%" stopColor="var(--color-bead-red)" />
+          </linearGradient>
+          <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="2" result="blur" />
+            <feComposite in="SourceGraphic" in2="blur" operator="over" />
+          </filter>
+        </defs>
         {budgetLinks.map((link) => {
           const start = positions[link.source];
           const end = positions[link.target];
@@ -50,9 +64,10 @@ export function BudgetFlow({ locale }: { locale: Locale }) {
               fill="none"
               key={`${link.source}-${link.target}`}
               opacity={isActive ? 1 : alpha(link.amount)}
-              stroke={isActive ? "#b93336" : "#425466"}
+              stroke={isActive ? "url(#activeLinkGradient)" : "url(#linkGradient)"}
               strokeLinecap="round"
               strokeWidth={width(link.amount)}
+              className="transition-all duration-500"
             />
           );
         })}
@@ -70,13 +85,15 @@ export function BudgetFlow({ locale }: { locale: Locale }) {
               <circle
                 cx={position.x}
                 cy={position.y}
-                fill={isActive ? "#b93336" : node.kind === "project" ? "#f2b33d" : "#285a3a"}
+                fill={isActive ? "var(--color-bead-red)" : node.kind === "project" ? "var(--color-maize)" : "var(--color-cane)"}
                 r={node.kind === "county" ? 6.5 : node.kind === "project" ? 4.1 : 5.2}
-                stroke="#fffdf5"
-                strokeWidth="1.2"
+                stroke="var(--color-surface)"
+                strokeWidth={isActive ? "2" : "1.2"}
+                filter={isActive ? "url(#glow)" : undefined}
+                className="transition-all duration-300"
               />
               <text
-                fill="#17211c"
+                fill="var(--color-charcoal)"
                 fontSize="3.1"
                 fontWeight="800"
                 textAnchor={position.x > 74 ? "end" : "start"}
@@ -86,7 +103,7 @@ export function BudgetFlow({ locale }: { locale: Locale }) {
                 {node.label}
               </text>
               <text
-                fill="#425466"
+                fill="var(--color-muted)"
                 fontFamily="var(--font-roboto-mono)"
                 fontSize="2.6"
                 textAnchor={position.x > 74 ? "end" : "start"}
