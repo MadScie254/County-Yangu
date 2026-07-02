@@ -1,13 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "motion/react";
-import {
-  AlertTriangle,
-  Briefcase,
-  CheckCircle2,
-  TrendingUp,
-  X,
-} from "lucide-react";
+import { X } from "lucide-react";
 import { useEffect, useState } from "react";
 
 type LiveEvent = {

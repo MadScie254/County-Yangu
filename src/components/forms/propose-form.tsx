@@ -7,11 +7,10 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { wards } from "@/lib/data";
-import { type Locale } from "@/lib/locales";
 import { proposeSchema, type ProposeInput } from "@/lib/schemas";
 import { useCountyStore } from "@/lib/store";
 
-export function ProposeForm({ locale }: { locale: Locale }) {
+export function ProposeForm() {
   const t = useTranslations("propose");
   const proposeProject = useCountyStore((state) => state.proposeProject);
   const selectedWardId = useCountyStore((state) => state.selectedWardId);
