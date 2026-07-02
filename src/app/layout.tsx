@@ -7,7 +7,10 @@ import "@fontsource/public-sans/latin-800.css";
 import "@fontsource/public-sans/latin-900.css";
 import "@fontsource/roboto-mono/latin-400.css";
 import "@fontsource/roboto-mono/latin-700.css";
-import "@fontsource/barrio/latin-400.css";
+import "@fontsource/outfit/latin-400.css";
+import "@fontsource/outfit/latin-600.css";
+import "@fontsource/outfit/latin-700.css";
+import "@fontsource/outfit/latin-900.css";
 import "./globals.css";
 
 const description =

@@ -2,34 +2,34 @@
 @import "maplibre-gl/dist/maplibre-gl.css";
 
 :root {
-  --color-bg: #fffdf5;
+  --color-bg: #fcfbf8;
   --color-surface: #ffffff;
-  --color-charcoal: #17211c;
-  --color-muted: #425466;
-  --color-line: #d8d2bf;
-  --color-maize: #f2b33d;
-  --color-maize-soft: #f8e3a8;
-  --color-cane: #285a3a;
-  --color-elgon: #425466;
-  --color-bead-red: #b93336;
+  --color-charcoal: #09090b;
+  --color-muted: #52525b;
+  --color-line: #e4e4e7;
+  --color-maize: #fbbd23;
+  --color-maize-soft: #fef0cd;
+  --color-cane: #166534;
+  --color-elgon: #3f3f46;
+  --color-bead-red: #b91c1c;
   --font-public: "Public Sans";
   --font-roboto-mono: "Roboto Mono";
-  --font-barrio: "Barrio";
+  --font-outfit: "Outfit";
   --text-scale: 1;
   color-scheme: light;
 }
 
 :root[data-contrast="high"] {
-  --color-bg: #ffffff;
-  --color-surface: #ffffff;
-  --color-charcoal: #050807;
-  --color-muted: #17211c;
-  --color-line: #050807;
-  --color-maize: #ffbd2e;
-  --color-maize-soft: #ffe08a;
-  --color-cane: #0d4b25;
-  --color-elgon: #26394d;
-  --color-bead-red: #9f151c;
+  --color-bg: #09090b;
+  --color-surface: #18181b;
+  --color-charcoal: #fafafa;
+  --color-muted: #a1a1aa;
+  --color-line: #27272a;
+  --color-maize: #facc15;
+  --color-maize-soft: #423816;
+  --color-cane: #22c55e;
+  --color-elgon: #52525b;
+  --color-bead-red: #ef4444;
 }
 
 @theme inline {
@@ -65,11 +65,10 @@ html {
 
 body {
   min-height: 100%;
-  background:
-    linear-gradient(90deg, rgba(40, 90, 58, 0.055) 1px, transparent 1px),
-    linear-gradient(180deg, rgba(185, 51, 54, 0.045) 1px, transparent 1px),
-    var(--color-bg);
-  background-size: 48px 48px;
+  background: radial-gradient(circle at top, rgba(22, 101, 52, 0.03) 0%, transparent 40%),
+              radial-gradient(circle at bottom right, rgba(251, 189, 35, 0.03) 0%, transparent 40%),
+              var(--color-bg);
+  background-attachment: fixed;
   color: var(--color-charcoal);
   font-family: var(--font-public), Arial, Helvetica, sans-serif;
   font-size: calc(16px * var(--text-scale));
@@ -86,8 +85,8 @@ textarea {
 }
 
 .font-display {
-  font-family: var(--font-barrio), var(--font-public), Arial, Helvetica, sans-serif;
-  letter-spacing: 0;
+  font-family: var(--font-outfit), var(--font-public), Arial, Helvetica, sans-serif;
+  letter-spacing: -0.02em;
 }
 
 .font-data {
