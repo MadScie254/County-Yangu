@@ -51,12 +51,12 @@ export function AlertForm() {
         options={[
           { value: "sms", label: t("channelSms") },
           { value: "ussd", label: t("channelUssd") },
-          { value: "whatsapp", label: "WhatsApp Message" },
+          { value: "whatsapp", label: t("channelWhatsapp") },
         ]}
         value={channel}
       />
       <label className="grid gap-2 text-sm font-bold">
-        Phone Number
+        {t("phoneLabel")}
         <input
           className="min-h-12 rounded-md border border-[var(--color-line)] bg-white/50 px-3 text-base font-semibold outline-none transition-all focus-visible:border-[var(--color-maize)] focus-visible:ring-4 focus-visible:ring-[var(--color-maize)]/30"
           inputMode="tel"

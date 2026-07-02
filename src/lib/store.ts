@@ -22,6 +22,8 @@ type CountyState = {
   textScale: number;
   selectedWardId: string;
   queuedActions: QueuedAction[];
+  votesCastCount: number;
+  reportsSubmittedCount: number;
   setSelectedWard: (wardId: string) => void;
   toggleSimpleMode: () => void;
   toggleHighContrast: () => void;
@@ -45,6 +47,8 @@ export const useCountyStore = create<CountyState>()(
       textScale: 1,
       selectedWardId: "kimilili",
       queuedActions: [],
+      votesCastCount: 0,
+      reportsSubmittedCount: 0,
       setSelectedWard: (wardId) => set({ selectedWardId: wardId }),
       toggleSimpleMode: () =>
         set((state) => ({ simpleMode: !state.simpleMode })),
@@ -59,7 +63,7 @@ export const useCountyStore = create<CountyState>()(
           createdAt: new Date().toISOString(),
           payload,
         };
-        set((state) => ({ queuedActions: [action, ...state.queuedActions] }));
+        set((state) => ({ queuedActions: [action, ...state.queuedActions], votesCastCount: state.votesCastCount + 1 }));
         window.setTimeout(() => get().markSynced(action.id), navigator.onLine ? 850 : 2600);
         return action;
       },
@@ -72,7 +76,7 @@ export const useCountyStore = create<CountyState>()(
           payload,
           reference: makeReference(payload.wardId),
         };
-        set((state) => ({ queuedActions: [action, ...state.queuedActions] }));
+        set((state) => ({ queuedActions: [action, ...state.queuedActions], reportsSubmittedCount: state.reportsSubmittedCount + 1 }));
         window.setTimeout(() => get().markSynced(action.id), navigator.onLine ? 900 : 3200);
         return action;
       },
@@ -106,6 +110,8 @@ export const useCountyStore = create<CountyState>()(
         textScale: state.textScale,
         selectedWardId: state.selectedWardId,
         queuedActions: state.queuedActions,
+        votesCastCount: state.votesCastCount,
+        reportsSubmittedCount: state.reportsSubmittedCount,
       }),
     },
   ),

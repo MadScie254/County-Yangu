@@ -34,11 +34,7 @@ export default async function ReportPage({
       <div>
         <SectionHeader title={report.title}>{report.intro}</SectionHeader>
         <div className="mt-6 grid gap-3">
-          {[
-            "Your name is not required.",
-            "The case reference is safe to share.",
-            "Public dashboards show only aggregate category and status counts.",
-          ].map((item) => (
+          {(report.privacyBullets as string[]).map((item) => (
             <div className="rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] p-4 font-bold" key={item}>
               {item}
             </div>

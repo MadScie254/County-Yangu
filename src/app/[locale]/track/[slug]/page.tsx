@@ -53,7 +53,7 @@ export default async function ProjectPage({
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
       <Link className="text-sm font-bold underline" href={`/${locale}/track`}>
-        Back to projects
+        {messages.track.back}
       </Link>
       <section className="mt-5 grid gap-6 lg:grid-cols-[1fr_0.55fr]">
         <div className="rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
@@ -80,7 +80,7 @@ export default async function ProjectPage({
               <dd className="font-black">{project.contractor}</dd>
             </div>
             <div>
-              <dt className="text-sm font-bold text-[var(--color-muted)]">Expected</dt>
+              <dt className="text-sm font-bold text-[var(--color-muted)]">{messages.track.expected}</dt>
               <dd className="font-data font-black">{project.expectedAt}</dd>
             </div>
           </dl>
@@ -122,7 +122,7 @@ export default async function ProjectPage({
             </div>
           </div>
           <div className="rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
-            <h2 className="font-black">Site photos</h2>
+            <h2 className="font-black">{messages.track.photos}</h2>
             <div className="mt-4 grid gap-3">
               {project.photos.map((photo, index) => (
                 <div className="rounded-md bg-[var(--color-charcoal)] p-4 text-white" key={photo}>

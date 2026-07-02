@@ -19,29 +19,17 @@ export default async function Image({
 
   return new ImageResponse(
     (
-      <div
-        style={{
-          width: "100%",
-          height: "100%",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-          background: "#17211c",
-          color: "#fffdf5",
-          padding: 64,
-          fontFamily: "Arial",
-        }}
-      >
-        <div style={{ fontSize: 28, fontWeight: 900, color: "#f2b33d" }}>
+      <div tw="flex flex-col justify-between w-full h-full bg-[#17211c] text-[#fffdf5] p-16 font-sans">
+        <div tw="text-[28px] font-black text-[#f2b33d]">
           County Yangu report status
         </div>
         <div>
-          <div style={{ fontSize: 72, fontWeight: 900 }}>{report?.reference ?? reference}</div>
-          <div style={{ marginTop: 24, fontSize: 34, fontWeight: 800 }}>
+          <div tw="text-[72px] font-black">{report?.reference ?? reference}</div>
+          <div tw="mt-6 text-[34px] font-extrabold">
             {ward?.name ?? "Bungoma"} · {report?.status.replace(/_/g, " ") ?? "received"}
           </div>
         </div>
-        <div style={{ fontSize: 26, fontWeight: 800, color: "#d8d2bf" }}>
+        <div tw="text-[26px] font-extrabold text-[#d8d2bf]">
           Public lookup shows status only. No phone numbers. No report text.
         </div>
       </div>

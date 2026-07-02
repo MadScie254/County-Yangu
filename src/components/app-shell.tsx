@@ -63,6 +63,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const simpleMode = useCountyStore((state) => state.simpleMode);
   const highContrast = useCountyStore((state) => state.highContrast);
   const textScale = useCountyStore((state) => state.textScale);
+  const votesCastCount = useCountyStore((state) => state.votesCastCount);
+  const reportsSubmittedCount = useCountyStore((state) => state.reportsSubmittedCount);
   const toggleSimpleMode = useCountyStore((state) => state.toggleSimpleMode);
   const toggleHighContrast = useCountyStore((state) => state.toggleHighContrast);
   const setTextScale = useCountyStore((state) => state.setTextScale);
@@ -137,12 +139,15 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 {localeLabels[targetLocale]}
               </Link>
             ))}
+            {votesCastCount > 0 && <span className="ml-2 inline-flex items-center gap-1 rounded-full bg-[var(--color-maize)] px-2.5 py-1 text-[10px] font-black uppercase tracking-wider text-[var(--color-charcoal)]" title="You have voted!">🏅 Voter</span>}
+            {reportsSubmittedCount > 0 && <span className="inline-flex items-center gap-1 rounded-full bg-[var(--color-cane)] px-2.5 py-1 text-[10px] font-black uppercase tracking-wider text-white" title="You have submitted a report!">🛡️ Watcher</span>}
           </div>
 
           <button
             className="ml-auto grid size-11 place-items-center rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] lg:hidden"
             onClick={() => setOpen((value) => !value)}
             aria-expanded={open}
+            aria-controls="mobile-menu"
             aria-label="Open menu"
           >
             <Menu aria-hidden="true" />
@@ -173,7 +178,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         </div>
 
         {open ? (
-          <nav className="grid gap-1 border-t border-[var(--color-line)] bg-[var(--color-bg)] p-3 lg:hidden" aria-label="Mobile" key={pathname}>
+          <nav id="mobile-menu" className="grid gap-1 border-t border-[var(--color-line)] bg-[var(--color-bg)] p-3 lg:hidden" aria-label="Mobile" key={pathname}>
             {navItems.map((item) => {
               const Icon = item.icon;
               return (
@@ -200,6 +205,12 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 </Link>
               ))}
             </div>
+            {(votesCastCount > 0 || reportsSubmittedCount > 0) && (
+              <div className="mt-3 flex items-center gap-2 border-t border-[var(--color-line)] pt-3">
+                {votesCastCount > 0 && <span className="inline-flex items-center gap-1 rounded-full bg-[var(--color-maize)] px-2.5 py-1 text-[10px] font-black uppercase tracking-wider text-[var(--color-charcoal)]">🏅 Voter</span>}
+                {reportsSubmittedCount > 0 && <span className="inline-flex items-center gap-1 rounded-full bg-[var(--color-cane)] px-2.5 py-1 text-[10px] font-black uppercase tracking-wider text-white">🛡️ Watcher</span>}
+              </div>
+            )}
           </nav>
         ) : null}
       </header>

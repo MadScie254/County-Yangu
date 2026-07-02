@@ -1,6 +1,7 @@
 "use client";
 
 import { Activity, CheckCircle2, MessageCircleWarning, Vote } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { countyTotals } from "@/lib/data";
 import { formatNumber } from "@/lib/utils";
@@ -13,6 +14,7 @@ export function LiveTicker({
   labels: { votes: string; reports: string; milestones: string };
   locale: Locale;
 }) {
+  const t = useTranslations("pulse");
   const [pulse, setPulse] = useState(0);
 
   useEffect(() => {
@@ -42,7 +44,7 @@ export function LiveTicker({
     <div className="rounded-xl border border-white/50 bg-white/80 backdrop-blur-sm p-3 shadow-lg" role="status">
       <div className="mb-3 flex items-center gap-2 text-sm font-black text-[var(--color-bead-red)]">
         <Activity aria-hidden="true" size={18} />
-        Live now
+        {t("liveNow")}
         <span className="relative flex size-2 ml-1">
           <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--color-cane)] opacity-75"></span>
           <span className="relative inline-flex size-2 rounded-full bg-[var(--color-cane)]"></span>

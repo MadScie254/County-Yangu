@@ -21,36 +21,24 @@ export default async function Image({
 
   return new ImageResponse(
     (
-      <div
-        style={{
-          width: "100%",
-          height: "100%",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-          background: "#fffdf5",
-          color: "#17211c",
-          padding: 64,
-          fontFamily: "Arial",
-        }}
-      >
-        <div style={{ fontSize: 28, fontWeight: 900, color: "#b93336" }}>
+      <div tw="flex flex-col justify-between w-full h-full bg-[#fffdf5] text-[#17211c] p-16 font-sans">
+        <div tw="text-[28px] font-black text-[#b93336]">
           County Yangu · {getWard(project?.wardId ?? "")?.name ?? "Bungoma"}
         </div>
         <div>
-          <div style={{ fontSize: 74, fontWeight: 900, lineHeight: 1 }}>
+          <div tw="text-[74px] font-black leading-none">
             {project?.title ?? "County project"}
           </div>
-          <div style={{ marginTop: 28, fontSize: 34, fontWeight: 800 }}>
+          <div tw="mt-7 text-[34px] font-extrabold">
             {project ? formatCurrency(project.budget, safeLocale) : "Budget tracked"} ·{" "}
             {project ? projectStatusLabel(project.status) : "public status"}
           </div>
         </div>
-        <div style={{ display: "flex", gap: 18 }}>
-          <div style={{ width: 70, height: 70, borderRadius: 14, background: "#17211c", color: "#f2b33d", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 30, fontWeight: 900 }}>
+        <div tw="flex gap-[18px]">
+          <div tw="w-[70px] h-[70px] rounded-[14px] bg-[#17211c] text-[#f2b33d] flex items-center justify-center text-[30px] font-black">
             CY
           </div>
-          <div style={{ fontSize: 26, fontWeight: 800, display: "flex", alignItems: "center" }}>
+          <div tw="text-[26px] font-extrabold flex items-center">
             Track the work. Share the proof.
           </div>
         </div>

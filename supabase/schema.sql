@@ -79,7 +79,7 @@ create table public.alert_subscriptions (
   id uuid primary key default gen_random_uuid(),
   ward_id text references public.wards(id) on delete cascade,
   phone_hash bytea not null,
-  channel_preference text not null check (channel_preference in ('sms', 'ussd')),
+  channel_preference text not null check (channel_preference in ('sms', 'ussd', 'whatsapp')),
   created_at timestamptz not null default now()
 );
 
