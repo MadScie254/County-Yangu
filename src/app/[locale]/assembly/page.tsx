@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { CsvExportButton, PdfExportButton } from "@/components/export-buttons";
 import { SectionHeader } from "@/components/ui/section-header";
-import { getWard, projects, reports, wards } from "@/lib/data";
+import { getWard, projects, reports, wards, tenders } from "@/lib/data";
 import { isLocale, type Locale } from "@/lib/locales";
 import { getMessages } from "@/lib/messages";
 import { formatCurrency, formatNumber } from "@/lib/utils";
@@ -32,6 +32,21 @@ export default async function AssemblyPage({
   const locale = localeParam as Locale;
   const messages = getMessages(locale);
   const topWards = wards.slice(0, 12);
+
+  const contractorCounts: Record<string, { count: number; value: number }> = {};
+  tenders.forEach((tender) => {
+    if (tender.contractor) {
+      if (!contractorCounts[tender.contractor]) {
+        contractorCounts[tender.contractor] = { count: 0, value: 0 };
+      }
+      contractorCounts[tender.contractor].count += 1;
+      contractorCounts[tender.contractor].value += tender.estimatedBudget;
+    }
+  });
+
+  const flaggedContractors = Object.entries(contractorCounts)
+    .filter(([_, data]) => data.count > 2)
+    .map(([name, data]) => ({ name, ...data }));
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
@@ -99,6 +114,27 @@ export default async function AssemblyPage({
           </table>
         </div>
       </section>
+
+      {flaggedContractors.length > 0 && (
+        <section className="mt-6 rounded-md border-2 border-[var(--color-bead-red)]/50 bg-[var(--color-bead-red)]/5 p-4 print:break-inside-avoid">
+          <h2 className="text-2xl font-black text-[var(--color-bead-red)]">Procurement Anomalies & Red Flags</h2>
+          <p className="mt-1 text-sm font-bold text-[var(--color-charcoal)]">The following contractors have been awarded more than 2 active tenders, triggering an automated oversight flag.</p>
+          <div className="mt-4 grid gap-3 lg:grid-cols-2">
+            {flaggedContractors.map((contractor) => (
+              <div key={contractor.name} className="flex justify-between items-center rounded-md border border-[var(--color-bead-red)]/30 bg-white p-4 shadow-sm">
+                <div>
+                  <p className="font-black text-[var(--color-charcoal)]">{contractor.name}</p>
+                  <p className="text-xs font-bold text-[var(--color-bead-red)] uppercase mt-1">{contractor.count} Active Tenders</p>
+                </div>
+                <div className="text-right">
+                  <p className="text-xs font-bold text-[var(--color-muted)] uppercase tracking-wider">Cumulative Value</p>
+                  <p className="font-data text-lg font-black text-[var(--color-charcoal)]">{formatCurrency(contractor.value, locale)}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       <section className="mt-6 grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
         <div className="rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] p-4 print:break-inside-avoid">
