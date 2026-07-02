@@ -140,7 +140,8 @@ export function WardMapClient({
       map.remove();
       mapRef.current = null;
     };
-  }, [data]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     const source = mapRef.current?.getSource("wards") as maplibregl.GeoJSONSource | undefined;
