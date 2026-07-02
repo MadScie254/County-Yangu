@@ -46,7 +46,7 @@ export function ReportForm() {
   const category = useWatch({ control, name: "category" });
 
   return (
-    <form className="grid gap-5 rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-sm sm:p-5" onSubmit={handleSubmit(onSubmit)}>
+    <form className="grid gap-5 rounded-xl border border-white/50 bg-white/80 backdrop-blur-sm p-4 shadow-xl sm:p-5" onSubmit={handleSubmit(onSubmit)}>
       <div className="rounded-md border border-[var(--color-cane)] bg-[var(--color-bg)] p-4">
         <div className="flex items-start gap-3">
           <ShieldCheck aria-hidden="true" className="mt-1 text-[var(--color-cane)]" />

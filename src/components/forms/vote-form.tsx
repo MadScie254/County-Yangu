@@ -60,7 +60,7 @@ export function VoteForm({ locale }: { locale: Locale }) {
 
   return (
     <form
-      className="grid gap-5 rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-sm sm:p-5"
+      className="grid gap-5 rounded-xl border border-white/50 bg-white/80 backdrop-blur-sm p-4 shadow-xl sm:p-5"
       onSubmit={handleSubmit(onSubmit)}
     >
       <SelectField
@@ -88,7 +88,7 @@ export function VoteForm({ locale }: { locale: Locale }) {
           const largest = Math.max(...visibleOptions.map(getVoteTotals));
           return (
             <button
-              className="rounded-md border border-[var(--color-line)] bg-[var(--color-bg)] p-3 text-left transition hover:border-[var(--color-cane)] focus-visible:outline focus-visible:outline-3 focus-visible:outline-[var(--color-bead-red)]"
+              className="rounded-xl border border-[var(--color-line)] bg-white/60 p-3 text-left transition-all duration-300 hover:shadow-md hover:border-[var(--color-cane)] hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-3 focus-visible:outline-[var(--color-bead-red)]"
               key={option.id}
               onClick={() => setValue("optionId", option.id, { shouldValidate: true })}
               type="button"

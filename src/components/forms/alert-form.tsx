@@ -38,7 +38,7 @@ export function AlertForm() {
   const channel = useWatch({ control, name: "channel" });
 
   return (
-    <form className="grid gap-5 rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-sm sm:p-5" onSubmit={handleSubmit(onSubmit)}>
+    <form className="grid gap-5 rounded-xl border border-white/50 bg-white/80 backdrop-blur-sm p-4 shadow-xl sm:p-5" onSubmit={handleSubmit(onSubmit)}>
       <SelectField
         label="Ward"
         onValueChange={(value) => setValue("wardId", value, { shouldValidate: true })}

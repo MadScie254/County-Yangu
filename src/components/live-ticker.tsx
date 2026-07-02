@@ -39,10 +39,14 @@ export function LiveTicker({
   ];
 
   return (
-    <div className="rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] p-3 shadow-sm" role="status">
+    <div className="rounded-xl border border-white/50 bg-white/80 backdrop-blur-sm p-3 shadow-lg" role="status">
       <div className="mb-3 flex items-center gap-2 text-sm font-black text-[var(--color-bead-red)]">
         <Activity aria-hidden="true" size={18} />
         Live now
+        <span className="relative flex size-2 ml-1">
+          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--color-cane)] opacity-75"></span>
+          <span className="relative inline-flex size-2 rounded-full bg-[var(--color-cane)]"></span>
+        </span>
       </div>
       <div className="grid gap-2 sm:grid-cols-3">
         {metrics.map((metric) => {
