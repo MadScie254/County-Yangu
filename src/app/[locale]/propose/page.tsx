@@ -46,7 +46,7 @@ export default async function ProposePage({
           </p>
         </div>
       </div>
-      <ProposeForm locale={locale} />
+      <ProposeForm />
     </div>
   );
 }

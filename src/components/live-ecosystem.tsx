@@ -142,7 +142,6 @@ export function LiveEcosystem() {
       <AnimatePresence mode="popLayout">
         {toasts.map((toast) => {
           const style = typeStyles[toast.type];
-          const Icon = style.Icon;
           return (
             <motion.div
               key={toast.id}
