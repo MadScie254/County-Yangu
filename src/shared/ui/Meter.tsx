@@ -1,9 +1,9 @@
 import { cn } from '@/shared/lib/utils';
 
 /** Horizontal bar, e.g. budget spent. Accessible as a meter. */
-export function Meter({ value, max = 100, label, tone = 'brand', className }: { value: number; max?: number; label: string; tone?: 'brand' | 'good' | 'bad' | 'info'; className?: string }) {
+export function Meter({ value, max = 100, label, tone = 'brand', className }: { value: number; max?: number; label: string; tone?: 'brand' | 'good' | 'bad' | 'warn' | 'info'; className?: string }) {
   const pct = max > 0 ? Math.min(100, Math.max(0, (value / max) * 100)) : 0;
-  const bar = { brand: 'bg-brand', good: 'bg-good', bad: 'bg-bad', info: 'bg-info' }[tone];
+  const bar = { brand: 'bg-brand', good: 'bg-good', bad: 'bg-bad', warn: 'bg-warn', info: 'bg-info' }[tone];
   return (
     <div role="meter" aria-label={label} aria-valuemin={0} aria-valuemax={max} aria-valuenow={Math.round(value)} className={cn('h-2.5 w-full overflow-hidden rounded-full bg-bg-2', className)}>
       <div className={cn('h-full rounded-full transition-[width] duration-700 ease-out', bar)} style={{ width: `${pct}%` }} />

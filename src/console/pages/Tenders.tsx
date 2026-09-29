@@ -10,6 +10,7 @@ import { Field, SelectInput, TextInput } from '@/shared/ui/Field';
 import { Sheet } from '@/shared/ui/Sheet';
 import { Skeleton } from '@/shared/ui/Card';
 import { toast } from '@/shared/ui/Toast';
+import { checkKra } from '../api/admin';
 import { listContractors, listTenders, saveContractor, saveTender, type StaffTender } from '../api/content';
 import { Empty, PageHeader, Panel, Table, td } from '../ui/Page';
 
@@ -27,6 +28,16 @@ export default function Tenders() {
   const refresh = () => { void qc.invalidateQueries({ queryKey: ['c-tenders'] }); void qc.invalidateQueries({ queryKey: ['c-contractors'] }); };
   const save = useMutation({ mutationFn: (t: StaffTender) => saveTender({ ...t, id: t.id || undefined }), onSuccess: () => { toast({ tone: 'good', title: 'Saved' }); setEdit(null); refresh(); }, onError: (e) => toast({ tone: 'bad', title: 'That did not work', body: e instanceof Error ? e.message : undefined }) });
   const addC = useMutation({ mutationFn: () => saveContractor(newC.name.trim(), newC.pin.trim().toUpperCase() || null), onSuccess: () => { setNewC({ name: '', pin: '' }); refresh(); } });
+  const kra = useMutation({
+    mutationFn: (c: { id: string; kra_pin: string }) => checkKra(c.kra_pin, c.id),
+    onSuccess: (r) => {
+      refresh();
+      if (!r.pin_format_valid) toast({ tone: 'bad', title: 'That is not a valid KRA PIN', body: 'A PIN is a letter, nine digits and a letter.' });
+      else if (r.source === 'format-only') toast({ tone: 'info', title: 'The PIN is well formed', body: 'The live check with KRA is not switched on for this county yet, so tax compliance is still unknown.' });
+      else toast({ tone: r.status === 'compliant' ? 'good' : 'bad', title: r.status === 'compliant' ? 'Tax compliant' : 'Not tax compliant' });
+    },
+    onError: () => toast({ tone: 'bad', title: 'KRA could not be reached', body: 'Try again in a few minutes.' }),
+  });
   const awardedTo = edit?.awarded_contractor_id ? contractors.data?.find((c) => c.id === edit.awarded_contractor_id) : undefined;
 
   return (
@@ -58,7 +69,7 @@ export default function Tenders() {
         </div>
         <ul className="mt-4 divide-y divide-line">
           {contractors.data?.map((c) => (
-            <li key={c.id} className="flex items-center justify-between py-2.5"><span className="font-semibold">{c.name}</span><span className="flex items-center gap-3 text-sm text-muted"><span className="font-data">{c.kra_pin ?? 'no PIN'}</span>{c.kra_compliant === true ? <Chip tone="good"><ShieldCheck className="size-3.5" aria-hidden />Tax compliant</Chip> : c.kra_compliant === false ? <Chip tone="bad"><ShieldAlert className="size-3.5" aria-hidden />Not compliant</Chip> : <Chip>Not checked</Chip>}</span></li>
+            <li key={c.id} className="flex items-center justify-between py-2.5"><span className="font-semibold">{c.name}</span><span className="flex items-center gap-3 text-sm text-muted"><span className="font-data">{c.kra_pin ?? 'no PIN'}</span>{c.kra_compliant === true ? <Chip tone="good"><ShieldCheck className="size-3.5" aria-hidden />Tax compliant</Chip> : c.kra_compliant === false ? <Chip tone="bad"><ShieldAlert className="size-3.5" aria-hidden />Not compliant</Chip> : <Chip>Not checked</Chip>}{c.kra_pin && <Button size="sm" variant="ghost" loading={kra.isPending && kra.variables?.id === c.id} onClick={() => kra.mutate({ id: c.id, kra_pin: c.kra_pin! })}>Check</Button>}</span></li>
           ))}
         </ul>
         <p className="mt-3 text-xs text-muted">Tax compliance is checked against KRA when a contractor is awarded a tender or applies for a permit.</p>

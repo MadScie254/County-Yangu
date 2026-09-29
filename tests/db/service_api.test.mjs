@@ -393,3 +393,69 @@ test('AI questions run as the person asking: an officer sees their department, n
   const sla = await as(db, 'authenticated', admin, () => all(`select * from public.ai_sla_performance(30)`));
   assert.ok(sla.length >= 1);
 });
+
+// ---- administration (migration 0011) -----------------------------------------------------------------------------------------------------
+
+test('services: a chief officer can edit their own department’s services and no one else’s', async () => {
+  const waterChief = await newUser(db, 'water.chief@county.go.ke');
+  const water = (await one(`select id from public.departments where code = 'water'`)).id;
+  await db.query(`select public.grant_staff_role($1, 'chief_officer', $2)`, [waterChief, water]);
+  const mine = await svc(`insert into public.services (slug, name, fee, status, department_id) values ('water-connection', 'Water connection', 500, 'active', $1) returning id`, [water]);
+  const theirs = await svc(`insert into public.services (slug, name, fee, status, department_id) values ('road-cut', 'Road cut permit', 500, 'active', $1) returning id`, [roads]);
+  await as(db, 'authenticated', waterChief, async () => {
+    await db.query(`update public.services set fee = 750 where id = $1`, [mine.id]);
+    const r = await db.query(`update public.services set fee = 1 where id = $1 returning id`, [theirs.id]);
+    assert.equal(r.rows.length, 0, 'another department’s service is not theirs to change');
+    await assert.rejects(db.query(`insert into public.services (slug, name, fee, status, department_id) values ('sneaky', 'x', 0, 'active', $1)`, [roads]), /row-level security/i);
+  });
+  assert.equal(Number((await svc(`select fee from public.services where id = $1`, [mine.id])).fee), 750);
+  assert.equal(Number((await svc(`select fee from public.services where id = $1`, [theirs.id])).fee), 500);
+  await as(db, 'authenticated', admin, async () => {
+    await db.query(`update public.services set fee = 600 where id = $1`, [theirs.id]);
+  });
+  assert.equal(Number((await svc(`select fee from public.services where id = $1`, [theirs.id])).fee), 600);
+});
+
+test('two-factor switch: an administrator cannot turn it on from a password-only session', async () => {
+  const flip = (claims) => as(db, 'authenticated', admin, async () => {
+    if (claims) await db.query(`select set_config('request.jwt.claims', $1, false)`, [claims]);
+    try { return await db.query(`update public.county set settings = jsonb_set(settings, '{require_staff_mfa}', 'true') returning id`); }
+    finally { await db.query(`select set_config('request.jwt.claims', '', false)`); }
+  });
+  await assert.rejects(flip(JSON.stringify({ aal: 'aal1' })), /authenticator app/i);
+  await assert.rejects(flip(null), /authenticator app/i);
+  try {
+    assert.equal((await flip(JSON.stringify({ aal: 'aal2' }))).rows.length, 1);
+    // turning it off is always allowed (nobody is locked out by that)
+    await as(db, 'authenticated', admin, async () => {
+      await db.query(`select set_config('request.jwt.claims', $1, false)`, [JSON.stringify({ aal: 'aal2' })]);
+      try { await db.query(`update public.county set settings = settings - 'require_staff_mfa'`); }
+      finally { await db.query(`select set_config('request.jwt.claims', '', false)`); }
+    });
+  } finally {
+    await db.query(`update public.county set settings = settings - 'require_staff_mfa'`);
+  }
+});
+
+test('AI usage and budgets: visible to administrators only', async () => {
+  await svc(`update public.county set settings = settings || '{"ai_default_cap_kes": 100}'::jsonb`);
+  await svc(`select public.svc_ai_log('draft_reply', 'm', 'county', $1, $2, 1, 1, 12.5, true, 0)`, [roads, roadsOfficer]);
+  const usage = await as(db, 'authenticated', admin, () => all(`select * from public.ai_usage()`));
+  const r = usage.find((u) => u.department === 'Roads' || u.department_id === roads);
+  assert.ok(r);
+  assert.equal(Number(r.spent_kes) >= 12.5, true);
+  assert.equal(usage[0].department, 'County-wide pool', 'the shared pool is listed first');
+  assert.equal((await as(db, 'authenticated', roadsOfficer, () => all(`select * from public.ai_usage()`))).length, 0);
+  assert.equal((await as(db, 'authenticated', alice, () => all(`select * from public.ai_usage()`))).length, 0);
+
+  await as(db, 'authenticated', admin, async () => { await db.query(`select public.set_ai_budget($1, 40)`, [roads]); });
+  assert.equal(Number((await svc(`select public.svc_ai_check($1) r`, [roads])).r.cap), 40);
+  await as(db, 'authenticated', admin, async () => { await db.query(`select public.set_ai_budget($1, null)`, [roads]); });
+  assert.equal(Number((await svc(`select public.svc_ai_check($1) r`, [roads])).r.cap), 100, 'clearing falls back to the default');
+  await as(db, 'authenticated', roadsOfficer, async () => {
+    await assert.rejects(db.query(`select public.set_ai_budget($1, 99999)`, [roads]), /row-level security|permission/i);
+  });
+  await as(db, 'anon', null, async () => {
+    await assert.rejects(db.query(`select * from public.ai_usage()`), /permission denied/i);
+  });
+});

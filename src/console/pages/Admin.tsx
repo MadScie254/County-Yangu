@@ -16,9 +16,13 @@ import { nameMaps, useCategories, useDepartments, useDirectory, useHolidays, use
 import { roleLabel, useCan } from '../lib/perm';
 import type { Category } from '../api/types';
 import { Empty, PageHeader, Panel, Table, td } from '../ui/Page';
+import { AiTab } from './admin/AiTab';
+import { ServicesTab } from './admin/ServicesTab';
+import { SettingsTab } from './admin/SettingsTab';
+import { InviteAuditor } from './admin/InviteAuditor';
 import type { StaffRoleName } from '@/shared/state/auth';
 
-const tabs = [['people', 'People & roles'], ['categories', 'Categories & timers'], ['routing', 'Routing'], ['holidays', 'Holidays'], ['security', 'Security']] as const;
+const tabs = [['people', 'People & roles'], ['services', 'Services'], ['categories', 'Categories & timers'], ['routing', 'Routing'], ['holidays', 'Holidays'], ['ai', 'AI spending'], ['settings', 'Settings']] as const;
 type Tab = (typeof tabs)[number][0];
 const roleNames = Object.keys(roleLabel) as StaffRoleName[];
 const onErr = (e: unknown) => toast({ tone: 'bad', title: 'That did not work', body: e instanceof Error ? e.message : undefined });
@@ -50,7 +54,7 @@ function People() {
   const superOnly = form.role === 'admin' || form.role === 'super_admin';
 
   return (
-    <Panel pad={false} title="People & roles" action={<Button size="sm" icon={<UserPlus className="size-4" aria-hidden />} onClick={() => setOpen(true)}>Grant a role</Button>}>
+    <Panel pad={false} title="People & roles" action={<div className="flex gap-2"><InviteAuditor /><Button size="sm" icon={<UserPlus className="size-4" aria-hidden />} onClick={() => setOpen(true)}>Grant a role</Button></div>}>
       {roles.isLoading ? <div className="p-5"><Skeleton className="h-40" /></div> : (roles.data?.length ?? 0) === 0 ? <div className="p-5"><Empty>No roles yet.</Empty></div> : (
         <Table head={['Person', 'Role', 'Scope', 'Access', '']}>
           {roles.data!.map((r) => (
@@ -175,20 +179,6 @@ function Holidays() {
   );
 }
 
-function Security() {
-  return (
-    <div className="grid gap-4 lg:grid-cols-2">
-      <Panel title="Staff two-factor sign-in">
-        <p className="text-ink-2">When this switch is on, no staff permission applies unless the person signed in with an authenticator app. It is enforced in the database, so it cannot be bypassed from the screen.</p>
-        <p className="mt-3 rounded-xl bg-bg-2 p-3 text-sm">Turn it on when everyone has enrolled: <span className="font-data">update county set settings = jsonb_set(settings, '{'{'}require_staff_mfa{'}'}', 'true');</span></p>
-      </Panel>
-      <Panel title="Audit trail"><p className="text-ink-2">Every change to roles, services, projects, tenders, payments and cases is recorded with who did it and what changed. The record cannot be edited or deleted by anyone, including administrators. Auditors can read it under Overdue & digests.</p></Panel>
-      <Panel title="Data residency"><p className="text-ink-2">Public finance records (revenue, payments, tenders) must have a serving copy in a Kenyan data centre. See the deployment guide for how the Nairobi copy is kept up to date.</p></Panel>
-      <Panel title="Anonymity"><p className="text-ink-2">Reports carry no identity. An optional SMS callback number is stored separately and is never shown here. Votes are stored as one-way hashes and are never joined to reports.</p></Panel>
-    </div>
-  );
-}
-
 export default function Admin() {
   usePageTitle('Administration', 'CountyConnect');
   const [tab, setTab] = useState<Tab>('people');
@@ -202,7 +192,9 @@ export default function Admin() {
       {tab === 'categories' && <Categories />}
       {tab === 'routing' && <Routing />}
       {tab === 'holidays' && <Holidays />}
-      {tab === 'security' && <Security />}
+      {tab === 'services' && <ServicesTab />}
+      {tab === 'ai' && <AiTab />}
+      {tab === 'settings' && <SettingsTab />}
     </>
   );
 }
