@@ -1,57 +1,46 @@
-# County Yangu
+# County Yangu + CountyConnect
 
-County Yangu means "My County" in Swahili. This is a citizen-first public participation platform prototype for Bungoma County, Kenya.
+One system for a county, with two doors:
 
-The first screen is the public ward mosaic, not an admin dashboard. The app supports English and Swahili, public voting, anonymous-by-design issue reports, project tracking, public analytics, an oversight dashboard, installable PWA behavior, and offline queue states for votes and reports.
+- **County Yangu** (`/`): the residents' public window. Ward map and trust index, project tracker, budget votes, anonymous problem reports with a case number, SMS/USSD alerts, ideas and petitions, county tenders, and **My Services** (permits, licences, rates, with M-Pesa payment).
+- **CountyConnect** (`/console`): the staff back office. Case inbox and SLA board, applications, publishing (projects, tenders, budget rounds, ward alerts), revenue, an AI assistant that only drafts and answers, oversight for the Assembly and auditors, and administration.
+
+Both run on **one Supabase project per county**. Nairobi is the first deployment; another county is a new project, the same code and a different `VITE_COUNTY`.
 
 ## Stack
 
-- Next.js 16 App Router, React 19.2, Turbopack
-- Tailwind CSS 4.3 with County Yangu tokens
-- Radix UI unstyled primitives, reskinned locally
-- Motion from `motion/react`
-- MapLibre GL JS with OpenStreetMap raster tiles
-- Nivo charts and a custom SVG/D3 budget flow
-- TanStack Query, Zustand, React Hook Form, Zod
-- next-intl with `/en` and `/sw` locale routes
-- Serwist Turbopack service worker
-- Supabase schema reference in `supabase/schema.sql`
+Vite + React 19, React Router 7, Tailwind 4, TanStack Query, Zustand, MapLibre GL with OpenStreetMap, Supabase (Postgres with row-level security, Auth, Storage, Edge Functions on Deno). Hosted as static files (Cloudflare Pages: `public/_redirects`, `public/_headers`).
 
-## Routes
-
-- `/en` and `/sw`: public home with live ward mosaic
-- `/en/vote`: current budget-cycle vote flow with offline queue state
-- `/en/report`: anonymous report flow with clear privacy explainer
-- `/en/report/[reference]`: status lookup without report text or PII
-- `/en/track`: searchable project tracker with list and map views
-- `/en/track/[slug]`: project detail with milestones, budget, reports, and OG image
-- `/en/pulse`: public analytics dashboard
-- `/en/alerts`: SMS/USSD ward alert subscription
-- `/en/how-it-works`: web, USSD, and IVR parity explanation
-- `/en/assembly`: oversight dashboard demo
-
-Switch `en` to `sw` for Swahili.
-
-## Data Notes
-
-`src/lib/data.ts` seeds all 45 Bungoma wards with real ward names and realistic civic metrics. The current mosaic uses a tessellated ward representation for the local demo. The intended production path is to source ward boundary GeoJSON/shapefiles from Kenya open boundary datasets, verify them against Bungoma County political units, then store canonical ward geometry in Supabase/PostGIS or Supabase Storage.
-
-The Supabase SQL reference enables RLS, keeps public reads to safe tables/views, and does not expose raw phone numbers, report phone hashes, or individual report content to anonymous clients.
-
-## Run
+## Run it
 
 ```bash
 npm install
-npm run dev
+npm run dev                 # http://localhost:5173  (residents)   /console  (staff)
+VITE_FORCE_DEMO=1 npm run dev   # no backend: labelled sample data
 ```
+`.env.local`: `VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY`, `VITE_COUNTY=nairobi`. Nothing else.
 
-Then open `http://localhost:3000/en`.
+## Set up a county's backend
 
-## Verify
+1. New Supabase project. Install the schema: `supabase db push`, **or** paste `supabase/ops/setup.sql` into the SQL editor. (The project that still has the old CountyConnect schema: run `supabase/ops/reset-connect.sql` first; it is destructive and explains itself.)
+2. `supabase/ops/after-setup.sql`: profiles for existing accounts, your first super administrator, the county's web addresses.
+3. Functions and secrets: see `supabase/functions/README.md` (secrets template: `supabase/.env.example`). Schedule the jobs with `supabase/ops/schedule-jobs.sql`.
+4. Real ward shapes: `node scripts/load-boundaries.mjs` (see the top of the file). Until then the map shows sub-county markers, never invented shapes.
 
-```bash
-npm run lint
-npm run build
-```
+## Tests
 
-The production build generates the Serwist service worker at `/serwist/sw.js`.
+`npm test` (unit), `npm run test:db` (schema and security in an embedded Postgres), `npm run test:edge` (real function handlers under Deno), `npm run check:edge`. The security properties (no privilege escalation, anonymity separation, single-use codes, exactly-once payments, two-person alerts, immutable audit log) are tested in `tests/db`.
+
+## Launch checklist
+
+- [ ] Everyone on staff has enrolled an authenticator app; then switch on **Administration > Settings > two-factor** (the database refuses the switch from a password-only session).
+- [ ] `COUNTY_HMAC_SECRET`, `CRON_SECRET`, callback tokens set; `ALLOWED_ORIGINS` and `CONSOLE_URL` set. Do not change `COUNTY_HMAC_SECRET` during a voting round.
+- [ ] Old Edge Functions (`mpesa-stk-push`, `mpesa-webhook`, old `ussd-gateway`) deleted from the project.
+- [ ] Daraja production credentials; C2B URLs registered; Africa's Talking callbacks pointed at `ussd-gateway` and `sms-inbound`.
+- [ ] Public finance records have a serving copy in a Kenyan data centre (Data Protection regulation 26).
+- [ ] Swahili copy reviewed by a native speaker; the county's fee schedule entered under Administration > Services.
+- [ ] Any key that was ever committed or shared in chat is rotated (see Security notes).
+
+## Security notes
+
+The original CountyConnect commit history contained a Supabase service-role key and Daraja sandbox credentials. That history is **not** in this repository (the code was imported as a snapshot), but the keys were exposed elsewhere: rotate the Supabase keys and the Daraja credentials before real use.

@@ -21,7 +21,7 @@ test('old CountyConnect schema -> reset -> setup: a clean, locked-down install',
   await db.exec(read('tests/db/prelude.sql'));
 
   // What the old project looked like: its migrations (those that can run here) plus a user who signed up.
-  const oldDir = resolve(root, 'legacy/connect/supabase/migrations');
+  const oldDir = resolve(root, 'tests/db/fixtures/old-connect');
   let applied = 0;
   for (const f of readdirSync(oldDir).filter((x) => x.endsWith('.sql')).sort()) {
     try { await db.exec(readFileSync(resolve(oldDir, f), 'utf8')); applied++; } catch { /* Supabase-only statements; the reset must cope with whatever is there */ }
