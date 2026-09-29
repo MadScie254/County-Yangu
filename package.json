@@ -14,7 +14,8 @@
     "test:db": "node --test tests/db/*.test.mjs",
     "seed:gen": "node scripts/gen-seed.mjs",
     "test:edge": "deno test --config tests/functions/deno/deno.json --allow-env --allow-read tests/functions/deno/",
-    "check:edge": "deno check --config supabase/functions/deno.json supabase/functions/*/index.ts"
+    "check:edge": "deno check --config supabase/functions/deno.json supabase/functions/*/index.ts",
+    "build:sql": "node scripts/build-setup-sql.mjs"
   },
   "dependencies": {
     "@fontsource-variable/bricolage-grotesque": "^5.3.0",

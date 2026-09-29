@@ -17,6 +17,11 @@ revoke all on schema private from public;
 alter default privileges in schema public revoke all on tables    from anon, authenticated;
 alter default privileges in schema public revoke all on sequences from anon, authenticated;
 alter default privileges in schema public revoke all on functions from anon, authenticated;
+-- The service role (used only by Edge Functions and the SQL editor) keeps full access to everything created from here on.
+-- Stated explicitly so it holds even in a project whose `public` schema was dropped and recreated.
+alter default privileges in schema public grant all on tables    to service_role;
+alter default privileges in schema public grant all on sequences to service_role;
+alter default privileges in schema public grant all on functions to service_role;
 alter default privileges revoke execute on functions from public;
 -- Helpers in `private` are needed by RLS policies evaluated as the caller; the schema is not exposed by the API.
 alter default privileges in schema private grant execute on functions to authenticated, service_role;
