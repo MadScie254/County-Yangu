@@ -12,6 +12,14 @@ const SlaBoard = lazy(() => import('./pages/SlaBoard'));
 const Applications = lazy(() => import('./pages/Applications'));
 const Oversight = lazy(() => import('./pages/Oversight'));
 const Admin = lazy(() => import('./pages/Admin'));
+const Projects = lazy(() => import('./pages/Projects'));
+const Tenders = lazy(() => import('./pages/Tenders'));
+const Budget = lazy(() => import('./pages/Budget'));
+const Alerts = lazy(() => import('./pages/Alerts'));
+const Ideas = lazy(() => import('./pages/Ideas'));
+const Revenue = lazy(() => import('./pages/Revenue'));
+const Assistant = lazy(() => import('./pages/Assistant'));
+const AcceptInvite = lazy(() => import('./pages/AcceptInvite'));
 
 function Fallback() {
   return <div className="space-y-4"><Skeleton className="h-10 w-1/3" /><Skeleton className="h-56" /></div>;
@@ -25,8 +33,19 @@ function Allow({ when, children }: { when: (c: ReturnType<typeof useCan>) => boo
 
 export function App() {
   return (
-    <Gate>
-      <Suspense fallback={<Fallback />}>
+    <Suspense fallback={<Fallback />}>
+      <Routes>
+        {/* An invited auditor has no account yet, so this route sits outside the sign-in gate. */}
+        <Route path="invite/:token" element={<AcceptInvite />} />
+        <Route path="*" element={<Gate><Console /></Gate>} />
+      </Routes>
+    </Suspense>
+  );
+}
+
+function Console() {
+  return (
+    <Suspense fallback={<Fallback />}>
         <Routes>
           <Route element={<ConsoleShell />}>
             <Route index element={<Overview />} />
@@ -35,11 +54,17 @@ export function App() {
             <Route path="sla" element={<Allow when={(c) => c.working}><SlaBoard /></Allow>} />
             <Route path="applications" element={<Allow when={(c) => c.working}><Applications /></Allow>} />
             <Route path="oversight" element={<Allow when={(c) => c.oversight}><Oversight /></Allow>} />
+            <Route path="projects" element={<Allow when={(c) => c.publish}><Projects /></Allow>} />
+            <Route path="tenders" element={<Allow when={(c) => c.publish}><Tenders /></Allow>} />
+            <Route path="budget" element={<Allow when={(c) => c.admin}><Budget /></Allow>} />
+            <Route path="alerts" element={<Allow when={(c) => c.working}><Alerts /></Allow>} />
+            <Route path="ideas" element={<Allow when={(c) => c.working}><Ideas /></Allow>} />
+            <Route path="revenue" element={<Allow when={(c) => c.finance}><Revenue /></Allow>} />
+            <Route path="assistant" element={<Allow when={(c) => c.working}><Assistant /></Allow>} />
             <Route path="admin" element={<Allow when={(c) => c.admin}><Admin /></Allow>} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Route>
         </Routes>
-      </Suspense>
-    </Gate>
+    </Suspense>
   );
 }

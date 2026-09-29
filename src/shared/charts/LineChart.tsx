@@ -36,7 +36,7 @@ export function LineChart({ series, labels, height = 240, ariaLabel, format = (n
               <text x={m.left - 8} y={y(t)} dy="0.32em" textAnchor="end" className="fill-muted text-[11px]" style={{ fontVariantNumeric: 'tabular-nums' }}>{compact(t)}</text>
             </g>
           ))}
-          {labels.map((l, i) => (i % Math.ceil(n / Math.max(2, Math.floor(iw / 64))) === 0 || i === n - 1) && <text key={l + i} x={x(i)} y={height - 6} textAnchor={i === 0 ? 'start' : i === n - 1 ? 'end' : 'middle'} className="fill-muted text-[11px]">{l}</text>)}
+          {labels.map((_, i) => { const step = Math.ceil(n / Math.max(2, Math.floor(iw / 64))); return (i === n - 1 || (i % step === 0 && n - 1 - i >= step * 0.75)); }).map((show, i) => show && <text key={labels[i]! + i} x={x(i)} y={height - 6} textAnchor={i === 0 ? 'start' : i === n - 1 ? 'end' : 'middle'} className="fill-muted text-[11px]">{labels[i]}</text>)}
 
           {series.map((s, si) => (
             <g key={s.key}>
