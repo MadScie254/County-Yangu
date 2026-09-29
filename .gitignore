@@ -48,3 +48,6 @@ public/swe-worker*
 
 # vite / build output
 /dist
+
+# scratch output of scripts
+/tmp
