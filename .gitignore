@@ -51,3 +51,6 @@ public/swe-worker*
 
 # scratch output of scripts
 /tmp
+
+# Claude Code local (per-person) settings
+/.claude/settings.local.json
