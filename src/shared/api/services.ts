@@ -94,7 +94,7 @@ export async function startPayment(appId: string, phone: string): Promise<{ chec
     return { checkoutRequestId: `demo-${uuid()}` };
   }
   const { data: sess } = await supabase!.auth.getSession();
-  const res = await fetch(`${functionsUrl}/mpesa-stk-push`, {
+  const res = await fetch(`${functionsUrl}/pay-start`, {
     method: 'POST',
     headers: { 'content-type': 'application/json', apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string, authorization: `Bearer ${sess.session?.access_token ?? ''}` },
     body: JSON.stringify({ application_id: appId, phone }),

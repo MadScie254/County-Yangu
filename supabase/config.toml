@@ -1,0 +1,47 @@
+# Supabase CLI configuration for one county's project.
+# Every function verifies its caller itself (a secret token, a signature, or a signed-in user's token that Supabase Auth
+# checks), so the platform-level JWT check is off: the public write endpoints are called with only the publishable key.
+project_id = "county-yangu"
+
+[functions.report-intake]
+verify_jwt = false
+[functions.otp-request]
+verify_jwt = false
+[functions.otp-verify]
+verify_jwt = false
+[functions.vote]
+verify_jwt = false
+[functions.alerts-subscribe]
+verify_jwt = false
+[functions.proposal-submit]
+verify_jwt = false
+[functions.proposal-support]
+verify_jwt = false
+[functions.ussd-gateway]
+verify_jwt = false
+[functions.sms-inbound]
+verify_jwt = false
+[functions.sms-hook]
+verify_jwt = false
+[functions.pay-start]
+verify_jwt = false
+[functions.pay-callback]
+verify_jwt = false
+[functions.pay-c2b]
+verify_jwt = false
+[functions.outbox-worker]
+verify_jwt = false
+[functions.escalation-runner]
+verify_jwt = false
+[functions.digest-builder]
+verify_jwt = false
+[functions.digest-open]
+verify_jwt = false
+[functions.ai-gateway]
+verify_jwt = false
+[functions.auditor-invite]
+verify_jwt = false
+[functions.auditor-accept]
+verify_jwt = false
+[functions.kra-check]
+verify_jwt = false

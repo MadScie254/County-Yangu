@@ -1,0 +1,5 @@
+{
+  "nodeModulesDir": "none",
+  "imports": { "npm:@supabase/supabase-js@2": "./stub-supabase.ts" },
+  "compilerOptions": { "strict": true }
+}

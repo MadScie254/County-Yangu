@@ -140,7 +140,9 @@ begin
 end;
 $$;
 
-create function public.svc_submit_proposal(p_ward text, p_kind text, p_title text, p_body text, p_voter_hash bytea)
+-- The caller chooses the id so it can compute the author's supporter hash for THIS idea, the same way it will for
+-- everyone else; otherwise the author could back their own idea a second time.
+create function public.svc_submit_proposal(p_id uuid, p_ward text, p_kind text, p_title text, p_body text, p_voter_hash bytea)
 returns uuid
 language plpgsql
 security definer
@@ -149,7 +151,8 @@ as $$
 declare
   v_id uuid;
 begin
-  insert into public.proposals (ward_id, kind, title, body) values (p_ward, p_kind, p_title, p_body) returning id into v_id;
+  insert into public.proposals (id, ward_id, kind, title, body)
+  values (coalesce(p_id, gen_random_uuid()), p_ward, p_kind, p_title, p_body) returning id into v_id;
   -- the author is the first supporter
   insert into public.proposal_supports (proposal_id, voter_hash) values (v_id, p_voter_hash);
   return v_id;

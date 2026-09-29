@@ -121,7 +121,7 @@ test('alerts: subscribe, change frequency, STOP one ward or all', async () => {
 // ---- proposals ----------------------------------------------------------------------------------------
 
 test('proposals: the author is the first supporter; nobody supports twice; closed ideas stop collecting', async () => {
-  const { id } = (await svc(`select public.svc_submit_proposal('kileleshwa', 'proposal', 'Street lights on Argwings', 'Please fix the street lights along the road.', $1) id`, [bytes('author')]));
+  const { id } = (await svc(`select public.svc_submit_proposal(null, 'kileleshwa', 'proposal', 'Street lights on Argwings', 'Please fix the street lights along the road.', $1) id`, [bytes('author')]));
   assert.equal((await svc(`select supporters from public.proposals where id = $1`, [id])).supporters, 1);
   assert.equal((await svc(`select public.svc_support_proposal($1, $2) r`, [id, bytes('author')])).r, 'duplicate');
   assert.equal((await svc(`select public.svc_support_proposal($1, $2) r`, [id, bytes('neighbour')])).r, 'ok');

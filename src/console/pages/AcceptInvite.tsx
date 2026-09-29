@@ -39,7 +39,7 @@ export default function AcceptInvite() {
       window.location.assign('/console/');
     } catch (err) {
       const m = (err as Error).message;
-      setError(m === 'expired' ? 'This invitation has expired or was already used. Ask the county for a new one.' : m === 'email' ? 'Use the email address the invitation was sent to.' : m === 'offline' ? 'Invitations can only be accepted on the live system.' : 'We could not accept the invitation. Check the details and try again.');
+      setError(m === 'expired' ? 'This invitation is not valid for that email address, has expired, or was already used. Check the address, or ask the county for a new invitation.' : m === 'account_exists' ? 'You already have an account with that email. Sign in, and ask the county to grant you access.' : m === 'offline' ? 'Invitations can only be accepted on the live system.' : 'We could not accept the invitation. Check the details and try again.');
       setBusy(false);
     }
   };
