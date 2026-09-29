@@ -33,6 +33,8 @@ export type CountyMapProps = {
   interactive?: boolean;
   /** Draw sub-county bubbles (off in pin-drop mode, where they would only clutter). */
   showBubbles?: boolean;
+  /** Fit the camera to the projects shown (falls back to the whole county). */
+  fitToProjects?: boolean;
   padding?: { top: number; right: number; bottom: number; left: number };
   labels: { zoomIn: string; zoomOut: string; recenter: string; locate: string; attribution: string; issues: (n: number) => string };
   /** Text shown if WebGL is unavailable. */
@@ -63,7 +65,7 @@ const paddedBounds = (bbox: number[], pad: number): LngLatBoundsLike => [
 ];
 
 export const CountyMap = forwardRef<CountyMapHandle, CountyMapProps>(function CountyMap(props, ref) {
-  const { className, ariaLabel, metric = 'open', stats, geometry, projects, selection, onSelect, onSelectProject, onCenterChange, interactive = true, showBubbles = true, padding, labels, fallback } = props;
+  const { className, ariaLabel, metric = 'open', stats, geometry, projects, selection, onSelect, onSelectProject, onCenterChange, interactive = true, showBubbles = true, fitToProjects = false, padding, labels, fallback } = props;
 
   const container = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MLMap | null>(null);
@@ -292,12 +294,23 @@ export const CountyMap = forwardRef<CountyMapHandle, CountyMapProps>(function Co
       type: 'FeatureCollection',
       features: pts.map((p) => ({ type: 'Feature', geometry: { type: 'Point', coordinates: [p.lng as number, p.lat as number] }, properties: { slug: p.slug, title: p.title, status: p.status, color: projectColors[p.status] ?? '#64748b' } })),
     };
+    const fit = () => {
+      if (!fitToProjects || !pts.length) return;
+      let minLng = Infinity, minLat = Infinity, maxLng = -Infinity, maxLat = -Infinity;
+      for (const p of pts) {
+        minLng = Math.min(minLng, p.lng as number); maxLng = Math.max(maxLng, p.lng as number);
+        minLat = Math.min(minLat, p.lat as number); maxLat = Math.max(maxLat, p.lat as number);
+      }
+      map.fitBounds([[minLng, minLat], [maxLng, maxLat]], { padding: padRef.current ?? 40, maxZoom: 14, duration: 600 });
+    };
     const src = map.getSource('projects') as GeoJSONSource | undefined;
     if (src) {
       src.setData(fc);
+      fit();
       return;
     }
     if (!pts.length) return;
+    fit();
     map.addSource('projects', { type: 'geojson', data: fc });
     map.addLayer({ id: 'projects-halo', type: 'circle', source: 'projects', paint: { 'circle-radius': ['interpolate', ['linear'], ['zoom'], 9, 7, 15, 13], 'circle-color': '#ffffff', 'circle-opacity': 0.95 } });
     map.addLayer({ id: 'projects-dot', type: 'circle', source: 'projects', paint: { 'circle-radius': ['interpolate', ['linear'], ['zoom'], 9, 4.5, 15, 9], 'circle-color': ['get', 'color'] } });
@@ -316,7 +329,7 @@ export const CountyMap = forwardRef<CountyMapHandle, CountyMapProps>(function Co
       const slug = e.features?.[0]?.properties?.slug as string | undefined;
       if (slug) cb.current.onSelectProject?.(slug);
     });
-  }, [ready, projects]);
+  }, [ready, projects, fitToProjects]);
 
   // ---- selection: highlight + camera --------------------------------------------------------------------------------
   const lastSel = useRef<string | null>(null);

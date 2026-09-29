@@ -47,7 +47,7 @@ export default function Report() {
   const form = useForm<ReportForm>({
     resolver: zodResolver(reportSchema),
     mode: 'onTouched',
-    defaultValues: { category_id: undefined, ward_id: wardById.has(initialWard) ? initialWard : '', description: '', lat: null, lng: null, callback_consent: false, callback_phone: '' },
+    defaultValues: { category_id: (categoryIds as readonly string[]).includes(params.get('category') ?? '') ? (params.get('category') as CategoryId) : undefined, ward_id: wardById.has(initialWard) ? initialWard : '', description: '', lat: null, lng: null, callback_consent: false, callback_phone: '' },
   });
   const { register, control, watch, setValue, trigger, handleSubmit, formState: { errors } } = form;
   const category = watch('category_id') as CategoryId | undefined;

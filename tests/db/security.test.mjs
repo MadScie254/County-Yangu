@@ -278,6 +278,21 @@ test('the public overdue counter never names anyone', async () => {
   assert.deepEqual(cols.sort(), ['department_id', 'open_count', 'overdue_count', 'ward_id']);
 });
 
+test('pulse summary is a public aggregate: 12 weeks, category and channel totals, no identities', async () => {
+  const r = await insertReport({ category: 'garbage', channel: 'ussd' });
+  await db.query(`update public.reports set acknowledged_at = created_at + interval '3 hours', resolved_at = created_at + interval '2 days', status = 'resolved' where id = $1`, [r.id]);
+  const out = await as(db, 'anon', null, () => one(`select public.pulse_summary() as s`));
+  const s = out.s;
+  assert.equal(s.weekly.length, 12);
+  assert.ok(s.weekly.some((w) => w.filed > 0));
+  assert.ok(s.weekly.some((w) => w.resolved > 0));
+  assert.ok(s.by_category.find((c) => c.category_id === 'garbage'));
+  assert.ok(s.by_channel.ussd >= 1);
+  assert.ok(s.median_ack_hours !== null && Number(s.median_ack_hours) >= 0);
+  const text = JSON.stringify(s);
+  assert.ok(!/description|assigned|phone|reference/i.test(text), 'nothing identifying in the payload');
+});
+
 // ---- applications & payments ---------------------------------------------------------------
 
 test('applications: price comes from the service, payment is required, decisions are department-scoped', async () => {

@@ -75,3 +75,9 @@ export const castVote = (body: { token: string; cycle_id: string; ward_id: strin
 
 export const subscribeAlerts = (body: { token: string; ward_id: string; frequency: string }) =>
   backendConfigured ? post<SimpleResult>('alerts-subscribe', JSON.stringify(body)) : sleep(500).then(() => ({ ok: true as const }));
+
+export const submitProposal = (body: { token: string; ward_id: string | null; kind: 'proposal' | 'petition'; title: string; body: string }) =>
+  backendConfigured ? post<SimpleResult>('proposal-submit', JSON.stringify(body)) : sleep(600).then(() => ({ ok: true as const }));
+
+export const supportProposal = (body: { token: string; proposal_id: string }) =>
+  backendConfigured ? post<SimpleResult>('proposal-support', JSON.stringify(body)) : sleep(400).then(() => ({ ok: true as const }));

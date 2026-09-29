@@ -1,7 +1,7 @@
 // Deterministic sample data. Used only when no backend is reachable, and always labelled
 // "Demo data" in the UI. Seeded per ward so the picture is stable between reloads.
 import { wards, subCountyById, subCounties, county } from '@/shared/config/county';
-import type { ActivityItem, CountySummary, PublicProject, PublicTender, ProjectStatus, WardStat } from './types';
+import type { ActivityItem, PulseSummary, BudgetCycle, Proposal, ProjectOption, CountySummary, PublicProject, PublicTender, ProjectStatus, WardStat } from './types';
 
 function hash(s: string) {
   let h = 2166136261;
@@ -144,4 +144,60 @@ export function demoActivity(): ActivityItem[] {
     const kind = kinds[i % kinds.length]!;
     return { id: `a${i}`, kind, ward: w.name, text: text[kind], at: new Date(Date.now() - (i * 17 + 3) * 60_000).toISOString() };
   });
+}
+
+export function demoVoteData(wardId: string): { cycle: BudgetCycle; envelope: number; options: ProjectOption[]; tally: Record<string, number> } {
+  const r = rng(`vote:${wardId}`);
+  const cycle: BudgetCycle = {
+    id: 'fy2026-27',
+    title: 'Ward Development Fund 2026/27',
+    status: 'open',
+    starts_at: new Date(Date.now() - 9 * 86_400_000).toISOString(),
+    ends_at: new Date(Date.now() + 21 * 86_400_000).toISOString(),
+    published_results: false,
+  };
+  const pool = [
+    { title: 'Tarmac the main access road', sector: 'Roads', amount: 18_000_000, description: 'Tarmac and drainage on the ward\'s busiest feeder road.' },
+    { title: 'Borehole and water kiosks', sector: 'Water', amount: 9_500_000, description: 'A new borehole with three water kiosks and a storage tank.' },
+    { title: 'Streetlights at market and junctions', sector: 'Safety', amount: 6_200_000, description: 'Solar streetlights on 14 poles around the market and main junctions.' },
+    { title: 'Upgrade the dispensary', sector: 'Health', amount: 14_000_000, description: 'A maternity room, a lab and 24-hour cover at the local dispensary.' },
+    { title: 'Classrooms and toilets', sector: 'Education', amount: 11_000_000, description: 'Four classrooms and gender-separate toilets at the public primary school.' },
+    { title: 'Storm-water drains', sector: 'Drainage', amount: 12_500_000, description: 'Open the blocked drains that flood the ward every rainy season.' },
+  ];
+  const options: ProjectOption[] = [...pool].sort(() => r() - 0.5).slice(0, 4).map((o, i) => ({ id: `${wardId}-opt-${i}`, cycle_id: cycle.id, ward_id: wardId, ...o }));
+  const tally: Record<string, number> = {};
+  options.forEach((o) => (tally[o.id] = Math.floor(r() * 400)));
+  return { cycle, envelope: 40_000_000, options, tally };
+}
+
+export function demoProposals(): Proposal[] {
+  const r = rng('proposals');
+  const base: Omit<Proposal, 'id' | 'ward_id' | 'supporters' | 'created_at'>[] = [
+    { kind: 'petition', title: 'Fix the flooding on the main road every rainy season', body: 'The drain beside the market blocks each April and the road becomes a river. We ask the county to desilt and widen it before the rains.', status: 'under_review', response: null },
+    { kind: 'proposal', title: 'Solar streetlights around the primary school', body: 'Children walk home in the dark during exams. Six solar lights along the school road would make it much safer.', status: 'accepted', response: 'Accepted for the 2026/27 ward development fund. Procurement opens in November.' },
+    { kind: 'petition', title: 'Open the health centre for 24 hours', body: 'Mothers travel 12 km at night for delivery. A night shift at the local health centre would save lives.', status: 'submitted', response: null },
+    { kind: 'proposal', title: 'Youth talent centre in the old social hall', body: 'Renovate the hall into a small studio and training space for young people.', status: 'declined', response: 'The hall is scheduled for demolition under the road expansion. We will look for another site.' },
+    { kind: 'proposal', title: 'More waste collection trucks on Saturdays', body: 'Garbage piles up over the weekend. Please add a Saturday route.', status: 'under_review', response: null },
+  ];
+  return base.map((b, i) => ({ ...b, id: `demo-p-${i}`, ward_id: wards[Math.floor(r() * wards.length)]!.id, supporters: 20 + Math.floor(r() * 900), created_at: new Date(Date.now() - (i + 2) * 5 * 86_400_000).toISOString() }));
+}
+
+export function demoPulse(): PulseSummary {
+  const r = rng('pulse');
+  const monday = new Date();
+  monday.setDate(monday.getDate() - ((monday.getDay() + 6) % 7));
+  const weekly = Array.from({ length: 12 }, (_, i) => {
+    const d = new Date(monday);
+    d.setDate(d.getDate() - (11 - i) * 7);
+    const filed = Math.round(1300 + r() * 500 + i * 22);
+    return { week: d.toISOString().slice(0, 10), filed, resolved: Math.round(filed * (0.62 + i * 0.018 + r() * 0.05)) };
+  });
+  const cats = [['pothole', 3100], ['garbage', 2650], ['drainage', 1900], ['streetlight', 1700], ['water_main', 1200], ['sewer', 980], ['dumping', 760], ['health_facility', 420], ['illegal_build', 330], ['abandoned', 210], ['school', 180], ['market', 150], ['safety_hazard', 130], ['missing_funds', 70], ['other', 260]] as const;
+  return {
+    weekly,
+    by_category: cats.map(([category_id, total]) => ({ category_id, total, open: Math.round(total * (0.18 + r() * 0.2)) })),
+    by_channel: { web: 8200, ussd: 5400, sms: 2100, ivr: 700, voice: 480 },
+    median_ack_hours: 9.5,
+    median_resolve_days: 6.2,
+  };
 }

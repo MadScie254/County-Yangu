@@ -37,6 +37,9 @@
   --vote: #5f3a97;
   --vote-soft: #ebe3f7;
 
+  /* chart categorical slots, in fixed order (dataviz reference palette; validated adjacent-pair CVD-safe) */
+  --series-1: #2a78d6; --series-2: #eb6834; --series-3: #1baf7a; --series-4: #eda100; --series-5: #e87ba4;
+  --seq-strong: #2a78d6; --seq-soft: #cde2fb;
   --map-tone: 0.72;          /* how much OSM colour is drained so our data reads first */
   --shadow-sm: 0 1px 2px rgb(16 28 46 / 0.06), 0 1px 1px rgb(16 28 46 / 0.04);
   --shadow-md: 0 6px 20px -6px rgb(16 28 46 / 0.18), 0 2px 6px rgb(16 28 46 / 0.06);
@@ -70,6 +73,8 @@
   --info-soft: #14304f;
   --vote: #bda0f2;
   --vote-soft: #2b2049;
+  --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70; --series-4: #c98500; --series-5: #d55181;
+  --seq-strong: #3987e5; --seq-soft: #184f95;
   --map-tone: 0.85;
   --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.4);
   --shadow-md: 0 8px 24px -8px rgb(0 0 0 / 0.55);

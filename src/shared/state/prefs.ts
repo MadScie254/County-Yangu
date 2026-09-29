@@ -11,12 +11,14 @@ type PrefsState = {
   simpleMode: boolean;
   textScale: number; // 0.9 – 1.4
   wardId: string | null; // the resident's ward, remembered on this device only
+  votedCycles: string[]; // voting rounds already voted in on this device (the server enforces one vote per phone)
   setLocale: (l: Locale) => void;
   setTheme: (t: ThemePref) => void;
   setHighContrast: (v: boolean) => void;
   setSimpleMode: (v: boolean) => void;
   setTextScale: (n: number) => void;
   setWardId: (id: string | null) => void;
+  markVoted: (cycleId: string) => void;
 };
 
 export function detectLocale(): Locale {
@@ -35,12 +37,14 @@ export const usePrefs = create<PrefsState>()(
       simpleMode: false,
       textScale: 1,
       wardId: null,
+      votedCycles: [],
       setLocale: (locale) => set({ locale }),
       setTheme: (theme) => set({ theme }),
       setHighContrast: (highContrast) => set({ highContrast }),
       setSimpleMode: (simpleMode) => set({ simpleMode }),
       setTextScale: (textScale) => set({ textScale: Math.min(1.4, Math.max(0.9, textScale)) }),
       setWardId: (wardId) => set({ wardId }),
+      markVoted: (cycleId) => set((s) => ({ votedCycles: s.votedCycles.includes(cycleId) ? s.votedCycles : [...s.votedCycles, cycleId] })),
     }),
     {
       name: 'county-yangu-prefs',

@@ -295,3 +295,44 @@ grant select on public.public_projects, public.public_tenders, public.public_vot
                 public.public_ward_stats, public.public_county_summary to anon, authenticated;
 
 grant execute on function public.case_status(text) to anon, authenticated;
+
+-- ---- County Pulse: one small aggregate payload instead of thousands of rows ---------------------------
+
+create function public.pulse_summary()
+returns jsonb
+language sql
+stable
+security definer
+set search_path = ''
+as $$
+  with weeks as (
+    select generate_series((date_trunc('week', now()) - interval '77 days')::date, date_trunc('week', now())::date, interval '7 days')::date as w
+  )
+  select jsonb_build_object(
+    'weekly', (
+      select coalesce(jsonb_agg(jsonb_build_object(
+               'week', weeks.w,
+               'filed',    (select count(*) from public.reports r where r.created_at >= weeks.w and r.created_at < weeks.w + 7),
+               'resolved', (select count(*) from public.reports r where r.resolved_at >= weeks.w and r.resolved_at < weeks.w + 7)
+             ) order by weeks.w), '[]'::jsonb)
+      from weeks),
+    'by_category', (
+      select coalesce(jsonb_agg(jsonb_build_object('category_id', x.category_id, 'total', x.total, 'open', x.open) order by x.total desc), '[]'::jsonb)
+      from (select r.category_id,
+                   count(*)::int as total,
+                   count(*) filter (where r.status not in ('resolved', 'closed', 'rejected'))::int as open
+              from public.reports r
+             where r.created_at > now() - interval '90 days' and r.category_id is not null
+             group by r.category_id) x),
+    'by_channel', (
+      select coalesce(jsonb_object_agg(x.channel, x.n), '{}'::jsonb)
+      from (select r.channel, count(*)::int as n from public.reports r where r.created_at > now() - interval '90 days' group by r.channel) x),
+    'median_ack_hours', (
+      select round((percentile_cont(0.5) within group (order by extract(epoch from (r.acknowledged_at - r.created_at)) / 3600))::numeric, 1)
+        from public.reports r where r.acknowledged_at is not null and r.created_at > now() - interval '90 days'),
+    'median_resolve_days', (
+      select round((percentile_cont(0.5) within group (order by extract(epoch from (r.resolved_at - r.created_at)) / 86400))::numeric, 1)
+        from public.reports r where r.resolved_at is not null and r.created_at > now() - interval '90 days')
+  );
+$$;
+grant execute on function public.pulse_summary() to anon, authenticated;

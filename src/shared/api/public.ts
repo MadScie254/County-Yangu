@@ -2,8 +2,8 @@
 // public RPCs; nothing touches base tables. Falls back to labelled sample data when the backend is
 // unavailable so the app stays usable (and testable) before a county's database is connected.
 import { supabase, backendConfigured } from './client';
-import { demoActivity, demoProjects, demoSummary, demoTenders, demoWardStats } from './demo';
-import type { ActivityItem, CaseStatus, CountySummary, DataSource, PublicProject, PublicTender, WardStat } from './types';
+import { demoActivity, demoProjects, demoProposals, demoPulse, demoSummary, demoTenders, demoVoteData, demoWardStats } from './demo';
+import type { ActivityItem, BudgetCycle, CaseStatus, CountySummary, DataSource, ProjectOption, Proposal, PulseSummary, PublicProject, PublicTender, VoteData, WardStat } from './types';
 
 let sourcePromise: Promise<DataSource> | null = null;
 
@@ -91,3 +91,32 @@ export async function getCaseStatus(reference: string): Promise<CaseStatus | nul
   if (error) throw error;
   return (data as CaseStatus | null) ?? null;
 }
+
+export async function getVoteData(wardId: string): Promise<VoteData> {
+  if ((await dataSource()) === 'demo' || !supabase) return demoVoteData(wardId);
+  const { data: cycles, error } = await supabase.from('budget_cycles').select('*').in('status', ['open', 'closed']).order('starts_at', { ascending: false }).limit(1);
+  if (error) throw error;
+  const cycle = (cycles?.[0] as BudgetCycle | undefined) ?? null;
+  if (!cycle) return { cycle: null, envelope: null, options: [], tally: {} };
+  const [opts, tally, env] = await Promise.all([
+    supabase.from('project_options').select('*').eq('cycle_id', cycle.id).eq('ward_id', wardId).order('amount', { ascending: false }),
+    supabase.from('public_vote_tally').select('option_id, vote_count').eq('cycle_id', cycle.id).eq('ward_id', wardId),
+    supabase.from('ward_budget_envelopes').select('amount').eq('cycle_id', cycle.id).eq('ward_id', wardId).maybeSingle(),
+  ]);
+  if (opts.error) throw opts.error;
+  const counts: Record<string, number> = {};
+  for (const row of (tally.data ?? []) as { option_id: string; vote_count: number }[]) counts[row.option_id] = (counts[row.option_id] ?? 0) + row.vote_count;
+  return { cycle, envelope: (env.data as { amount: number } | null)?.amount ?? null, options: (opts.data ?? []) as ProjectOption[], tally: counts };
+}
+
+export const getProposals = () =>
+  live<Proposal[]>(
+    async () => (await supabase!.from('proposals').select('id, ward_id, kind, title, body, status, response, supporters, created_at').order('supporters', { ascending: false }).limit(100)) as { data: Proposal[] | null; error: unknown },
+    demoProposals,
+  );
+
+export const getPulse = () =>
+  live<PulseSummary>(
+    async () => (await supabase!.rpc('pulse_summary')) as { data: PulseSummary | null; error: unknown },
+    demoPulse,
+  );

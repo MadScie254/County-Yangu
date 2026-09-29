@@ -7,6 +7,14 @@ const Home = lazy(() => import('./pages/Home'));
 const Report = lazy(() => import('./pages/Report'));
 const CaseLookup = lazy(() => import('./pages/CaseLookup'));
 const CaseDetail = lazy(() => import('./pages/CaseDetail'));
+const Projects = lazy(() => import('./pages/Projects'));
+const ProjectDetail = lazy(() => import('./pages/ProjectDetail'));
+const Vote = lazy(() => import('./pages/Vote'));
+const Alerts = lazy(() => import('./pages/Alerts'));
+const Ideas = lazy(() => import('./pages/Ideas'));
+const Tenders = lazy(() => import('./pages/Tenders'));
+const Pulse = lazy(() => import('./pages/Pulse'));
+const HowItWorks = lazy(() => import('./pages/HowItWorks'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 function PageFallback() {
@@ -26,6 +34,14 @@ export function App() {
         <Route element={<ResidentShell />}>
           <Route index element={<Home />} />
           <Route path="report" element={<Report />} />
+          <Route path="projects" element={<Projects />} />
+          <Route path="projects/:slug" element={<ProjectDetail />} />
+          <Route path="vote" element={<Vote />} />
+          <Route path="alerts" element={<Alerts />} />
+          <Route path="ideas" element={<Ideas />} />
+          <Route path="tenders" element={<Tenders />} />
+          <Route path="pulse" element={<Pulse />} />
+          <Route path="how-it-works" element={<HowItWorks />} />
           <Route path="case" element={<CaseLookup />} />
           <Route path="case/:reference" element={<CaseDetail />} />
           <Route path="*" element={<NotFound />} />

@@ -88,3 +88,27 @@ export type CaseStatus = {
 export type ActivityItem = { id: string; kind: 'report' | 'resolved' | 'milestone' | 'vote' | 'tender'; ward: string; text: string; at: string };
 
 export type DataSource = 'live' | 'demo';
+
+export type BudgetCycle = { id: string; title: string; status: 'draft' | 'open' | 'closed'; starts_at: string; ends_at: string; published_results: boolean };
+export type ProjectOption = { id: string; cycle_id: string; ward_id: string; title: string; sector: string; description: string | null; amount: number };
+export type VoteData = { cycle: BudgetCycle | null; envelope: number | null; options: ProjectOption[]; tally: Record<string, number> };
+
+export type Proposal = {
+  id: string;
+  ward_id: string | null;
+  kind: 'proposal' | 'petition';
+  title: string;
+  body: string;
+  status: 'submitted' | 'under_review' | 'accepted' | 'declined' | 'merged';
+  response: string | null;
+  supporters: number;
+  created_at: string;
+};
+
+export type PulseSummary = {
+  weekly: { week: string; filed: number; resolved: number }[];
+  by_category: { category_id: string; total: number; open: number }[];
+  by_channel: Record<string, number>;
+  median_ack_hours: number | null;
+  median_resolve_days: number | null;
+};
