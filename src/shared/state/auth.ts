@@ -23,6 +23,9 @@ type AuthState = {
   signIn: (email: string, password: string) => Promise<AuthResult>;
   signUp: (input: { name: string; email: string; password: string; phone?: string }) => Promise<AuthResult>;
   signOut: () => Promise<void>;
+  /** Assembly members sign in with their phone and a code (Supabase phone auth; codes are sent through our SMS hook). */
+  requestPhoneOtp: (phone: string) => Promise<AuthResult>;
+  verifyPhoneOtp: (phone: string, code: string) => Promise<AuthResult>;
   hasRole: (...names: StaffRoleName[]) => boolean;
 };
 
@@ -115,6 +118,24 @@ export const useAuth = create<AuthState>((set, get) => ({
       return;
     }
     await supabase.auth.signOut();
+  },
+
+  requestPhoneOtp: async (phone) => {
+    if (get().demo || !supabase) return { ok: true };
+    const { error } = await supabase.auth.signInWithOtp({ phone, options: { shouldCreateUser: false } });
+    return error ? { ok: false, error: mapError(error) } : { ok: true };
+  },
+
+  verifyPhoneOtp: async (phone, code) => {
+    if (get().demo || !supabase) {
+      if (code !== '123456') return { ok: false, error: 'invalid' };
+      const user = { id: uuid(), email: `assembly.${phone.replace(/\D/g, '')}@demo.local`, name: 'Assembly member', phone };
+      localStorage.setItem(DEMO_SESSION, JSON.stringify(user));
+      set({ status: 'in', user, roles: demoRoles(user.email) });
+      return { ok: true };
+    }
+    const { error } = await supabase.auth.verifyOtp({ phone, token: code, type: 'sms' });
+    return error ? { ok: false, error: mapError(error) } : { ok: true };
   },
 
   hasRole: (...names) => get().roles.some((r) => names.includes(r.role)),

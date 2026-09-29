@@ -1,4 +1,16 @@
+import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import '@/shared/styles/app.css';
+import { bindPrefsToDocument } from '@/shared/state/prefs';
+import { Providers } from './Providers';
+import { App } from './App';
 
-createRoot(document.getElementById('root')!).render(<p className="p-8">CountyConnect console: coming next.</p>);
+bindPrefsToDocument();
+
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    <Providers>
+      <App />
+    </Providers>
+  </StrictMode>,
+);
