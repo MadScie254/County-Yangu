@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="County Connect - Digital Governance Platform" />
+    <title>County Connect - Digital Governance Platform</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script>
+      // Patch to fix "Cannot set property fetch of #<Window> which has only a getter"
+      try {
+        if (window.fetch && !Object.getOwnPropertyDescriptor(window, 'fetch')?.set) {
+          const originalFetch = window.fetch;
+          Object.defineProperty(window, 'fetch', {
+            value: originalFetch,
+            writable: true,
+            configurable: true
+          });
+        }
+      } catch (e) {
+        console.warn('Failed to patch window.fetch:', e);
+      }
+    </script>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+
