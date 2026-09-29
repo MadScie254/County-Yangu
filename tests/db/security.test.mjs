@@ -278,6 +278,67 @@ test('the public overdue counter never names anyone', async () => {
   assert.deepEqual(cols.sort(), ['department_id', 'open_count', 'overdue_count', 'ward_id']);
 });
 
+test('staff directory: working staff see who they can assign to; residents, assembly and auditors get nothing; no contact details', async () => {
+  const names = await as(db, 'authenticated', roadsOfficer, async () => (await db.query(`select * from public.staff_directory()`)).rows);
+  assert.ok(names.some((r) => r.user_id === waterOfficer), 'officers can see other officers');
+  assert.ok(!names.some((r) => r.role === 'auditor' || r.role === 'assembly_member'), 'oversight roles are not assignable');
+  assert.deepEqual(Object.keys(names[0]).sort(), ['department_id', 'name', 'role', 'sub_county_id', 'user_id', 'ward_id']);
+  for (const uid of [alice, assembly, auditor]) {
+    const rows = await as(db, 'authenticated', uid, async () => (await db.query(`select * from public.staff_directory()`)).rows);
+    assert.equal(rows.length, 0);
+  }
+  await as(db, 'anon', null, async () => {
+    await assert.rejects(db.query(`select * from public.staff_directory()`), denied);
+  });
+});
+
+test('review queue shows applicants only to reviewers of that service; admin user lookup is admin-only', async () => {
+  const trade = (await one(`select id from public.departments where code = 'trade'`)).id;
+  const tradeOfficer = await newUser(db, 'trade.officer2@county.go.ke');
+  await db.query(`select public.grant_staff_role($1, 'officer', $2)`, [tradeOfficer, trade]);
+  const svc = await one(`insert into public.services (slug, name, department_id, fee, status) values ('queue-svc', 'Queue service', $1, 0, 'active') returning id`, [trade]);
+  const applicant = await newUser(db, 'applicant@example.com', { name: 'Amina Applicant' });
+  const app = await as(db, 'authenticated', applicant, () => one(`insert into public.applications (service_id, applicant_id) values ($1, $2) returning id`, [svc.id, applicant]));
+  await as(db, 'authenticated', applicant, () => db.query(`update public.applications set status = 'submitted' where id = $1`, [app.id]));
+
+  const seen = (uid) => as(db, 'authenticated', uid, async () => (await db.query(`select * from public.review_queue()`)).rows);
+  const mine = (await seen(tradeOfficer)).find((r) => r.id === app.id);
+  assert.equal(mine.applicant_name, 'Amina Applicant');
+  assert.equal((await seen(roadsOfficer)).some((r) => r.id === app.id), false, 'another department cannot see it');
+  assert.equal((await seen(alice)).length, 0, 'residents see nothing');
+  assert.equal((await seen(assembly)).length, 0, 'assembly members do not review applications');
+  assert.equal((await seen(admin)).some((r) => r.id === app.id), true);
+
+  const find = (uid) => as(db, 'authenticated', uid, async () => (await db.query(`select * from public.admin_find_user('APPLICANT@example.com')`)).rows);
+  assert.equal((await find(admin)).length, 1);
+  assert.equal((await find(roadsOfficer)).length, 0);
+  assert.equal((await find(alice)).length, 0);
+});
+
+test('staff MFA switch: when required, staff powers vanish without an aal2 session, residents are unaffected', async () => {
+  const r = await insertReport({ ward: 'kileleshwa', category: 'pothole' });
+  const visible = (uid, claims) => as(db, 'authenticated', uid, async () => {
+    if (claims) await db.query(`select set_config('request.jwt.claims', $1, false)`, [claims]);
+    try { return (await db.query(`select id from public.reports where id = $1`, [r.id])).rows.length; }
+    finally { await db.query(`select set_config('request.jwt.claims', '', false)`); }
+  });
+  assert.equal(await visible(roadsOfficer), 1, 'off by default');
+  await db.query(`update public.county set settings = jsonb_set(settings, '{require_staff_mfa}', 'true')`);
+  try {
+    assert.equal(await visible(roadsOfficer, JSON.stringify({ aal: 'aal1' })), 0, 'password-only session sees nothing');
+    assert.equal(await visible(roadsOfficer, JSON.stringify({ aal: 'aal2' })), 1, 'with a second factor, full access');
+    assert.equal(await visible(admin, JSON.stringify({ aal: 'aal1' })), 0, 'admins too');
+    await as(db, 'authenticated', roadsOfficer, async () => {
+      const own = await db.query(`select role from public.staff_roles where user_id = $1`, [roadsOfficer]);
+      assert.equal(own.rows.length, 1, 'can still read their own role, so the app can ask them to enrol MFA');
+    });
+    // residents keep working
+    await as(db, 'authenticated', alice, async () => { assert.equal((await db.query(`select id from public.profiles`)).rows.length, 1); });
+  } finally {
+    await db.query(`update public.county set settings = settings - 'require_staff_mfa'`);
+  }
+});
+
 test('pulse summary is a public aggregate: 12 weeks, category and channel totals, no identities', async () => {
   const r = await insertReport({ category: 'garbage', channel: 'ussd' });
   await db.query(`update public.reports set acknowledged_at = created_at + interval '3 hours', resolved_at = created_at + interval '2 days', status = 'resolved' where id = $1`, [r.id]);

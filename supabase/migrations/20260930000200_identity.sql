@@ -82,6 +82,21 @@ create table public.auditor_invites (
 
 grant usage on schema private to authenticated, service_role;
 
+-- Staff MFA. When the county sets settings.require_staff_mfa = true (at go-live), no staff permission
+-- applies unless the session was authenticated with a second factor (JWT claim aal = 'aal2').
+-- Residents are unaffected: this only gates rows in staff_roles. A user can still read their OWN role rows
+-- (so the app can tell them to enrol an authenticator) but nothing else.
+create function private.mfa_ok()
+returns boolean
+language sql
+stable
+security definer
+set search_path = ''
+as $$
+  select coalesce((select c.settings ->> 'require_staff_mfa' from public.county c limit 1), 'false') <> 'true'
+         or coalesce(nullif(current_setting('request.jwt.claims', true), '')::jsonb ->> 'aal', '') = 'aal2';
+$$;
+
 -- Does the signed-in user hold any active, unexpired role from the list?
 create function private.has_role(p_roles text[])
 returns boolean
@@ -93,6 +108,7 @@ as $$
   select exists (
     select 1 from public.staff_roles r
     where r.user_id = (select auth.uid())
+      and private.mfa_ok()
       and r.active
       and (r.expires_at is null or r.expires_at > now())
       and r.role = any (p_roles)
@@ -135,6 +151,7 @@ as $$
     from public.staff_roles r
     left join public.wards w on w.id = p_ward
     where r.user_id = (select auth.uid())
+      and private.mfa_ok()
       and r.active
       and (r.expires_at is null or r.expires_at > now())
       and (

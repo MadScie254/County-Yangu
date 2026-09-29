@@ -17,6 +17,7 @@ as $$
     from public.staff_roles r
     left join public.wards w on w.id = p_ward
     where r.user_id = (select auth.uid())
+      and private.mfa_ok()
       and r.active
       and (r.expires_at is null or r.expires_at > now())
       and (
@@ -40,6 +41,7 @@ as $$
     from public.staff_roles r
     left join public.services s on s.id = p_service
     where r.user_id = (select auth.uid())
+      and private.mfa_ok()
       and r.active
       and (r.expires_at is null or r.expires_at > now())
       and (
@@ -336,3 +338,61 @@ as $$
   );
 $$;
 grant execute on function public.pulse_summary() to anon, authenticated;
+
+-- ---- staff directory: who can I assign a case to? -----------------------------------------------------
+-- Officers cannot read each other's profiles (RLS), but they need names to assign and to read a timeline.
+-- This returns display names and roles of active staff, to signed-in staff only. No emails, phones or IDs.
+create function public.staff_directory()
+returns table (user_id uuid, name text, role text, department_id uuid, sub_county_id text, ward_id text)
+language sql
+stable
+security definer
+set search_path = ''
+as $$
+  select r.user_id, coalesce(nullif(p.name, ''), 'Staff'), r.role, r.department_id, r.sub_county_id, r.ward_id
+    from public.staff_roles r
+    left join public.profiles p on p.id = r.user_id
+   where private.has_role(array['super_admin', 'admin', 'chief_officer', 'sub_county_admin', 'ward_admin', 'officer'])
+     and r.active
+     and (r.expires_at is null or r.expires_at > now())
+     and r.role not in ('auditor', 'assembly_member');
+$$;
+grant execute on function public.staff_directory() to authenticated;
+
+-- ---- application review queue: applicant identity only for the people who review that service -------------
+create function public.review_queue()
+returns table (
+  id uuid, reference text, service_id uuid, service_name text, applicant_name text, applicant_phone text,
+  business_name text, kra_pin text, ward_id text, status text, amount numeric, form_data jsonb,
+  decision_note text, due_at timestamptz, created_at timestamptz
+)
+language sql
+stable
+security definer
+set search_path = ''
+as $$
+  select a.id, a.reference, a.service_id, s.name, coalesce(nullif(p.name, ''), 'Applicant'), p.phone,
+         a.business_name, a.kra_pin, a.ward_id, a.status, a.amount, a.form_data,
+         a.decision_note, a.due_at, a.created_at
+    from public.applications a
+    join public.services s on s.id = a.service_id
+    left join public.profiles p on p.id = a.applicant_id
+   where private.can_review_service(a.service_id)
+     and a.status not in ('draft', 'withdrawn')
+   order by a.due_at asc nulls last;
+$$;
+grant execute on function public.review_queue() to authenticated;
+
+-- ---- admin: find a person by email so a role can be granted (admins only) -------------------------------------
+create function public.admin_find_user(p_email text)
+returns table (id uuid, name text, email text)
+language sql
+stable
+security definer
+set search_path = ''
+as $$
+  select p.id, p.name, p.email
+    from public.profiles p
+   where private.is_admin() and lower(p.email) = lower(trim(p_email));
+$$;
+grant execute on function public.admin_find_user(text) to authenticated;

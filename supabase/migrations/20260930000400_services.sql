@@ -177,7 +177,7 @@ begin
 
   if not (private.is_admin()
           or exists (select 1 from public.staff_roles r
-                     where r.user_id = (select auth.uid()) and r.active
+                     where r.user_id = (select auth.uid()) and private.mfa_ok() and r.active
                        and (r.expires_at is null or r.expires_at > now())
                        and r.role in ('chief_officer', 'officer') and r.department_id = v_dept)) then
     raise exception 'Not allowed to decide this application' using errcode = '42501';
