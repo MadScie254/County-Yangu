@@ -31,6 +31,8 @@ export type CountyMapProps = {
   /** Pin-drop mode: the map pans under a fixed centre pin and reports where it stops. */
   onCenterChange?: (p: LngLat) => void;
   interactive?: boolean;
+  /** Draw sub-county bubbles (off in pin-drop mode, where they would only clutter). */
+  showBubbles?: boolean;
   padding?: { top: number; right: number; bottom: number; left: number };
   labels: { zoomIn: string; zoomOut: string; recenter: string; locate: string; attribution: string; issues: (n: number) => string };
   /** Text shown if WebGL is unavailable. */
@@ -61,7 +63,7 @@ const paddedBounds = (bbox: number[], pad: number): LngLatBoundsLike => [
 ];
 
 export const CountyMap = forwardRef<CountyMapHandle, CountyMapProps>(function CountyMap(props, ref) {
-  const { className, ariaLabel, metric = 'open', stats, geometry, projects, selection, onSelect, onSelectProject, onCenterChange, interactive = true, padding, labels, fallback } = props;
+  const { className, ariaLabel, metric = 'open', stats, geometry, projects, selection, onSelect, onSelectProject, onCenterChange, interactive = true, showBubbles = true, padding, labels, fallback } = props;
 
   const container = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MLMap | null>(null);
@@ -256,7 +258,7 @@ export const CountyMap = forwardRef<CountyMapHandle, CountyMapProps>(function Co
     if (!map || !lib || !ready) return;
     markers.current.forEach((m) => m.remove());
     markers.current = [];
-    if (geometry && geometry.features.length) return; // polygons take over
+    if (!showBubbles || (geometry && geometry.features.length)) return; // polygons take over
     for (const sc of view.subs) {
       const v = subMetricValue(metric, sc);
       const color = colorFor(metric, v, view.subBreaks);
@@ -278,7 +280,7 @@ export const CountyMap = forwardRef<CountyMapHandle, CountyMapProps>(function Co
       });
       markers.current.push(new lib.Marker({ element: el }).setLngLat([sc.lng, sc.lat]).addTo(map));
     }
-  }, [ready, geometry, view, metric, selection]);
+  }, [ready, geometry, view, metric, selection, showBubbles]);
 
   // ---- projects -----------------------------------------------------------------------------------------------
   useEffect(() => {

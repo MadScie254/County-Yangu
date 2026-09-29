@@ -199,7 +199,8 @@
     "reported": "Iliripotiwa",
     "lastUpdate": "Sasisho la mwisho",
     "noUpdates": "Bado hakuna masasisho. Utayaona hapa kaunti inapojibu.",
-    "sensitive": "Imetumwa kwa dawati la uadilifu"
+    "sensitive": "Imetumwa kwa dawati la uadilifu",
+    "onThisPhone": "Kwenye simu hii"
   },
   "statuses": {
     "received": "Imepokelewa",

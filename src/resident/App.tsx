@@ -4,6 +4,9 @@ import { ResidentShell } from './layout/ResidentShell';
 import { Skeleton } from '@/shared/ui/Card';
 
 const Home = lazy(() => import('./pages/Home'));
+const Report = lazy(() => import('./pages/Report'));
+const CaseLookup = lazy(() => import('./pages/CaseLookup'));
+const CaseDetail = lazy(() => import('./pages/CaseDetail'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 function PageFallback() {
@@ -22,6 +25,9 @@ export function App() {
       <Routes>
         <Route element={<ResidentShell />}>
           <Route index element={<Home />} />
+          <Route path="report" element={<Report />} />
+          <Route path="case" element={<CaseLookup />} />
+          <Route path="case/:reference" element={<CaseDetail />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

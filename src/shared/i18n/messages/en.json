@@ -199,7 +199,8 @@
     "reported": "Reported",
     "lastUpdate": "Last update",
     "noUpdates": "No updates yet. You will see them here as the county responds.",
-    "sensitive": "Sent to the integrity desk"
+    "sensitive": "Sent to the integrity desk",
+    "onThisPhone": "On this phone"
   },
   "statuses": {
     "received": "Received",

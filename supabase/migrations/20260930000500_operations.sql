@@ -256,6 +256,7 @@ as $$
   select jsonb_build_object(
     'reference', r.reference,
     'status', r.status,
+    'category_id', r.category_id,
     'category', c.name,
     'category_sw', c.name_sw,
     'ward', w.name,
