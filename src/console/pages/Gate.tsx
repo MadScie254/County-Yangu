@@ -69,13 +69,16 @@ function MfaStep({ mode, onDone }: { mode: 'challenge' | 'enroll'; onDone: () =>
 /** Everything under the console sits behind this: signed in, second factor done, and at least one role. */
 export function Gate({ children }: { children: ReactNode }) {
   const { status, roles, user, init, demo } = useAuth();
-  const [mfa, setMfa] = useState<MfaState | 'loading'>('loading');
+  // the answer belongs to one signed-in user; for anyone else (or nobody) it is "still loading"
+  const [asked, setAsked] = useState<{ uid: string | undefined; state: MfaState } | null>(null);
+  const mfa: MfaState | 'loading' = status !== 'in' ? 'loading' : demo ? 'ok' : asked && asked.uid === user?.id ? asked.state : 'loading';
+  const setMfa = (state: MfaState) => setAsked({ uid: user?.id, state });
 
   useEffect(() => { void init(); }, [init]);
   useEffect(() => {
-    if (status !== 'in') return setMfa('loading');
-    if (demo) return setMfa('ok');
-    void getMfaState().then(setMfa);
+    if (status !== 'in' || demo) return;
+    const uid = user?.id;
+    void getMfaState().then((state) => setAsked({ uid, state }));
   }, [status, demo, user?.id]);
 
   if (status === 'loading') return <Center><Skeleton className="h-10 w-2/3" /><Skeleton className="mt-4 h-40" /></Center>;

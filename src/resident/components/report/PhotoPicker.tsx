@@ -15,7 +15,7 @@ export function PhotoPicker({ photos, onChange }: { photos: Photo[]; onChange: (
   const gallery = useRef<HTMLInputElement>(null);
   const [busy, setBusy] = useState(false);
   const latest = useRef(photos);
-  latest.current = photos;
+  useEffect(() => { latest.current = photos; });
 
   // release object URLs when the picker goes away
   useEffect(() => () => latest.current.forEach((p) => URL.revokeObjectURL(p.url)), []);

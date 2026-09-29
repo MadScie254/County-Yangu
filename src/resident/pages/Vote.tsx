@@ -31,7 +31,6 @@ export default function Vote() {
   const [stage, setStage] = useState<'verify' | 'confirm' | 'done'>('verify');
   const [token, setToken] = useState<string | null>(null);
   const [voteId, setVoteId] = useState<string | null>(null);
-  const [failed, setFailed] = useState<string | null>(null);
 
   const item = useQueue((s) => s.items.find((i) => i.id === voteId));
   const cycle = data.data?.cycle ?? null;
@@ -45,13 +44,11 @@ export default function Vote() {
 
   const start = () => {
     setStage(token ? 'confirm' : 'verify');
-    setFailed(null);
     setSheet(true);
   };
 
   const confirm = async () => {
     if (!chosen || !cycle || !token || !wardId) return;
-    setFailed(null);
     const it = await enqueueVote({ token, cycle_id: cycle.id, ward_id: wardId, option_id: chosen.id });
     setVoteId(it.id);
     setStage('done');
@@ -60,11 +57,11 @@ export default function Vote() {
   // reflect the queue outcome (an effect, never work during render)
   const outcome = item?.status;
   const itemError = item?.error;
+  const failed = outcome === 'failed' ? (itemError ?? 'failed') : null;
   useEffect(() => {
     if (stage !== 'done') return;
     if (outcome === 'sent' && cycle) markVoted(cycle.id);
-    if (outcome === 'failed') setFailed(itemError ?? 'failed');
-  }, [stage, outcome, itemError, cycle, markVoted]);
+  }, [stage, outcome, cycle, markVoted]);
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8 pb-32 sm:px-6 sm:py-12">

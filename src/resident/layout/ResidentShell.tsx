@@ -75,13 +75,14 @@ function DemoRibbon() {
 export function ResidentShell() {
   const { t } = useI18n();
   const [settings, setSettings] = useState(false);
-  const [more, setMore] = useState(false);
   const { pathname } = useLocation();
+  const [moreOn, setMoreOn] = useState<string | null>(null);
+  const more = moreOn === pathname;
+  const setMore = (v: boolean | ((o: boolean) => boolean)) => setMoreOn((typeof v === 'function' ? v(more) : v) ? pathname : null);
   const flush = useQueue((s) => s.flush);
 
   useEffect(() => {
     window.scrollTo({ top: 0 });
-    setMore(false);
   }, [pathname]);
 
   // retry the offline queue on load and whenever the connection returns

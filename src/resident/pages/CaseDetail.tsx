@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { CheckCircle2, CircleDot, Clock, Flag, Landmark, Megaphone, MessageSquare, TriangleAlert, ArrowRight } from 'lucide-react';
 import { useI18n, type MessageKey } from '@/shared/i18n';
@@ -19,6 +20,7 @@ export default function CaseDetail() {
   const ref = reference.toUpperCase();
   const valid = referenceRegex.test(ref);
   const q = useCaseStatus(valid ? ref : null);
+  const [now] = useState(() => Date.now());
   usePageTitle(valid ? ref : t('status.title'));
 
   if (!valid || (q.isSuccess && !q.data)) return <NotFound />;
@@ -36,7 +38,6 @@ export default function CaseDetail() {
   const done = c.status === 'resolved' || c.status === 'closed' || c.status === 'rejected';
   const created = new Date(c.created_at).getTime();
   const due = c.resolve_due_at ? new Date(c.resolve_due_at).getTime() : null;
-  const now = Date.now();
   const overdueDays = due && !done && now > due ? Math.max(1, daysBetween(new Date(due), new Date(now))) : 0;
   const progress = done ? 1 : due ? Math.min(1, Math.max(0, (now - created) / (due - created))) : 0;
   const categoryId = c.category_id as CategoryId | null | undefined;

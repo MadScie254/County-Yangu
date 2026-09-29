@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { ShieldCheck } from 'lucide-react';
 import { Button } from '@/shared/ui/Button';
@@ -12,13 +12,15 @@ const onErr = (e: unknown) => toast({ tone: 'bad', title: 'That did not work', b
 const parseEmails = (s: string) => s.split(/[\s,;]+/).map((x) => x.trim().toLowerCase()).filter((x) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(x));
 
 export function SettingsTab() {
-  const qc = useQueryClient();
   const q = useQuery({ queryKey: ['c-settings'], queryFn: getSettings });
+  if (!q.data) return <Skeleton className="h-64" />;
+  return <SettingsForm s={q.data} />;
+}
+
+function SettingsForm({ s }: { s: CountySettings }) {
+  const qc = useQueryClient();
   const factor = useQuery({ queryKey: ['c-aal'], queryFn: hasSecondFactor });
-  const [f, setF] = useState<{ web: string; console: string; cap: string; emails: Record<string, string> } | null>(null);
-  useEffect(() => {
-    if (q.data && !f) setF({ web: q.data.web_url, console: q.data.console_url, cap: q.data.ai_default_cap_kes === null ? '' : String(q.data.ai_default_cap_kes), emails: Object.fromEntries(DIGEST_KINDS.map(([k]) => [k, (q.data!.digest_recipients[k] ?? []).join('\n')])) });
-  }, [q.data, f]);
+  const [f, setF] = useState({ web: s.web_url, console: s.console_url, cap: s.ai_default_cap_kes === null ? '' : String(s.ai_default_cap_kes), emails: Object.fromEntries(DIGEST_KINDS.map(([k]) => [k, (s.digest_recipients[k] ?? []).join('\n')])) as Record<string, string> });
 
   const save = useMutation({
     mutationFn: (patch: Partial<CountySettings>) => saveSettings(patch),
@@ -26,8 +28,6 @@ export function SettingsTab() {
     onError: onErr,
   });
 
-  if (!q.data || !f) return <Skeleton className="h-64" />;
-  const s = q.data;
   const canEnable = factor.data === true;
 
   return (

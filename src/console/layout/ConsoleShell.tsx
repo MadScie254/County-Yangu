@@ -59,13 +59,16 @@ function Nav({ onNavigate }: { onNavigate?: () => void }) {
 }
 
 export function ConsoleShell() {
-  const [open, setOpen] = useState(false);
   const { pathname } = useLocation();
+  // the menu is open for one page only: navigating elsewhere closes it without an effect
+  const [openOn, setOpenOn] = useState<string | null>(null);
+  const open = openOn === pathname;
+  const setOpen = (v: boolean | ((o: boolean) => boolean)) => setOpenOn((typeof v === 'function' ? v(open) : v) ? pathname : null);
   const user = useAuth((s) => s.user);
   const signOut = useAuth((s) => s.signOut);
   const can = useCan();
   const demo = useIsDemo();
-  useEffect(() => { setOpen(false); window.scrollTo({ top: 0 }); }, [pathname]);
+  useEffect(() => { window.scrollTo({ top: 0 }); }, [pathname]);
 
   const brand = (
     <div className="flex items-center gap-3">
