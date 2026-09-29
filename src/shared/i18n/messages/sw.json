@@ -123,7 +123,10 @@
     "issues_other": "Matatizo {count} wazi",
     "pinHint": "Sogeza ramani ili pini iwe kwenye tatizo.",
     "pinSet": "Pini imewekwa",
-    "outsideCounty": "Eneo hilo liko nje ya Kaunti ya {county}."
+    "outsideCounty": "Eneo hilo liko nje ya Kaunti ya {county}.",
+    "saveDataTitle": "Kiokoa data kimewashwa",
+    "saveDataBody": "Ramani hutumia data ya ziada. Utafutaji, orodha na takwimu za ukurasa huu hufanya kazi bila hiyo.",
+    "saveDataLoad": "Pakia ramani"
   },
   "report": {
     "title": "Ripoti tatizo",

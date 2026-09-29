@@ -43,3 +43,20 @@ export function usePageTitle(title: string, suffix = 'County Yangu') {
     document.title = title ? `${title} · ${suffix}` : suffix;
   }, [title, suffix]);
 }
+
+type NetworkInfo = { saveData?: boolean; effectiveType?: string };
+
+/** True when the visitor asked their browser to save data, or is on a 2G-class connection. */
+export function useSaveData() {
+  const info = () => (typeof navigator === 'undefined' ? undefined : (navigator as Navigator & { connection?: NetworkInfo }).connection);
+  const get = () => Boolean(info()?.saveData) || ['slow-2g', '2g'].includes(info()?.effectiveType ?? '');
+  const [saving, setSaving] = useState(get);
+  useEffect(() => {
+    const c = (navigator as Navigator & { connection?: EventTarget }).connection;
+    const on = () => setSaving(get());
+    c?.addEventListener?.('change', on);
+    return () => c?.removeEventListener?.('change', on);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  return saving;
+}

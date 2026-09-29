@@ -4,7 +4,8 @@ import { ArrowRight, Megaphone, FolderKanban, Vote, ShieldCheck, Smartphone, Rou
 import { useI18n } from '@/shared/i18n';
 import { county, wards } from '@/shared/config/county';
 import { useCountySummary, useProjects, useWardStats } from '@/shared/api/hooks';
-import { CountyMap, type CountyMapHandle, type MapSelection } from '@/shared/map/CountyMap';
+import type { CountyMapHandle, MapSelection } from '@/shared/map/CountyMap';
+import { LazyCountyMap as CountyMap } from '@/shared/map/LazyCountyMap';
 import { useWardGeometry } from '@/shared/map/useGeometry';
 import { MapLegend } from '@/shared/map/MapLegend';
 import { aggregateBySubCounty } from '@/shared/map/aggregate';

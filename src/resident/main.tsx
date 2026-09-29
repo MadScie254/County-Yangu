@@ -14,3 +14,8 @@ createRoot(document.getElementById('root')!).render(
     </Providers>
   </StrictMode>,
 );
+
+// Offline shell. Production only, so development is never served stale files.
+if ('serviceWorker' in navigator && import.meta.env.PROD) {
+  window.addEventListener('load', () => void navigator.serviceWorker.register('/sw.js').catch(() => {}));
+}

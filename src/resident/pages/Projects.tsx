@@ -5,7 +5,7 @@ import { useI18n } from '@/shared/i18n';
 import { wards } from '@/shared/config/county';
 import { useProjects } from '@/shared/api/hooks';
 import type { ProjectStatus } from '@/shared/api/types';
-import { CountyMap } from '@/shared/map/CountyMap';
+import { LazyCountyMap as CountyMap } from '@/shared/map/LazyCountyMap';
 import { useWardGeometry } from '@/shared/map/useGeometry';
 import { projectColors } from '@/shared/map/palette';
 import { usePageTitle } from '@/shared/lib/hooks';

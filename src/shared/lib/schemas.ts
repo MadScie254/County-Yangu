@@ -1,4 +1,8 @@
 import { z } from 'zod';
+
+// Zod's just-in-time compiler probes for `eval`, which the site's Content-Security-Policy (correctly) forbids.
+// Skipping the probe keeps the browser console free of a violation report on every page that validates a form.
+z.config({ jitless: true });
 import { categoryIds } from '@/shared/data/categories';
 import { toE164Kenya } from '@/shared/lib/utils';
 

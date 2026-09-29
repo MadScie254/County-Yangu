@@ -123,7 +123,10 @@
     "issues_other": "{count} open issues",
     "pinHint": "Drag the map so the pin sits on the problem.",
     "pinSet": "Pin placed",
-    "outsideCounty": "That spot is outside {county} County."
+    "outsideCounty": "That spot is outside {county} County.",
+    "saveDataTitle": "Data saver is on",
+    "saveDataBody": "The map uses extra mobile data. Search, lists and figures on this page work without it.",
+    "saveDataLoad": "Load the map"
   },
   "report": {
     "title": "Report a problem",
