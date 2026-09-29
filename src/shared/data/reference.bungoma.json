@@ -1,0 +1,357 @@
+{
+ "generatedBy": "scripts/gen-seed.mjs",
+ "source": "kenya-regions (KNBS/OCHA), MIT",
+ "county": {
+  "slug": "bungoma",
+  "name": "Bungoma",
+  "code": 39,
+  "centroid": {
+   "lat": 0.785694,
+   "lng": 34.718757
+  },
+  "bbox": [
+   34.362,
+   0.421,
+   35.068,
+   1.15
+  ],
+  "population2019": 1670570
+ },
+ "subCounties": [
+  {
+   "id": "mt-elgon",
+   "name": "Mt.Elgon",
+   "lat": 0.959389,
+   "lng": 34.603736,
+   "areaKm2": 954.8994
+  },
+  {
+   "id": "sirisia",
+   "name": "Sirisia",
+   "lat": 0.737027,
+   "lng": 34.495087,
+   "areaKm2": 210.143
+  },
+  {
+   "id": "kabuchai",
+   "name": "Kabuchai",
+   "lat": 0.696422,
+   "lng": 34.590988,
+   "areaKm2": 233.7438
+  },
+  {
+   "id": "bumula",
+   "name": "Bumula",
+   "lat": 0.567884,
+   "lng": 34.449637,
+   "areaKm2": 345.3332
+  },
+  {
+   "id": "kanduyi",
+   "name": "Kanduyi",
+   "lat": 0.561989,
+   "lng": 34.608965,
+   "areaKm2": 319.1792
+  },
+  {
+   "id": "webuye-east",
+   "name": "Webuye East",
+   "lat": 0.652949,
+   "lng": 34.797167,
+   "areaKm2": 163.9555
+  },
+  {
+   "id": "webuye-west",
+   "name": "Webuye West",
+   "lat": 0.597497,
+   "lng": 34.716663,
+   "areaKm2": 236.0702
+  },
+  {
+   "id": "kimilili",
+   "name": "Kimilili",
+   "lat": 0.787729,
+   "lng": 34.727599,
+   "areaKm2": 177.4107
+  },
+  {
+   "id": "tongaren",
+   "name": "Tongaren",
+   "lat": 0.777569,
+   "lng": 34.934798,
+   "areaKm2": 375.4393
+  }
+ ],
+ "wards": [
+  {
+   "id": "cheptais",
+   "code": 1076,
+   "name": "Cheptais",
+   "subCountyId": "mt-elgon"
+  },
+  {
+   "id": "chesikaki",
+   "code": 1077,
+   "name": "Chesikaki",
+   "subCountyId": "mt-elgon"
+  },
+  {
+   "id": "chepyuk",
+   "code": 1078,
+   "name": "Chepyuk",
+   "subCountyId": "mt-elgon"
+  },
+  {
+   "id": "kapkateny",
+   "code": 1079,
+   "name": "Kapkateny",
+   "subCountyId": "mt-elgon"
+  },
+  {
+   "id": "kaptama",
+   "code": 1080,
+   "name": "Kaptama",
+   "subCountyId": "mt-elgon"
+  },
+  {
+   "id": "elgon",
+   "code": 1081,
+   "name": "Elgon",
+   "subCountyId": "mt-elgon"
+  },
+  {
+   "id": "namwela",
+   "code": 1082,
+   "name": "Namwela",
+   "subCountyId": "sirisia"
+  },
+  {
+   "id": "malakisi-south-kulisiru",
+   "code": 1083,
+   "name": "Malakisi/South Kulisiru",
+   "subCountyId": "sirisia"
+  },
+  {
+   "id": "lwandanyi",
+   "code": 1084,
+   "name": "Lwandanyi",
+   "subCountyId": "sirisia"
+  },
+  {
+   "id": "kabuchai-chwele",
+   "code": 1085,
+   "name": "Kabuchai/Chwele",
+   "subCountyId": "kabuchai"
+  },
+  {
+   "id": "west-nalondo",
+   "code": 1086,
+   "name": "West Nalondo",
+   "subCountyId": "kabuchai"
+  },
+  {
+   "id": "bwake-luuya",
+   "code": 1087,
+   "name": "Bwake/Luuya",
+   "subCountyId": "kabuchai"
+  },
+  {
+   "id": "mukuyuni",
+   "code": 1088,
+   "name": "Mukuyuni",
+   "subCountyId": "kabuchai"
+  },
+  {
+   "id": "south-bukusu",
+   "code": 1089,
+   "name": "South Bukusu",
+   "subCountyId": "bumula"
+  },
+  {
+   "id": "bumula",
+   "code": 1090,
+   "name": "Bumula",
+   "subCountyId": "bumula"
+  },
+  {
+   "id": "khasoko",
+   "code": 1091,
+   "name": "Khasoko",
+   "subCountyId": "bumula"
+  },
+  {
+   "id": "kabula",
+   "code": 1092,
+   "name": "Kabula",
+   "subCountyId": "bumula"
+  },
+  {
+   "id": "kimaeti",
+   "code": 1093,
+   "name": "Kimaeti",
+   "subCountyId": "bumula"
+  },
+  {
+   "id": "west-bukusu",
+   "code": 1094,
+   "name": "West Bukusu",
+   "subCountyId": "bumula"
+  },
+  {
+   "id": "siboti",
+   "code": 1095,
+   "name": "Siboti",
+   "subCountyId": "bumula"
+  },
+  {
+   "id": "bukembe-west",
+   "code": 1096,
+   "name": "Bukembe West",
+   "subCountyId": "kanduyi"
+  },
+  {
+   "id": "bukembe-east",
+   "code": 1097,
+   "name": "Bukembe East",
+   "subCountyId": "kanduyi"
+  },
+  {
+   "id": "township",
+   "code": 1098,
+   "name": "Township",
+   "subCountyId": "kanduyi"
+  },
+  {
+   "id": "khalaba",
+   "code": 1099,
+   "name": "Khalaba",
+   "subCountyId": "kanduyi"
+  },
+  {
+   "id": "musikoma",
+   "code": 1100,
+   "name": "Musikoma",
+   "subCountyId": "kanduyi"
+  },
+  {
+   "id": "east-sangalo",
+   "code": 1101,
+   "name": "East Sang'alo",
+   "subCountyId": "kanduyi"
+  },
+  {
+   "id": "marakaru-tuuti",
+   "code": 1102,
+   "name": "Marakaru/Tuuti",
+   "subCountyId": "kanduyi"
+  },
+  {
+   "id": "sangalo-west",
+   "code": 1103,
+   "name": "Sang'alo West",
+   "subCountyId": "kanduyi"
+  },
+  {
+   "id": "mihuu",
+   "code": 1104,
+   "name": "Mihuu",
+   "subCountyId": "webuye-east"
+  },
+  {
+   "id": "ndivisi",
+   "code": 1105,
+   "name": "Ndivisi",
+   "subCountyId": "webuye-east"
+  },
+  {
+   "id": "maraka",
+   "code": 1106,
+   "name": "Maraka",
+   "subCountyId": "webuye-east"
+  },
+  {
+   "id": "misikhu",
+   "code": 1107,
+   "name": "Misikhu",
+   "subCountyId": "webuye-west"
+  },
+  {
+   "id": "sitikho",
+   "code": 1108,
+   "name": "Sitikho",
+   "subCountyId": "webuye-west"
+  },
+  {
+   "id": "matulo",
+   "code": 1109,
+   "name": "Matulo",
+   "subCountyId": "webuye-west"
+  },
+  {
+   "id": "bokoli",
+   "code": 1110,
+   "name": "Bokoli",
+   "subCountyId": "webuye-west"
+  },
+  {
+   "id": "kimilili",
+   "code": 1111,
+   "name": "Kimilili",
+   "subCountyId": "kimilili"
+  },
+  {
+   "id": "kibingei",
+   "code": 1112,
+   "name": "Kibingei",
+   "subCountyId": "kimilili"
+  },
+  {
+   "id": "maeni",
+   "code": 1113,
+   "name": "Maeni",
+   "subCountyId": "kimilili"
+  },
+  {
+   "id": "kamukuywa",
+   "code": 1114,
+   "name": "Kamukuywa",
+   "subCountyId": "kimilili"
+  },
+  {
+   "id": "mbakalo",
+   "code": 1115,
+   "name": "Mbakalo",
+   "subCountyId": "tongaren"
+  },
+  {
+   "id": "naitiri-kabuyefwe",
+   "code": 1116,
+   "name": "Naitiri/Kabuyefwe",
+   "subCountyId": "tongaren"
+  },
+  {
+   "id": "milima",
+   "code": 1117,
+   "name": "Milima",
+   "subCountyId": "tongaren"
+  },
+  {
+   "id": "ndalu-tabani",
+   "code": 1118,
+   "name": "Ndalu/ Tabani",
+   "subCountyId": "tongaren"
+  },
+  {
+   "id": "tongaren",
+   "code": 1119,
+   "name": "Tongaren",
+   "subCountyId": "tongaren"
+  },
+  {
+   "id": "soysambu-mitua",
+   "code": 1120,
+   "name": "Soysambu/ Mitua",
+   "subCountyId": "tongaren"
+  }
+ ]
+}

@@ -44,3 +44,6 @@ next-env.d.ts
 # Serwist generated workers
 public/sw*
 public/swe-worker*
+
+# vite / build output
+/dist

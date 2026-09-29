@@ -1,0 +1,653 @@
+{
+ "generatedBy": "scripts/gen-seed.mjs",
+ "source": "kenya-regions (KNBS/OCHA), MIT",
+ "county": {
+  "slug": "nairobi",
+  "name": "Nairobi",
+  "code": 47,
+  "centroid": {
+   "lat": -1.300489,
+   "lng": 36.827926
+  },
+  "bbox": [
+   36.663,
+   -1.442,
+   37.104,
+   -1.158
+  ],
+  "population2019": 4397073
+ },
+ "subCounties": [
+  {
+   "id": "westlands",
+   "name": "Westlands",
+   "lat": -1.232061,
+   "lng": 36.795375,
+   "areaKm2": 72.7043
+  },
+  {
+   "id": "dagoretti-north",
+   "name": "Dagoretti North",
+   "lat": -1.276854,
+   "lng": 36.774202,
+   "areaKm2": 29.3557
+  },
+  {
+   "id": "dagoretti-south",
+   "name": "Dagoretti South",
+   "lat": -1.281058,
+   "lng": 36.712155,
+   "areaKm2": 24.4451
+  },
+  {
+   "id": "langata",
+   "name": "Langata",
+   "lat": -1.367952,
+   "lng": 36.814278,
+   "areaKm2": 209.8091
+  },
+  {
+   "id": "kibra",
+   "name": "Kibra",
+   "lat": -1.304209,
+   "lng": 36.779709,
+   "areaKm2": 12.3303
+  },
+  {
+   "id": "roysambu",
+   "name": "Roysambu",
+   "lat": -1.208012,
+   "lng": 36.878542,
+   "areaKm2": 48.1044
+  },
+  {
+   "id": "kasarani",
+   "name": "Kasarani",
+   "lat": -1.252005,
+   "lng": 37.013557,
+   "areaKm2": 136.2742
+  },
+  {
+   "id": "ruaraka",
+   "name": "Ruaraka",
+   "lat": -1.245755,
+   "lng": 36.878076,
+   "areaKm2": 7.1797
+  },
+  {
+   "id": "embakasi-south",
+   "name": "Embakasi South",
+   "lat": -1.33573,
+   "lng": 36.87389,
+   "areaKm2": 17.5493
+  },
+  {
+   "id": "embakasi-north",
+   "name": "Embakasi North",
+   "lat": -1.247454,
+   "lng": 36.899452,
+   "areaKm2": 5.4293
+  },
+  {
+   "id": "embakasi-central",
+   "name": "Embakasi Central",
+   "lat": -1.269612,
+   "lng": 36.909366,
+   "areaKm2": 8.1824
+  },
+  {
+   "id": "embakasi-east",
+   "name": "Embakasi East",
+   "lat": -1.310568,
+   "lng": 36.937724,
+   "areaKm2": 85.8439
+  },
+  {
+   "id": "embakasi-west",
+   "name": "Embakasi West",
+   "lat": -1.273424,
+   "lng": 36.885515,
+   "areaKm2": 9.7608
+  },
+  {
+   "id": "makadara",
+   "name": "Makadara",
+   "lat": -1.294572,
+   "lng": 36.863379,
+   "areaKm2": 11.9972
+  },
+  {
+   "id": "kamukunji",
+   "name": "Kamukunji",
+   "lat": -1.275421,
+   "lng": 36.858306,
+   "areaKm2": 8.8375
+  },
+  {
+   "id": "starehe",
+   "name": "Starehe",
+   "lat": -1.289902,
+   "lng": 36.828624,
+   "areaKm2": 16.8364
+  },
+  {
+   "id": "mathare",
+   "name": "Mathare",
+   "lat": -1.255947,
+   "lng": 36.870494,
+   "areaKm2": 2.9028
+  }
+ ],
+ "wards": [
+  {
+   "id": "kitisuru",
+   "code": 1366,
+   "name": "Kitisuru",
+   "subCountyId": "westlands"
+  },
+  {
+   "id": "parklands-highridge",
+   "code": 1367,
+   "name": "Parklands/Highridge",
+   "subCountyId": "westlands"
+  },
+  {
+   "id": "karura",
+   "code": 1368,
+   "name": "Karura",
+   "subCountyId": "westlands"
+  },
+  {
+   "id": "kangemi",
+   "code": 1369,
+   "name": "Kangemi",
+   "subCountyId": "westlands"
+  },
+  {
+   "id": "mountain-view",
+   "code": 1370,
+   "name": "Mountain View",
+   "subCountyId": "westlands"
+  },
+  {
+   "id": "kilimani",
+   "code": 1371,
+   "name": "Kilimani",
+   "subCountyId": "dagoretti-north"
+  },
+  {
+   "id": "kawangware",
+   "code": 1372,
+   "name": "Kawangware",
+   "subCountyId": "dagoretti-north"
+  },
+  {
+   "id": "gatina",
+   "code": 1373,
+   "name": "Gatina",
+   "subCountyId": "dagoretti-north"
+  },
+  {
+   "id": "kileleshwa",
+   "code": 1374,
+   "name": "Kileleshwa",
+   "subCountyId": "dagoretti-north"
+  },
+  {
+   "id": "kabiro",
+   "code": 1375,
+   "name": "Kabiro",
+   "subCountyId": "dagoretti-north"
+  },
+  {
+   "id": "mutuini",
+   "code": 1376,
+   "name": "Mutuini",
+   "subCountyId": "dagoretti-south"
+  },
+  {
+   "id": "ngando",
+   "code": 1377,
+   "name": "Ngando",
+   "subCountyId": "dagoretti-south"
+  },
+  {
+   "id": "riruta",
+   "code": 1378,
+   "name": "Riruta",
+   "subCountyId": "dagoretti-south"
+  },
+  {
+   "id": "uthiru-ruthimitu",
+   "code": 1379,
+   "name": "Uthiru/Ruthimitu",
+   "subCountyId": "dagoretti-south"
+  },
+  {
+   "id": "waithaka",
+   "code": 1380,
+   "name": "Waithaka",
+   "subCountyId": "dagoretti-south"
+  },
+  {
+   "id": "karen",
+   "code": 1381,
+   "name": "Karen",
+   "subCountyId": "langata"
+  },
+  {
+   "id": "nairobi-west",
+   "code": 1382,
+   "name": "Nairobi West",
+   "subCountyId": "langata"
+  },
+  {
+   "id": "mugumo-ini",
+   "code": 1383,
+   "name": "Mugumo-Ini",
+   "subCountyId": "langata"
+  },
+  {
+   "id": "south-c",
+   "code": 1384,
+   "name": "South-C",
+   "subCountyId": "langata"
+  },
+  {
+   "id": "nyayo-highrise",
+   "code": 1385,
+   "name": "Nyayo Highrise",
+   "subCountyId": "langata"
+  },
+  {
+   "id": "laini-saba",
+   "code": 1386,
+   "name": "Laini Saba",
+   "subCountyId": "kibra"
+  },
+  {
+   "id": "lindi",
+   "code": 1387,
+   "name": "Lindi",
+   "subCountyId": "kibra"
+  },
+  {
+   "id": "makina",
+   "code": 1388,
+   "name": "Makina",
+   "subCountyId": "kibra"
+  },
+  {
+   "id": "woodley-kenyatta-golf-course",
+   "code": 1389,
+   "name": "Woodley/Kenyatta Golf Course",
+   "subCountyId": "kibra"
+  },
+  {
+   "id": "sarangombe",
+   "code": 1390,
+   "name": "Sarangombe",
+   "subCountyId": "kibra"
+  },
+  {
+   "id": "githurai",
+   "code": 1391,
+   "name": "Githurai",
+   "subCountyId": "roysambu"
+  },
+  {
+   "id": "kahawa-west",
+   "code": 1392,
+   "name": "Kahawa West",
+   "subCountyId": "roysambu"
+  },
+  {
+   "id": "zimmerman",
+   "code": 1393,
+   "name": "Zimmerman",
+   "subCountyId": "roysambu"
+  },
+  {
+   "id": "roysambu",
+   "code": 1394,
+   "name": "Roysambu",
+   "subCountyId": "roysambu"
+  },
+  {
+   "id": "kahawa",
+   "code": 1395,
+   "name": "Kahawa",
+   "subCountyId": "roysambu"
+  },
+  {
+   "id": "claycity",
+   "code": 1396,
+   "name": "Claycity",
+   "subCountyId": "kasarani"
+  },
+  {
+   "id": "mwiki",
+   "code": 1397,
+   "name": "Mwiki",
+   "subCountyId": "kasarani"
+  },
+  {
+   "id": "kasarani",
+   "code": 1398,
+   "name": "Kasarani",
+   "subCountyId": "kasarani"
+  },
+  {
+   "id": "njiru",
+   "code": 1399,
+   "name": "Njiru",
+   "subCountyId": "kasarani"
+  },
+  {
+   "id": "ruai",
+   "code": 1400,
+   "name": "Ruai",
+   "subCountyId": "kasarani"
+  },
+  {
+   "id": "baba-dogo",
+   "code": 1401,
+   "name": "Baba Dogo",
+   "subCountyId": "ruaraka"
+  },
+  {
+   "id": "utalii",
+   "code": 1402,
+   "name": "Utalii",
+   "subCountyId": "ruaraka"
+  },
+  {
+   "id": "mathare-north",
+   "code": 1403,
+   "name": "Mathare North",
+   "subCountyId": "ruaraka"
+  },
+  {
+   "id": "lucky-summer",
+   "code": 1404,
+   "name": "Lucky Summer",
+   "subCountyId": "ruaraka"
+  },
+  {
+   "id": "korogocho",
+   "code": 1405,
+   "name": "Korogocho",
+   "subCountyId": "ruaraka"
+  },
+  {
+   "id": "imara-daima",
+   "code": 1406,
+   "name": "Imara Daima",
+   "subCountyId": "embakasi-south"
+  },
+  {
+   "id": "kwa-njenga",
+   "code": 1407,
+   "name": "Kwa Njenga",
+   "subCountyId": "embakasi-south"
+  },
+  {
+   "id": "kwa-reuben",
+   "code": 1408,
+   "name": "Kwa Reuben",
+   "subCountyId": "embakasi-south"
+  },
+  {
+   "id": "pipeline",
+   "code": 1409,
+   "name": "Pipeline",
+   "subCountyId": "embakasi-south"
+  },
+  {
+   "id": "kware",
+   "code": 1410,
+   "name": "Kware",
+   "subCountyId": "embakasi-south"
+  },
+  {
+   "id": "kariobangi-north",
+   "code": 1411,
+   "name": "Kariobangi North",
+   "subCountyId": "embakasi-north"
+  },
+  {
+   "id": "dandora-area-i",
+   "code": 1412,
+   "name": "Dandora Area I",
+   "subCountyId": "embakasi-north"
+  },
+  {
+   "id": "dandora-area-ii",
+   "code": 1413,
+   "name": "Dandora Area Ii",
+   "subCountyId": "embakasi-north"
+  },
+  {
+   "id": "dandora-area-iii",
+   "code": 1414,
+   "name": "Dandora Area Iii",
+   "subCountyId": "embakasi-north"
+  },
+  {
+   "id": "dandora-area-iv",
+   "code": 1415,
+   "name": "Dandora Area Iv",
+   "subCountyId": "embakasi-north"
+  },
+  {
+   "id": "kayole-north",
+   "code": 1416,
+   "name": "Kayole North",
+   "subCountyId": "embakasi-central"
+  },
+  {
+   "id": "kayole-central",
+   "code": 1417,
+   "name": "Kayole Central",
+   "subCountyId": "embakasi-central"
+  },
+  {
+   "id": "kayole-south",
+   "code": 1418,
+   "name": "Kayole South",
+   "subCountyId": "embakasi-central"
+  },
+  {
+   "id": "komarock",
+   "code": 1419,
+   "name": "Komarock",
+   "subCountyId": "embakasi-central"
+  },
+  {
+   "id": "matopeni-spring-valley",
+   "code": 1420,
+   "name": "Matopeni/Spring Valley",
+   "subCountyId": "embakasi-central"
+  },
+  {
+   "id": "upper-savannah",
+   "code": 1421,
+   "name": "Upper Savannah",
+   "subCountyId": "embakasi-east"
+  },
+  {
+   "id": "lower-savannah",
+   "code": 1422,
+   "name": "Lower Savannah",
+   "subCountyId": "embakasi-east"
+  },
+  {
+   "id": "embakasi",
+   "code": 1423,
+   "name": "Embakasi",
+   "subCountyId": "embakasi-east"
+  },
+  {
+   "id": "utawala",
+   "code": 1424,
+   "name": "Utawala",
+   "subCountyId": "embakasi-east"
+  },
+  {
+   "id": "mihango",
+   "code": 1425,
+   "name": "Mihango",
+   "subCountyId": "embakasi-east"
+  },
+  {
+   "id": "umoja-i",
+   "code": 1426,
+   "name": "Umoja I",
+   "subCountyId": "embakasi-west"
+  },
+  {
+   "id": "umoja-ii",
+   "code": 1427,
+   "name": "Umoja Ii",
+   "subCountyId": "embakasi-west"
+  },
+  {
+   "id": "mowlem",
+   "code": 1428,
+   "name": "Mowlem",
+   "subCountyId": "embakasi-west"
+  },
+  {
+   "id": "kariobangi-south",
+   "code": 1429,
+   "name": "Kariobangi South",
+   "subCountyId": "embakasi-west"
+  },
+  {
+   "id": "makongeni",
+   "code": 1430,
+   "name": "Makongeni",
+   "subCountyId": "makadara"
+  },
+  {
+   "id": "maringo-hamza",
+   "code": 1431,
+   "name": "Maringo/Hamza",
+   "subCountyId": "makadara"
+  },
+  {
+   "id": "harambee",
+   "code": 1432,
+   "name": "Harambee",
+   "subCountyId": "makadara"
+  },
+  {
+   "id": "viwandani",
+   "code": 1433,
+   "name": "Viwandani",
+   "subCountyId": "makadara"
+  },
+  {
+   "id": "pumwani",
+   "code": 1434,
+   "name": "Pumwani",
+   "subCountyId": "kamukunji"
+  },
+  {
+   "id": "eastleigh-north",
+   "code": 1435,
+   "name": "Eastleigh North",
+   "subCountyId": "kamukunji"
+  },
+  {
+   "id": "eastleigh-south",
+   "code": 1436,
+   "name": "Eastleigh South",
+   "subCountyId": "kamukunji"
+  },
+  {
+   "id": "airbase",
+   "code": 1437,
+   "name": "Airbase",
+   "subCountyId": "kamukunji"
+  },
+  {
+   "id": "california",
+   "code": 1438,
+   "name": "California",
+   "subCountyId": "kamukunji"
+  },
+  {
+   "id": "nairobi-central",
+   "code": 1439,
+   "name": "Nairobi Central",
+   "subCountyId": "starehe"
+  },
+  {
+   "id": "ngara",
+   "code": 1440,
+   "name": "Ngara",
+   "subCountyId": "starehe"
+  },
+  {
+   "id": "ziwani-kariokor",
+   "code": 1441,
+   "name": "Ziwani/Kariokor",
+   "subCountyId": "starehe"
+  },
+  {
+   "id": "pangani",
+   "code": 1442,
+   "name": "Pangani",
+   "subCountyId": "starehe"
+  },
+  {
+   "id": "landimawe",
+   "code": 1443,
+   "name": "Landimawe",
+   "subCountyId": "starehe"
+  },
+  {
+   "id": "nairobi-south",
+   "code": 1444,
+   "name": "Nairobi South",
+   "subCountyId": "starehe"
+  },
+  {
+   "id": "hospital",
+   "code": 1445,
+   "name": "Hospital",
+   "subCountyId": "mathare"
+  },
+  {
+   "id": "mabatini",
+   "code": 1446,
+   "name": "Mabatini",
+   "subCountyId": "mathare"
+  },
+  {
+   "id": "huruma",
+   "code": 1447,
+   "name": "Huruma",
+   "subCountyId": "mathare"
+  },
+  {
+   "id": "ngei",
+   "code": 1448,
+   "name": "Ngei",
+   "subCountyId": "mathare"
+  },
+  {
+   "id": "mlango-kubwa",
+   "code": 1449,
+   "name": "Mlango Kubwa",
+   "subCountyId": "mathare"
+  },
+  {
+   "id": "kiamaiko",
+   "code": 1450,
+   "name": "Kiamaiko",
+   "subCountyId": "mathare"
+  }
+ ]
+}
