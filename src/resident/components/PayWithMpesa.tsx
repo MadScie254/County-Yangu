@@ -19,7 +19,11 @@ export function PayWithMpesa({ app, onPaid }: { app: Application; onPaid: () => 
   const [receipt, setReceipt] = useState<string | null>(null);
   const [err, setErr] = useState<string | null>(null);
   const cancelled = useRef(false);
-  useEffect(() => () => { cancelled.current = true; }, []);
+  // reset on every mount: React StrictMode mounts, unmounts and remounts, and a stale `true` would stop polling for good
+  useEffect(() => {
+    cancelled.current = false;
+    return () => { cancelled.current = true; };
+  }, []);
 
   const pay = async () => {
     const e164 = toE164Kenya(phone);
