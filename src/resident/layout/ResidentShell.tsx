@@ -2,7 +2,7 @@ import { NoticesStrip } from '../components/NoticesStrip';
 import { InstallPrompt } from '../components/InstallPrompt';
 import { useEffect, useState } from 'react';
 import { NavLink, Link, Outlet, useLocation } from 'react-router-dom';
-import { Activity, BadgeCheck, BellRing, Briefcase, CalendarDays, ChevronDown, CircleHelp, Database, FileText, Home, Landmark, Lightbulb, Megaphone, FolderKanban, Vote, Menu, Settings2, Smartphone, WifiOff, Building2, ShieldCheck, UserRound, Scale, SearchCheck, Trophy, Columns2, Siren, Handshake, type LucideIcon } from 'lucide-react';
+import { Activity, BadgeCheck, BellRing, Briefcase, CalendarDays, ChevronDown, CircleHelp, Database, FileText, Home, Landmark, Lightbulb, Megaphone, FolderKanban, Vote, Menu, Settings2, Smartphone, WifiOff, Building2, ShieldCheck, UserRound, Scale, SearchCheck, Trophy, Columns2, Siren, Handshake, FileQuestion, MessagesSquare, type LucideIcon } from 'lucide-react';
 import { useI18n, locales, type MessageKey } from '@/shared/i18n';
 import { county } from '@/shared/config/county';
 import { Wordmark } from '@/shared/ui/Logo';
@@ -34,11 +34,13 @@ const navGroups: NavGroup[] = [
     { to: '/pulse', key: 'nav.pulse', icon: Activity },
     { to: '/compare', key: 'nav.compare', icon: Columns2 },
     { to: '/promises', key: 'nav.promises', icon: Handshake },
+    { to: '/information', key: 'nav.information', icon: FileQuestion },
     { to: '/open/api', key: 'nav.data', icon: Database },
   ] },
   { key: 'nav.groups.take', items: [
     { to: '/report', key: 'nav.report', icon: Megaphone },
     { to: '/vote', key: 'nav.vote', icon: Vote },
+    { to: '/have-your-say', key: 'nav.haveYourSay', icon: MessagesSquare },
     { to: '/meetings', key: 'nav.meetings', icon: CalendarDays },
     { to: '/ideas', key: 'nav.proposals', icon: Lightbulb },
     { to: '/alerts', key: 'nav.alerts', icon: BellRing },

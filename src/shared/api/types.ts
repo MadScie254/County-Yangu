@@ -151,6 +151,8 @@ export type Proposal = {
   response: string | null;
   supporters: number;
   created_at: string;
+  threshold_reached_at?: string | null;
+  response_due_at?: string | null;
 };
 
 export type PulseSummary = {
@@ -273,3 +275,47 @@ export type Commitment = {
   updated_at: string;
   updates: CommitmentUpdate[];
 };
+
+export type InfoRequestStatus = 'submitted' | 'extended' | 'answered' | 'partly_answered' | 'refused' | 'withdrawn';
+export type InfoRequest = {
+  id: string;
+  reference: string;
+  requester_name: string | null;
+  department_id: string | null;
+  title: string;
+  body: string;
+  is_public: boolean;
+  urgent: boolean;
+  status: InfoRequestStatus;
+  due_at: string;
+  extended_to: string | null;
+  extension_reason: string | null;
+  response: string | null;
+  response_url: string | null;
+  refusal_reason: string | null;
+  answered_at: string | null;
+  created_at: string;
+};
+
+export type ConsultationKind = 'bill' | 'budget' | 'policy' | 'plan' | 'other';
+export type Consultation = {
+  id: string;
+  slug: string;
+  kind: ConsultationKind;
+  title: string;
+  title_sw: string | null;
+  summary: string;
+  summary_sw: string | null;
+  document_url: string | null;
+  questions: string[];
+  ward_id: string | null;
+  opens_at: string;
+  closes_at: string;
+  report: string | null;
+  report_url: string | null;
+  report_at: string | null;
+};
+export type Stance = 'support' | 'oppose' | 'amend' | 'comment';
+export type ConsultationComment = { id: number; consultation_id: string; author_name: string | null; ward_id: string | null; question: number | null; stance: Stance; body: string; created_at: string };
+export type ConsultationTally = { comments: number; people: number; wards: number; by_stance: Partial<Record<Stance, number>> };
+export type ErasureRequest = { id: string; email: string | null; reason: string | null; created_at: string; due_at: string };

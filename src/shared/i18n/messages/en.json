@@ -68,7 +68,9 @@
     },
     "compare": "Compare wards",
     "notices": "Service notices",
-    "promises": "Promise tracker"
+    "promises": "Promise tracker",
+    "information": "Ask for information",
+    "haveYourSay": "Have your say"
   },
   "a11y": {
     "settings": "Display settings",
@@ -409,7 +411,11 @@
       "merged": "Merged with another idea"
     },
     "response": "County response",
-    "none": "No ideas here yet. Be the first."
+    "none": "No ideas here yet. Be the first.",
+    "goal": "{count} of {goal} supporters for a guaranteed answer",
+    "goalReached": "Reached {goal} supporters. The county must answer by {date}.",
+    "goalOverdue": "Reached {goal} supporters. The answer is {days} days late.",
+    "goalRule": "Petitions with 200 supporters in a ward, or 1,000 county-wide, get a public answer within 30 days."
   },
   "tenders": {
     "title": "Tenders",
@@ -705,7 +711,11 @@
       "notices": "Service notices",
       "noticesHint": "Water, roads, power near you",
       "promises": "Promise tracker",
-      "promisesHint": "Did the county deliver?"
+      "promisesHint": "Did the county deliver?",
+      "information": "Ask for information",
+      "informationHint": "Your right, 21 days to answer",
+      "haveYourSay": "Have your say",
+      "haveYourSayHint": "Comment on draft laws and budgets"
     },
     "ward": {
       "title": "Your ward",
@@ -955,6 +965,14 @@
       "promises": {
         "t": "Promise tracker",
         "d": "What the county promised, by when, and whether it delivered. Every change stays on the record."
+      },
+      "information": {
+        "t": "Ask for information",
+        "d": "The law gives the county 21 days to answer. Requests and answers are public, so one answer serves everyone."
+      },
+      "haveYourSay": {
+        "t": "Have your say",
+        "d": "Comment on draft bills, budgets and policies before they are passed, and read what the county heard."
       }
     },
     "audiences": {
@@ -1410,6 +1428,135 @@
         "delayed": "Delayed",
         "dropped": "Dropped"
       }
+    }
+  },
+  "rights": {
+    "info": {
+      "title": "Ask the county for information",
+      "intro": "Under the Access to Information Act, 2016, you can ask the county for any information it holds. It must decide within 21 days, or 48 hours if a life or someone's freedom is at stake. Requests and answers are published here, so the next person does not have to ask again.",
+      "rules": {
+        "t": "How it works",
+        "a": "Ask a clear question about records the county holds: contracts, budgets, reports, staff numbers, decisions.",
+        "b": "The county has 21 days to decide. It can extend once, by 14 days, and must say why.",
+        "c": "A refusal must give the reason and the section of the Act. You can ask the Commission on Administrative Justice to review it, for free.",
+        "d": "Information is free. You may be asked to pay only the cost of copying."
+      },
+      "ask": "Ask a question",
+      "signIn": "Sign in to ask",
+      "signInWhy": "The law requires the county to know who asked. Your name is only shown if you choose.",
+      "form": {
+        "title": "Your question in one line",
+        "titleHint": "For example: evaluation report for the Othaya Road tender",
+        "body": "Details",
+        "bodyHint": "Say exactly which records you want and for what period. Do not include other people's personal details.",
+        "name": "Name to show publicly",
+        "nameHint": "Leave blank to show \"A resident\"",
+        "public": "Publish my request and the answer",
+        "publicHint": "Untick only if the request is about your own personal records.",
+        "urgent": "A life or someone's freedom depends on this",
+        "urgentReason": "Why it is urgent",
+        "send": "Send request"
+      },
+      "sent": "Request {reference} sent. The county must decide by {date}.",
+      "error": "We could not send that. Please check the form and try again.",
+      "mine": "My requests",
+      "all": "All requests",
+      "filter": {
+        "all": "All",
+        "open": "Waiting",
+        "overdue": "Late",
+        "answered": "Answered",
+        "refused": "Refused"
+      },
+      "none": "No requests yet. Be the first to ask.",
+      "noneFilter": "No requests match this filter.",
+      "asked": "Asked by {name}",
+      "aResident": "A resident",
+      "due": "Decision due {date}",
+      "late": "{days} days late",
+      "dueIn": "{days} days left",
+      "urgentTag": "48 hours",
+      "status": {
+        "submitted": "Waiting",
+        "extended": "Extended",
+        "answered": "Answered",
+        "partly_answered": "Partly answered",
+        "refused": "Refused",
+        "withdrawn": "Withdrawn"
+      },
+      "extended": "The county took 14 more days: {reason}",
+      "answer": "The answer",
+      "documents": "Open the documents",
+      "refusal": "Why it was refused",
+      "appeal": "You can ask the Commission on Administrative Justice (the Ombudsman) to review a refusal, or a request with no answer after the deadline. It is free.",
+      "appealLink": "How to ask for a review",
+      "notFound": "We could not find that request.",
+      "back": "All requests",
+      "lateNote": "The deadline has passed without a decision. Under the Act, silence counts as a refusal and can be reviewed."
+    },
+    "say": {
+      "title": "Have your say",
+      "intro": "The Constitution says the public must take part before the county passes laws, budgets and plans. Read the plain-language summary, comment on the parts that matter to you, and read the report of what the county heard and what it changed.",
+      "open": "Open for comments",
+      "closed": "Closed",
+      "none": "Nothing is open for comments right now. Follow your ward to hear when something opens.",
+      "closes": "Comments close {date}",
+      "closedOn": "Closed {date}",
+      "daysLeft": "{days} days left",
+      "kind": {
+        "bill": "Draft bill",
+        "budget": "Budget",
+        "policy": "Policy",
+        "plan": "Plan",
+        "other": "Consultation"
+      },
+      "document": "Read the full draft",
+      "questions": "What the county is asking about",
+      "people": "{count} people",
+      "comments": "{count} comments",
+      "wards": "from {count} wards",
+      "stance": {
+        "support": "Support",
+        "oppose": "Oppose",
+        "amend": "Change it",
+        "comment": "Comment"
+      },
+      "form": {
+        "title": "Your view",
+        "about": "About",
+        "general": "The whole draft",
+        "stance": "Your position",
+        "body": "Your comment",
+        "bodyHint": "Be specific: what should change and why.",
+        "name": "Name to show",
+        "nameHint": "Leave blank to stay anonymous",
+        "ward": "Your ward",
+        "send": "Send comment"
+      },
+      "sent": "Thank you. Your comment is public and will be in the county's report.",
+      "error": "We could not send that. Please try again.",
+      "signIn": "Sign in to comment",
+      "signInWhy": "One account per person keeps the count honest. Your name is only shown if you choose.",
+      "report": "What the county heard",
+      "reportPending": "The comment period is over. The county has not yet published its report on what it heard.",
+      "reportDoc": "Read the full report",
+      "what": "What people said",
+      "filterAll": "All parts",
+      "anon": "A resident",
+      "noComments": "No comments yet.",
+      "notFound": "We could not find that consultation.",
+      "back": "All consultations"
+    },
+    "data": {
+      "title": "Your data",
+      "intro": "The Data Protection Act, 2019 lets you see everything the county holds about you and ask for it to be erased.",
+      "download": "Download my data",
+      "downloaded": "Your data file is downloading.",
+      "erase": "Ask to erase my account",
+      "eraseReason": "Reason (optional)",
+      "eraseConfirm": "Send erasure request",
+      "eraseSent": "Request received. It will be done by {date}. Records the law requires the county to keep, like payments and permits issued, are kept.",
+      "error": "That did not work. Please try again."
     }
   }
 }

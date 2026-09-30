@@ -1,8 +1,9 @@
+import { MyDataPanel } from '../components/MyDataPanel';
 import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useMutation, useQueries, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { FollowKind } from '@/shared/api/types';
-import { BadgeCheck, CalendarDays, ArrowRight, Bell, BellRing, Building2, CalendarClock, CreditCard, FileWarning, FolderKanban, Handshake, Landmark, Lightbulb, LogOut, MapPin, Megaphone, Scale, SearchCheck, ShieldCheck, Siren, Smartphone, Vote, type LucideIcon } from 'lucide-react';
+import { BadgeCheck, CalendarDays, ArrowRight, Bell, BellRing, Building2, CalendarClock, CreditCard, FileQuestion, FileWarning, FolderKanban, Handshake, Landmark, Lightbulb, LogOut, MapPin, Megaphone, MessagesSquare, Scale, SearchCheck, ShieldCheck, Siren, Smartphone, Vote, type LucideIcon } from 'lucide-react';
 import { useI18n, type MessageKey } from '@/shared/i18n';
 import { county, wardLabel } from '@/shared/config/county';
 import { useCountySummary, useFollows, useProcurementWatch, useProjects, useTenders, useVoteData, useWardStats } from '@/shared/api/hooks';
@@ -194,6 +195,8 @@ export default function Dashboard() {
           <Tile to="/verify" icon={BadgeCheck} tone="info" title={t('me.quick.verify')} hint={t('me.quick.verifyHint')} />
           <Tile to="/notices" icon={Siren} tone="warn" title={t('me.quick.notices')} hint={t('me.quick.noticesHint')} />
           <Tile to="/promises" icon={Handshake} tone="good" title={t('me.quick.promises')} hint={t('me.quick.promisesHint')} />
+          <Tile to="/information" icon={FileQuestion} tone="info" title={t('me.quick.information')} hint={t('me.quick.informationHint')} />
+          <Tile to="/have-your-say" icon={MessagesSquare} tone="vote" title={t('me.quick.haveYourSay')} hint={t('me.quick.haveYourSayHint')} />
         </div>
       </section>
 
@@ -330,6 +333,10 @@ export default function Dashboard() {
         <div className="space-y-6 lg:sticky lg:top-24 lg:self-start">
           <Panel id="follows" title={t('loop.follow.title')}>
             <FollowsList />
+          </Panel>
+
+          <Panel id="my-data" title={t('rights.data.title')}>
+            <MyDataPanel />
           </Panel>
 
           <Panel id="mine" title={t('me.reports.title')}>

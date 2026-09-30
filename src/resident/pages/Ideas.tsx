@@ -3,6 +3,7 @@ import { HeartHandshake, Lightbulb, Plus, ThumbsUp, Check } from 'lucide-react';
 import { useI18n, type MessageKey } from '@/shared/i18n';
 import { wardById, wardsBySubCounty } from '@/shared/config/county';
 import { useProposals } from '@/shared/api/hooks';
+import { petitionGoal } from '@/shared/api/rights';
 import { submitProposal, supportProposal } from '@/shared/api/submit';
 import type { Proposal } from '@/shared/api/types';
 import { useQueryClient } from '@tanstack/react-query';
@@ -25,6 +26,7 @@ export default function Ideas() {
   const q = useProposals();
   const qc = useQueryClient();
   const [filter, setFilter] = useState<Filter>('all');
+  const [now] = useState(() => Date.now());
   const [supported, setSupported] = useState<Set<string>>(() => new Set(JSON.parse(localStorage.getItem('cy-supported') ?? '[]') as string[]));
   const [supportTarget, setSupportTarget] = useState<string | null>(null);
   const [composer, setComposer] = useState(false);
@@ -76,6 +78,7 @@ export default function Ideas() {
         <div className="max-w-xl">
           <h1 className="font-display text-[clamp(2rem,6vw,3rem)] font-extrabold">{t('ideas.title')}</h1>
           <p className="mt-3 text-[1.05rem] text-ink-2">{t('ideas.intro')}</p>
+          <p className="mt-2 text-sm font-semibold text-vote">{t('ideas.goalRule')}</p>
         </div>
         <Button onClick={() => setComposer(true)} icon={<Plus className="size-4" aria-hidden />}>{t('ideas.new')}</Button>
       </header>
@@ -102,6 +105,7 @@ export default function Ideas() {
                   <p className="mt-1">{p.response}</p>
                 </div>
               )}
+              {p.kind === 'petition' && !p.response && <PetitionGoal p={p} now={now} />}
               <div className="mt-4 flex items-center justify-between gap-3">
                 <span className="text-sm font-semibold text-muted">{t('ideas.supporters', { count: p.supporters })}</span>
                 <Button variant={did ? 'soft' : 'secondary'} size="sm" disabled={did} onClick={() => setSupportTarget(p.id)} icon={did ? <Check className="size-4" aria-hidden /> : <ThumbsUp className="size-4" aria-hidden />}>
@@ -141,6 +145,25 @@ export default function Ideas() {
           )}
         </div>
       </Sheet>
+    </div>
+  );
+}
+
+/** Taiwan's Join and Democracy Seoul promise an answer once enough people sign; so does this county (migration 0020). */
+function PetitionGoal({ p, now }: { p: Proposal; now: number }) {
+  const { t, date, number } = useI18n();
+  const goal = petitionGoal(p.ward_id);
+  if (p.response_due_at) {
+    const late = Date.parse(p.response_due_at) < now;
+    return <p className={cn('mt-4 rounded-2xl p-3 text-sm font-semibold', late ? 'bg-bad-soft text-bad' : 'bg-vote-soft')}>
+      {late ? t('ideas.goalOverdue', { goal: number(goal), days: number(Math.ceil((now - Date.parse(p.response_due_at)) / 86_400_000)) }) : t('ideas.goalReached', { goal: number(goal), date: date(p.response_due_at, { dateStyle: 'medium' }) })}
+    </p>;
+  }
+  const pct = Math.min(100, Math.round((100 * p.supporters) / goal));
+  return (
+    <div className="mt-4">
+      <div className="h-2 overflow-hidden rounded-full bg-bg-2" role="progressbar" aria-valuemin={0} aria-valuemax={goal} aria-valuenow={p.supporters}><div className="h-full rounded-full bg-vote" style={{ width: `${pct}%` }} /></div>
+      <p className="mt-1.5 text-xs font-semibold text-muted" title={t('ideas.goalRule')}>{t('ideas.goal', { count: number(p.supporters), goal: number(goal) })}</p>
     </div>
   );
 }

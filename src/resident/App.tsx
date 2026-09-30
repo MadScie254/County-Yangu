@@ -30,6 +30,10 @@ const WardScorecard = lazy(() => import('./pages/WardScorecard'));
 const Compare = lazy(() => import('./pages/Compare'));
 const Notices = lazy(() => import('./pages/Notices'));
 const Promises = lazy(() => import('./pages/Promises'));
+const Information = lazy(() => import('./pages/Information'));
+const InformationDetail = lazy(() => import('./pages/InformationDetail'));
+const HaveYourSay = lazy(() => import('./pages/HaveYourSay'));
+const ConsultationDetail = lazy(() => import('./pages/ConsultationDetail'));
 const Meetings = lazy(() => import('./pages/Meetings'));
 const OpenApi = lazy(() => import('./pages/OpenApi'));
 const OpenCounty = lazy(() => import('./pages/OpenCounty'));
@@ -70,6 +74,10 @@ export function App() {
           <Route path="compare" element={<Compare />} />
           <Route path="notices" element={<Notices />} />
           <Route path="promises" element={<Promises />} />
+          <Route path="information" element={<Information />} />
+          <Route path="information/:reference" element={<InformationDetail />} />
+          <Route path="have-your-say" element={<HaveYourSay />} />
+          <Route path="have-your-say/:slug" element={<ConsultationDetail />} />
           <Route path="me" element={<RequireAuth><Dashboard /></RequireAuth>} />
           <Route path="how-it-works" element={<HowItWorks />} />
           <Route path="services" element={<Services />} />

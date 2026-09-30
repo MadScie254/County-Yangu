@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
-import { BellRing, Banknote, Building, Eye, FolderKanban, Gauge, Inbox, LogOut, Menu, MessageSquareText, Scale, Settings, Sparkles, Vote, X, ClipboardCheck, FileStack, Lightbulb, Timer, UserRound, Globe, CalendarDays, Siren, Handshake } from 'lucide-react';
+import { BellRing, Banknote, Building, Eye, FolderKanban, Gauge, Inbox, LogOut, Menu, MessageSquareText, Scale, Settings, Sparkles, Vote, X, ClipboardCheck, FileStack, Lightbulb, Timer, UserRound, Globe, CalendarDays, Siren, Handshake, FileQuestion, MessagesSquare } from 'lucide-react';
 import { useAuth } from '@/shared/state/auth';
 import { county } from '@/shared/config/county';
 import { LogoMark } from '@/shared/ui/Logo';
@@ -18,6 +18,7 @@ const groups: Group[] = [
     { to: '/cases', label: 'Case inbox', icon: Inbox, show: (c) => c.working },
     { to: '/sla', label: 'SLA board', icon: Timer, show: (c) => c.working },
     { to: '/applications', label: 'Applications', icon: ClipboardCheck, show: (c) => c.working },
+    { to: '/information', label: 'Information requests', icon: FileQuestion, show: (c) => c.working },
     { to: '/assistant', label: 'AI assistant', icon: Sparkles, show: (c) => c.working },
   ] },
   { title: 'Publish', items: [
@@ -25,6 +26,7 @@ const groups: Group[] = [
     { to: '/tenders', label: 'Tenders', icon: FileStack, show: (c) => c.publish },
     { to: '/meetings', label: 'Public meetings', icon: CalendarDays, show: (c) => c.publish },
     { to: '/notices', label: 'Service notices', icon: Siren, show: (c) => c.publish },
+    { to: '/consultations', label: 'Have your say', icon: MessagesSquare, show: (c) => c.has('super_admin', 'admin', 'chief_officer') },
     { to: '/promises', label: 'Promise tracker', icon: Handshake, show: (c) => c.has('super_admin', 'admin', 'chief_officer') },
     { to: '/budget', label: 'Budget cycles', icon: Vote, show: (c) => c.admin },
     { to: '/alerts', label: 'Ward alerts', icon: BellRing, show: (c) => c.working },

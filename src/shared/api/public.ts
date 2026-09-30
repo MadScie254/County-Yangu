@@ -128,7 +128,7 @@ export async function getVoteData(wardId: string): Promise<VoteData> {
 
 export const getProposals = () =>
   live<Proposal[]>(
-    async () => (await supabase!.from('proposals').select('id, ward_id, kind, title, body, status, response, supporters, created_at').order('supporters', { ascending: false }).limit(100)) as { data: Proposal[] | null; error: unknown },
+    async () => (await supabase!.from('proposals').select('id, ward_id, kind, title, body, status, response, supporters, created_at, threshold_reached_at, response_due_at').order('supporters', { ascending: false }).limit(100)) as { data: Proposal[] | null; error: unknown },
     demoProposals,
   );
 

@@ -68,7 +68,9 @@
     },
     "compare": "Linganisha wadi",
     "notices": "Taarifa za huduma",
-    "promises": "Ahadi za kaunti"
+    "promises": "Ahadi za kaunti",
+    "information": "Omba taarifa",
+    "haveYourSay": "Toa maoni yako"
   },
   "a11y": {
     "settings": "Mipangilio ya kuonyesha",
@@ -409,7 +411,11 @@
       "merged": "Limeunganishwa na wazo lingine"
     },
     "response": "Jibu la kaunti",
-    "none": "Bado hakuna mawazo hapa. Kuwa wa kwanza."
+    "none": "Bado hakuna mawazo hapa. Kuwa wa kwanza.",
+    "goal": "Wafuasi {count} kati ya {goal} ili kupata jibu la uhakika",
+    "goalReached": "Imefikia wafuasi {goal}. Kaunti lazima ijibu kufikia {date}.",
+    "goalOverdue": "Imefikia wafuasi {goal}. Jibu limechelewa siku {days}.",
+    "goalRule": "Maombi yenye wafuasi 200 katika wadi, au 1,000 kaunti nzima, yanapata jibu la umma ndani ya siku 30."
   },
   "tenders": {
     "title": "Zabuni",
@@ -705,7 +711,11 @@
       "notices": "Taarifa za huduma",
       "noticesHint": "Maji, barabara, umeme karibu nawe",
       "promises": "Ahadi za kaunti",
-      "promisesHint": "Je, kaunti ilitimiza?"
+      "promisesHint": "Je, kaunti ilitimiza?",
+      "information": "Omba taarifa",
+      "informationHint": "Haki yako, siku 21 kujibiwa",
+      "haveYourSay": "Toa maoni yako",
+      "haveYourSayHint": "Toa maoni kuhusu miswada na bajeti"
     },
     "ward": {
       "title": "Wadi yako",
@@ -955,6 +965,14 @@
       "promises": {
         "t": "Ahadi za kaunti",
         "d": "Kaunti iliahidi nini, kufikia lini, na kama ilitimiza. Kila mabadiliko yanabaki kwenye rekodi."
+      },
+      "information": {
+        "t": "Omba taarifa",
+        "d": "Sheria inaipa kaunti siku 21 kujibu. Maombi na majibu ni ya umma, kwa hivyo jibu moja linamfaa kila mtu."
+      },
+      "haveYourSay": {
+        "t": "Toa maoni yako",
+        "d": "Toa maoni kuhusu miswada, bajeti na sera kabla hazijapitishwa, na usome kile kaunti ilisikia."
       }
     },
     "audiences": {
@@ -1410,6 +1428,135 @@
         "delayed": "Imechelewa",
         "dropped": "Imeachwa"
       }
+    }
+  },
+  "rights": {
+    "info": {
+      "title": "Omba taarifa kutoka kwa kaunti",
+      "intro": "Chini ya Sheria ya Kupata Taarifa, 2016, unaweza kuomba kaunti taarifa yoyote iliyo nayo. Lazima iamue ndani ya siku 21, au saa 48 ikiwa maisha au uhuru wa mtu uko hatarini. Maombi na majibu yanachapishwa hapa, ili mtu mwingine asilazimike kuuliza tena.",
+      "rules": {
+        "t": "Jinsi inavyofanya kazi",
+        "a": "Uliza swali wazi kuhusu rekodi za kaunti: mikataba, bajeti, ripoti, idadi ya wafanyakazi, maamuzi.",
+        "b": "Kaunti ina siku 21 kuamua. Inaweza kuongeza muda mara moja, kwa siku 14, na lazima itoe sababu.",
+        "c": "Kukataa lazima kutoe sababu na kifungu cha Sheria. Unaweza kuomba Tume ya Haki ya Utawala ikague uamuzi huo, bila malipo.",
+        "d": "Taarifa ni bure. Unaweza kuombwa kulipia gharama ya kunakili tu."
+      },
+      "ask": "Uliza swali",
+      "signIn": "Ingia ili kuuliza",
+      "signInWhy": "Sheria inataka kaunti ijue aliyeuliza. Jina lako linaonyeshwa tu ukichagua.",
+      "form": {
+        "title": "Swali lako kwa mstari mmoja",
+        "titleHint": "Kwa mfano: ripoti ya tathmini ya zabuni ya barabara ya Othaya",
+        "body": "Maelezo",
+        "bodyHint": "Sema hasa rekodi unazotaka na kwa kipindi gani. Usiweke taarifa za kibinafsi za watu wengine.",
+        "name": "Jina la kuonyesha hadharani",
+        "nameHint": "Acha wazi ili kuonyesha \"Mkazi\"",
+        "public": "Chapisha ombi langu na jibu",
+        "publicHint": "Ondoa alama tu ikiwa ombi linahusu rekodi zako binafsi.",
+        "urgent": "Maisha au uhuru wa mtu unategemea hili",
+        "urgentReason": "Kwa nini ni la dharura",
+        "send": "Tuma ombi"
+      },
+      "sent": "Ombi {reference} limetumwa. Kaunti lazima iamue kufikia {date}.",
+      "error": "Hatukuweza kutuma. Tafadhali kagua fomu ujaribu tena.",
+      "mine": "Maombi yangu",
+      "all": "Maombi yote",
+      "filter": {
+        "all": "Yote",
+        "open": "Yanasubiri",
+        "overdue": "Yamechelewa",
+        "answered": "Yamejibiwa",
+        "refused": "Yamekataliwa"
+      },
+      "none": "Bado hakuna maombi. Kuwa wa kwanza kuuliza.",
+      "noneFilter": "Hakuna maombi yanayolingana na kichujio hiki.",
+      "asked": "Imeulizwa na {name}",
+      "aResident": "Mkazi",
+      "due": "Uamuzi kufikia {date}",
+      "late": "Imechelewa siku {days}",
+      "dueIn": "Zimebaki siku {days}",
+      "urgentTag": "Saa 48",
+      "status": {
+        "submitted": "Linasubiri",
+        "extended": "Muda umeongezwa",
+        "answered": "Limejibiwa",
+        "partly_answered": "Limejibiwa kwa sehemu",
+        "refused": "Limekataliwa",
+        "withdrawn": "Limeondolewa"
+      },
+      "extended": "Kaunti imechukua siku 14 zaidi: {reason}",
+      "answer": "Jibu",
+      "documents": "Fungua nyaraka",
+      "refusal": "Kwa nini lilikataliwa",
+      "appeal": "Unaweza kuomba Tume ya Haki ya Utawala (Ombudsman) ikague ombi lililokataliwa, au ombi lisilojibiwa baada ya muda. Ni bure.",
+      "appealLink": "Jinsi ya kuomba ukaguzi",
+      "notFound": "Hatukupata ombi hilo.",
+      "back": "Maombi yote",
+      "lateNote": "Muda umepita bila uamuzi. Chini ya Sheria, kimya kinahesabiwa kama kukataa na kinaweza kukaguliwa."
+    },
+    "say": {
+      "title": "Toa maoni yako",
+      "intro": "Katiba inasema umma lazima ushiriki kabla kaunti haijapitisha sheria, bajeti na mipango. Soma muhtasari kwa lugha rahisi, toa maoni kuhusu sehemu zinazokuhusu, na usome ripoti ya kile kaunti ilisikia na ilichobadilisha.",
+      "open": "Wazi kwa maoni",
+      "closed": "Imefungwa",
+      "none": "Hakuna kilicho wazi kwa maoni sasa. Fuata wadi yako ujue kitu kinapofunguliwa.",
+      "closes": "Maoni yanafungwa {date}",
+      "closedOn": "Ilifungwa {date}",
+      "daysLeft": "Zimebaki siku {days}",
+      "kind": {
+        "bill": "Mswada",
+        "budget": "Bajeti",
+        "policy": "Sera",
+        "plan": "Mpango",
+        "other": "Mashauriano"
+      },
+      "document": "Soma rasimu kamili",
+      "questions": "Kaunti inauliza kuhusu",
+      "people": "Watu {count}",
+      "comments": "Maoni {count}",
+      "wards": "kutoka wadi {count}",
+      "stance": {
+        "support": "Naunga mkono",
+        "oppose": "Napinga",
+        "amend": "Ibadilishwe",
+        "comment": "Maoni"
+      },
+      "form": {
+        "title": "Maoni yako",
+        "about": "Kuhusu",
+        "general": "Rasimu nzima",
+        "stance": "Msimamo wako",
+        "body": "Maoni yako",
+        "bodyHint": "Kuwa mahususi: nini kibadilike na kwa nini.",
+        "name": "Jina la kuonyesha",
+        "nameHint": "Acha wazi ili usijulikane",
+        "ward": "Wadi yako",
+        "send": "Tuma maoni"
+      },
+      "sent": "Asante. Maoni yako ni ya umma na yatakuwa katika ripoti ya kaunti.",
+      "error": "Hatukuweza kutuma. Tafadhali jaribu tena.",
+      "signIn": "Ingia ili kutoa maoni",
+      "signInWhy": "Akaunti moja kwa kila mtu inaweka hesabu kuwa ya kweli. Jina lako linaonyeshwa tu ukichagua.",
+      "report": "Kile kaunti ilisikia",
+      "reportPending": "Kipindi cha maoni kimeisha. Kaunti bado haijachapisha ripoti ya kile ilichosikia.",
+      "reportDoc": "Soma ripoti kamili",
+      "what": "Watu walisema nini",
+      "filterAll": "Sehemu zote",
+      "anon": "Mkazi",
+      "noComments": "Bado hakuna maoni.",
+      "notFound": "Hatukupata mashauriano hayo.",
+      "back": "Mashauriano yote"
+    },
+    "data": {
+      "title": "Data yako",
+      "intro": "Sheria ya Ulinzi wa Data, 2019 inakuruhusu kuona kila kitu kaunti inachoshikilia kukuhusu na kuomba kifutwe.",
+      "download": "Pakua data yangu",
+      "downloaded": "Faili ya data yako inapakuliwa.",
+      "erase": "Omba akaunti yangu ifutwe",
+      "eraseReason": "Sababu (si lazima)",
+      "eraseConfirm": "Tuma ombi la kufuta",
+      "eraseSent": "Ombi limepokelewa. Litafanyika kufikia {date}. Rekodi ambazo sheria inataka kaunti izihifadhi, kama malipo na vibali vilivyotolewa, zinahifadhiwa.",
+      "error": "Haikufanya kazi. Tafadhali jaribu tena."
     }
   }
 }

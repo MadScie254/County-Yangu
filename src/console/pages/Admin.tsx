@@ -19,10 +19,11 @@ import { Empty, PageHeader, Panel, Table, td } from '../ui/Page';
 import { AiTab } from './admin/AiTab';
 import { ServicesTab } from './admin/ServicesTab';
 import { SettingsTab } from './admin/SettingsTab';
+import { PrivacyTab } from './admin/PrivacyTab';
 import { InviteAuditor } from './admin/InviteAuditor';
 import type { StaffRoleName } from '@/shared/state/auth';
 
-const tabs = [['people', 'People & roles'], ['services', 'Services'], ['categories', 'Categories & timers'], ['routing', 'Routing'], ['holidays', 'Holidays'], ['ai', 'AI spending'], ['settings', 'Settings']] as const;
+const tabs = [['people', 'People & roles'], ['services', 'Services'], ['categories', 'Categories & timers'], ['routing', 'Routing'], ['holidays', 'Holidays'], ['ai', 'AI spending'], ['privacy', 'Privacy requests'], ['settings', 'Settings']] as const;
 type Tab = (typeof tabs)[number][0];
 const roleNames = Object.keys(roleLabel) as StaffRoleName[];
 const onErr = (e: unknown) => toast({ tone: 'bad', title: 'That did not work', body: e instanceof Error ? e.message : undefined });
@@ -194,6 +195,7 @@ export default function Admin() {
       {tab === 'holidays' && <Holidays />}
       {tab === 'services' && <ServicesTab />}
       {tab === 'ai' && <AiTab />}
+      {tab === 'privacy' && <PrivacyTab />}
       {tab === 'settings' && <SettingsTab />}
     </>
   );
