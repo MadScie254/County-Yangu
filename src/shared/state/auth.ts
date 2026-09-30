@@ -106,7 +106,7 @@ export const useAuth = create<AuthState>((set, get) => ({
       return { ok: true };
     }
     // `name` and `phone_number` are personal details only; the database ignores any role in metadata.
-    const { data, error } = await supabase.auth.signUp({ email, password, options: { data: { name, phone_number: phone ?? null }, emailRedirectTo: `${location.origin}/services` } });
+    const { data, error } = await supabase.auth.signUp({ email, password, options: { data: { name, phone_number: phone ?? null }, emailRedirectTo: `${location.origin}/me` } });
     if (error) return { ok: false, error: mapError(error) };
     return { ok: true, needsEmailConfirmation: !data.session };
   },

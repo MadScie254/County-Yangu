@@ -84,7 +84,7 @@ export function Audiences() {
             <span className="grid size-12 place-items-center rounded-2xl bg-brand text-brand-ink"><UserRound className="size-6" aria-hidden /></span>
             <h3 className="mt-5 font-display text-2xl font-bold">{t('landing.audiences.residents.t')}</h3>
             <p className="mt-2 flex-1 text-ink-2">{t('landing.audiences.residents.d')}</p>
-            <ButtonLink to={status === 'in' ? '/me' : '/services/account'} className="mt-6 self-start" iconRight={<ArrowRight className="size-4" aria-hidden />}>{t('landing.audiences.residents.cta')}</ButtonLink>
+            <ButtonLink to={status === 'in' ? '/me' : '/services/account?mode=up'} className="mt-6 self-start" iconRight={<ArrowRight className="size-4" aria-hidden />}>{t('landing.audiences.residents.cta')}</ButtonLink>
           </article>
           <article className="flex flex-col rounded-[1.75rem] border border-line bg-surface p-7 shadow-card">
             <span className="grid size-12 place-items-center rounded-2xl bg-panel text-panel-ink"><Building2 className="size-6" aria-hidden /></span>
@@ -262,7 +262,7 @@ export function FinalCta() {
           <p className="mt-4 text-[1.05rem] text-ink-2">{t('landing.cta.body')}</p>
           <div className="mt-7 flex flex-wrap gap-3">
             <ButtonLink to="/report" size="lg" icon={<Megaphone className="size-5" aria-hidden />}>{t('home.reportCta')}</ButtonLink>
-            <ButtonLink to={status === 'in' ? '/me' : '/services/account'} size="lg" variant="secondary">{status === 'in' ? t('landing.audiences.residents.cta') : t('nav.signIn')}</ButtonLink>
+            <ButtonLink to={status === 'in' ? '/me' : '/services/account?mode=up'} size="lg" variant="secondary">{status === 'in' ? t('landing.audiences.residents.cta') : t('auth.signUp')}</ButtonLink>
           </div>
         </div>
       </div>

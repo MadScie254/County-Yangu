@@ -12,7 +12,7 @@ export default function Account() {
   const { t } = useI18n();
   const [params] = useSearchParams();
   const auth = useAuth();
-  const [mode, setMode] = useState<'in' | 'up'>('in');
+  const [mode, setMode] = useState<'in' | 'up'>(params.get('mode') === 'up' ? 'up' : 'in');
   const [form, setForm] = useState({ name: '', email: '', password: '', phone: '' });
   const [error, setError] = useState<AuthError | null>(null);
   const [busy, setBusy] = useState(false);

@@ -157,13 +157,18 @@ export function ResidentShell() {
                 <Settings2 className="size-5" aria-hidden />
               </IconButton>
             </span>
-            <span className="hidden md:block">
+            <span className="hidden md:flex md:gap-2">
               {authStatus === 'in' ? (
                 <AccountChip />
               ) : (
-                <Link to="/services/account" className={buttonClass('secondary', 'sm')}>
-                  {t('nav.signIn')}
-                </Link>
+                <>
+                  <Link to="/services/account" className={buttonClass('ghost', 'sm')}>
+                    {t('nav.signIn')}
+                  </Link>
+                  <Link to="/services/account?mode=up" className={buttonClass('primary', 'sm')}>
+                    {t('auth.signUp')}
+                  </Link>
+                </>
               )}
             </span>
             <span className="lg:hidden">
