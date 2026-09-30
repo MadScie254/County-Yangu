@@ -49,6 +49,12 @@ export const QUESTIONS: Record<string, Question> = {
     params: {},
     keys: ['status', 'projects', 'budget', 'spent'], columns: ['Status', 'Projects', 'Budget (KES)', 'Spent (KES)'],
   },
+  procurement_flags: {
+    rpc: 'ai_procurement_flags',
+    description: 'Procurement patterns flagged for review: a supplier holding a large share of awarded value, few bidders, direct awards, awards above the estimate, projects over budget. Optional: min_severity ("info", "watch" or "high", default "watch").',
+    params: { min_severity: { kind: 'text', rpc: 'p_min_severity', pattern: /^(info|watch|high)$/ } },
+    keys: ['severity', 'subject', 'title', 'status'], columns: ['Priority', 'Subject', 'Flag', 'Status'],
+  },
 };
 
 export type Plan = { tool: string; args: Record<string, string | boolean | number> };

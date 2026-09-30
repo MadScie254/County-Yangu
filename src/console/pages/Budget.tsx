@@ -39,7 +39,7 @@ export default function Budget() {
               <li key={c.id}>
                 <button type="button" onClick={() => setCycleId(c.id)} className={`w-full rounded-2xl border p-4 text-left transition ${cycle?.id === c.id ? 'border-ink bg-brand-soft ring-2 ring-ink' : 'border-line hover:border-line-strong'}`}>
                   <div className="flex items-start justify-between gap-2"><span className="font-semibold">{c.title}</span><Chip tone={c.status === 'open' ? 'good' : c.status === 'closed' ? 'neutral' : 'warn'}>{c.status}</Chip></div>
-                  <p className="mt-1 flex items-center gap-1.5 text-xs text-muted"><CalendarClock className="size-3.5" aria-hidden />{date(c.starts_at)} – {date(c.ends_at)}</p>
+                  <p className="mt-1 flex items-center gap-1.5 text-xs text-muted"><CalendarClock className="size-3.5" aria-hidden />{date(c.starts_at)} to {date(c.ends_at)}</p>
                 </button>
               </li>
             ))}

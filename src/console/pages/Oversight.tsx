@@ -36,7 +36,7 @@ export default function Oversight() {
         <Kpi label="Overdue cases" value={rows.length} tone={rows.length ? 'bad' : 'good'} />
         <Kpi label="More than 30 days late" value={critical.length} tone={critical.length ? 'bad' : undefined} />
         <Kpi label="Flagged finance / integrity" value={financial.length} tone={financial.length ? 'warn' : undefined} />
-        <Kpi label="Longest wait" value={rows[0] ? `${rows[0].days_overdue}d` : '–'} />
+        <Kpi label="Longest wait" value={rows[0] ? `${rows[0].days_overdue}d` : '-'} />
       </div>
 
       <div role="tablist" aria-label="Oversight" className="mb-4 mt-6 flex flex-wrap gap-1.5">
@@ -51,7 +51,7 @@ export default function Oversight() {
                 <tr key={r.reference}>
                   <td className={td}><span className="font-data text-[0.82rem] font-medium">{r.reference}</span>{r.flagged_financial && <Chip tone="bad" className="ml-2"><Flag className="size-3" aria-hidden />finance</Chip>}</td>
                   <td className={td}>{r.ward}</td><td className={td}>{r.category}</td><td className={td}>{r.department}</td>
-                  <td className={td}>{r.officer ?? <span className="text-muted">—</span>}</td>
+                  <td className={td}>{r.officer ?? <span className="text-muted">-</span>}</td>
                   <td className={cn(td, 'font-data font-semibold', r.days_overdue > 30 && 'text-bad')}>{r.days_overdue}</td>
                   <td className={td}><span className={cn('text-xs', r.escalation_level >= 3 ? 'font-bold text-bad' : 'text-muted')}>{levelLabel[r.escalation_level]}</span></td>
                 </tr>
@@ -67,7 +67,7 @@ export default function Oversight() {
           {digests.data?.map((d) => (
             <Panel key={d.id}>
               <p className="flex items-center gap-2 font-display text-lg font-bold capitalize"><FileText className="size-5 text-muted" aria-hidden />{d.kind.replace(/_/g, ' ')}</p>
-              <p className="mt-1 text-sm text-muted">{date(d.period_start)} – {date(d.period_end)}</p>
+              <p className="mt-1 text-sm text-muted">{date(d.period_start)} to {date(d.period_end)}</p>
               <p className="mt-3 whitespace-pre-line text-sm text-ink-2">{d.body_md}</p>
             </Panel>
           ))}

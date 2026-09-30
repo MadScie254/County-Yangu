@@ -7,6 +7,14 @@ One system for a county, with two doors:
 
 Both run on **one Supabase project per county**. Nairobi is the first deployment; another county is a new project, the same code and a different `VITE_COUNTY`.
 
+## One sign-in, two spaces
+
+Everyone has one account. Signing in lands on **My Yangu** (`/me`), the citizen dashboard: what needs you, your ward, your applications, the reports you sent from this device, and the county at a glance. People who hold a staff role also see a switch to the **staff console** (`/console`), and the console links straight back to the citizen view. A role is only ever a row in `staff_roles`; the switch grants nothing.
+
+## Open County (transparency)
+
+`/open` shows who wins county tenders, how contracts are awarded, and which patterns are flagged for a closer look (supplier concentration, single bidders, direct awards, awards above the estimate, projects over budget or stalled after spending). The rules live in the database (`procurement_watch()`, migration 0012), follow the open-contracting red-flag approach, and are listed on the page. A flag is a prompt, never a finding. Administrators review flags in the console (`/console/procurement`) and their response is published beside the flag. A daily job (`svc_procurement_scan`) remembers flags and emails administrators and auditors about new high-priority ones. Everything on the page can be downloaded as CSV.
+
 ## Stack
 
 Vite + React 19, React Router 7, Tailwind 4, TanStack Query, Zustand, MapLibre GL with OpenStreetMap, Supabase (Postgres with row-level security, Auth, Storage, Edge Functions on Deno). Hosted as static files (Cloudflare Pages: `public/_redirects`, `public/_headers`).

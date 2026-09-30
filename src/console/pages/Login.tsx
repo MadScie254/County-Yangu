@@ -62,20 +62,20 @@ export default function Login() {
 
   return (
     <div className="grid min-h-dvh lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)]">
-      <aside className="relative hidden overflow-hidden bg-ink p-12 text-bg lg:flex lg:flex-col lg:justify-between">
+      <aside className="relative hidden overflow-hidden bg-panel p-12 text-panel-ink lg:flex lg:flex-col lg:justify-between">
         <div aria-hidden className="paper-grain absolute inset-0 opacity-25" />
         <div className="relative flex items-center gap-3">
           <LogoMark className="size-11" />
           <div>
             <p className="font-display text-xl font-extrabold leading-none">CountyConnect</p>
-            <p className="mt-1 text-xs font-semibold uppercase tracking-[0.16em] text-bg/60">{county.name} County · staff console</p>
+            <p className="mt-1 text-xs font-semibold uppercase tracking-[0.16em] text-panel-ink/60">{county.name} County · staff console</p>
           </div>
         </div>
         <div className="relative max-w-md">
           <h1 className="font-display text-5xl font-extrabold leading-[1.02]">Every report answered. Every shilling accounted for.</h1>
-          <p className="mt-5 text-lg text-bg/75">One inbox for what residents report, one queue for what they apply for, and one place where the Assembly and auditors can see what is overdue.</p>
+          <p className="mt-5 text-lg text-panel-ink/75">One inbox for what residents report, one queue for what they apply for, and one place where the Assembly and auditors can see what is overdue.</p>
         </div>
-        <p className="relative text-sm text-bg/60">Everything you do here is recorded in an audit trail that cannot be edited.</p>
+        <p className="relative text-sm text-panel-ink/60">Everything you do here is recorded in an audit trail that cannot be edited.</p>
       </aside>
 
       <main className="flex items-center justify-center px-4 py-10 sm:px-8">
@@ -124,7 +124,7 @@ export default function Login() {
             {auth.demo && <p className="mt-4 rounded-lg bg-warn-soft px-3 py-2 text-xs font-medium text-warn">Demo mode. Any password works. Try <b>admin@…</b>, <b>officer@…</b>, <b>ward@…</b> or <b>audit@…</b>; for the Assembly, any number and code <b>123456</b>. Your role comes from the email’s first word.</p>}
           </div>
 
-          <p className="mt-10 text-sm text-muted">Are you a resident? <a href="/services" className="font-semibold underline">Go to My Services</a></p>
+          <p className="mt-10 text-sm text-muted">One account for everything: the same sign-in opens your citizen dashboard and, if you have a role, this console. Are you a resident? <a href="/me" className="font-semibold underline">Open My Yangu</a></p>
         </div>
       </main>
     </div>

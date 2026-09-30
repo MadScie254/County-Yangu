@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { NavLink, Link, Outlet, useLocation } from 'react-router-dom';
-import { Home, Megaphone, FolderKanban, Vote, Menu, Settings2, Smartphone, WifiOff, Building2, ShieldCheck } from 'lucide-react';
+import { Home, Megaphone, FolderKanban, Vote, Menu, Settings2, Smartphone, WifiOff, Building2, ShieldCheck, UserRound, Scale } from 'lucide-react';
 import { useI18n, locales, type MessageKey } from '@/shared/i18n';
 import { county } from '@/shared/config/county';
 import { Wordmark } from '@/shared/ui/Logo';
@@ -9,6 +9,7 @@ import { Toaster } from '@/shared/ui/Toast';
 import { useIsDemo } from '@/shared/api/hooks';
 import { useOnline } from '@/shared/lib/hooks';
 import { useQueue } from '@/shared/state/queue';
+import { useAuth } from '@/shared/state/auth';
 import { cn } from '@/shared/lib/utils';
 import { DisplaySettings } from './DisplaySettings';
 
@@ -21,6 +22,7 @@ const primaryNav: { to: string; key: MessageKey; end?: boolean }[] = [
 ];
 
 const secondaryNav: { to: string; key: MessageKey }[] = [
+  { to: '/open', key: 'nav.open' },
   { to: '/tenders', key: 'nav.tenders' },
   { to: '/ideas', key: 'nav.proposals' },
   { to: '/alerts', key: 'nav.alerts' },
@@ -54,7 +56,7 @@ function OfflineStrip() {
   const pending = useQueue((s) => s.items.filter((i) => i.status !== 'sent').length);
   if (online && pending === 0) return null;
   return (
-    <div role="status" className="bg-ink px-4 py-2 text-center text-sm font-medium text-bg">
+    <div role="status" className="bg-panel px-4 py-2 text-center text-sm font-medium text-panel-ink">
       <WifiOff className="mr-2 inline size-4 align-[-2px]" aria-hidden />
       {!online ? t('offline.banner') : t('offline.pending', { count: pending })}
     </div>
@@ -72,6 +74,26 @@ function DemoRibbon() {
   );
 }
 
+function AccountChip() {
+  const { t } = useI18n();
+  const user = useAuth((s) => s.user);
+  const staff = useAuth((s) => s.roles.length > 0);
+  const initials = ((user?.name || user?.email || '?').trim().split(/[\s@.]+/).filter(Boolean).slice(0, 2).map((p) => p[0]!.toUpperCase()).join('')) || '?';
+  return (
+    <span className="flex items-center gap-1.5">
+      <Link to="/me" className="inline-flex h-9 items-center gap-2 rounded-full border border-line-strong bg-surface pl-1 pr-3.5 text-sm font-semibold transition hover:bg-bg-2">
+        <span aria-hidden className="grid size-7 place-items-center rounded-full bg-brand text-xs font-extrabold text-brand-ink">{initials}</span>
+        {t('nav.me')}
+      </Link>
+      {staff && (
+        <a href="/console/" className="hidden h-9 items-center gap-1.5 rounded-full bg-panel px-3.5 text-sm font-semibold text-panel-ink transition hover:opacity-90 xl:inline-flex">
+          <Building2 className="size-4" aria-hidden /> {t('nav.staffConsole')}
+        </a>
+      )}
+    </span>
+  );
+}
+
 export function ResidentShell() {
   const { t } = useI18n();
   const [settings, setSettings] = useState(false);
@@ -80,6 +102,12 @@ export function ResidentShell() {
   const more = moreOn === pathname;
   const setMore = (v: boolean | ((o: boolean) => boolean)) => setMoreOn((typeof v === 'function' ? v(more) : v) ? pathname : null);
   const flush = useQueue((s) => s.flush);
+  const authStatus = useAuth((s) => s.status);
+  const initAuth = useAuth((s) => s.init);
+  const staff = useAuth((s) => s.roles.length > 0);
+  useEffect(() => {
+    void initAuth();
+  }, [initAuth]);
 
   useEffect(() => {
     window.scrollTo({ top: 0 });
@@ -105,7 +133,7 @@ export function ResidentShell() {
 
       <header className="glass sticky top-0 z-40 border-b border-line/70">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
-          <Link to="/" aria-label={`${t('common.appName')} — ${t('nav.home')}`} className="rounded-xl">
+          <Link to="/" aria-label={`${t('common.appName')}, ${t('nav.home')}`} className="rounded-xl">
             <Wordmark sub={county.name} className="[&_.sub]:hidden sm:[&_.sub]:block" />
           </Link>
 
@@ -125,9 +153,13 @@ export function ResidentShell() {
               </IconButton>
             </span>
             <span className="hidden md:block">
-              <Link to="/services/account" className={buttonClass('secondary', 'sm')}>
-                {t('nav.signIn')}
-              </Link>
+              {authStatus === 'in' ? (
+                <AccountChip />
+              ) : (
+                <Link to="/services/account" className={buttonClass('secondary', 'sm')}>
+                  {t('nav.signIn')}
+                </Link>
+              )}
             </span>
             <span className="lg:hidden">
               <IconButton label={t('nav.more')} onClick={() => setMore((v) => !v)} aria-expanded={more}>
@@ -147,6 +179,16 @@ export function ResidentShell() {
                   </NavLink>
                 </li>
               ))}
+              <li>
+                <NavLink to={authStatus === 'in' ? '/me' : '/services/account'} className={({ isActive }) => cn('flex h-12 items-center gap-2 rounded-xl px-3 font-semibold', isActive ? 'bg-bg-2' : 'hover:bg-bg-2')}>
+                  <UserRound className="size-4" aria-hidden /> {authStatus === 'in' ? t('nav.me') : t('nav.signIn')}
+                </NavLink>
+              </li>
+              {staff && (
+                <li>
+                  <a href="/console/" className="flex h-12 items-center gap-2 rounded-xl px-3 font-semibold hover:bg-bg-2"><Building2 className="size-4" aria-hidden /> {t('nav.staffConsole')}</a>
+                </li>
+              )}
               <li>
                 <button type="button" onClick={() => setSettings(true)} className="flex h-12 w-full items-center gap-2 rounded-xl px-3 text-left font-semibold hover:bg-bg-2">
                   <Settings2 className="size-4" aria-hidden /> {t('a11y.settings')}
@@ -181,6 +223,9 @@ export function ResidentShell() {
           </ul>
           <ul className="space-y-2 text-sm font-medium">
             <li>
+              <a href="/#roadmap" className="inline-flex items-center gap-2 text-ink-2 hover:text-ink hover:underline"><Scale className="size-4" aria-hidden /> {t('nav.roadmap')}</a>
+            </li>
+            <li>
               <Link to="/how-it-works#privacy" className="inline-flex items-center gap-2 text-ink-2 hover:text-ink hover:underline">
                 <ShieldCheck className="size-4" aria-hidden /> {t('footer.privacy')}
               </Link>
@@ -204,7 +249,7 @@ export function ResidentShell() {
             { to: '/projects', key: 'nav.track' as const, icon: FolderKanban },
             { to: '/report', key: 'nav.report' as const, icon: Megaphone, fab: true },
             { to: '/vote', key: 'nav.vote' as const, icon: Vote },
-            { to: '/services', key: 'nav.servicesShort' as const, icon: Building2 },
+            { to: authStatus === 'in' ? '/me' : '/services/account', key: (authStatus === 'in' ? 'nav.me' : 'nav.signIn') as 'nav.me' | 'nav.signIn', icon: UserRound },
           ].map(({ to, key, icon: Icon, end, fab }) => (
             <li key={to} className="flex justify-center">
               <NavLink to={to} end={end} className={({ isActive }) => cn('flex flex-col items-center gap-0.5 rounded-2xl px-2 pb-1 text-[0.68rem] font-bold', fab ? '-mt-6' : 'pt-1.5', isActive && !fab ? 'text-ink' : 'text-muted')}>

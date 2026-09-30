@@ -48,7 +48,7 @@ export default function ApplicationDetail() {
 
       <dl className="mt-6 divide-y divide-line overflow-hidden rounded-[1.5rem] border border-line bg-surface">
         {app.business_name && <div className="flex justify-between gap-4 p-4"><dt className="text-muted">{t('services.apply_.businessName')}</dt><dd className="font-semibold">{app.business_name}</dd></div>}
-        {rows.map((r) => <div key={r.label} className="flex justify-between gap-4 p-4"><dt className="text-muted">{r.label}</dt><dd className="max-w-[60%] text-right font-semibold">{r.value || '–'}</dd></div>)}
+        {rows.map((r) => <div key={r.label} className="flex justify-between gap-4 p-4"><dt className="text-muted">{r.label}</dt><dd className="max-w-[60%] text-right font-semibold">{r.value || '-'}</dd></div>)}
         <div className="flex justify-between gap-4 p-4"><dt className="text-muted">{t('services.app.amount')}</dt><dd className="font-data font-medium">{app.amount > 0 ? kes(app.amount) : t('services.free')}</dd></div>
         {app.due_at && <div className="flex justify-between gap-4 p-4"><dt className="text-muted">{t('services.app.due')}</dt><dd className="font-semibold">{date(app.due_at)}</dd></div>}
       </dl>

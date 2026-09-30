@@ -273,8 +273,8 @@ export const CountyMap = forwardRef<CountyMapHandle, CountyMapProps>(function Co
       el.style.setProperty('--fg', inkOn(color));
       const selectedSub = selection?.type === 'subcounty' ? selection.id : selection?.type === 'ward' ? wardById.get(selection.id)?.subCountyId : undefined;
       el.dataset.selected = String(selectedSub === sc.id);
-      el.setAttribute('aria-label', `${sc.name}: ${metric === 'trust' ? (v ?? '–') : cb.current.labels.issues(v ?? 0)}`);
-      el.innerHTML = `<span>${v == null ? '–' : Math.round(v)}</span><span class="name"></span>`;
+      el.setAttribute('aria-label', `${sc.name}: ${metric === 'trust' ? (v ?? '-') : cb.current.labels.issues(v ?? 0)}`);
+      el.innerHTML = `<span>${v == null ? '-' : Math.round(v)}</span><span class="name"></span>`;
       (el.querySelector('.name') as HTMLElement).textContent = sc.name;
       el.addEventListener('click', (e) => {
         e.stopPropagation();

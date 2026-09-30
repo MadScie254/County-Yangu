@@ -89,7 +89,7 @@ export default function Projects() {
               <Field label="Ward">{({ id }) => <SelectInput id={id} value={edit.ward_id} onChange={(e) => setEdit({ ...edit, ward_id: e.target.value })}><option value="">Choose…</option>{wards.map((w) => <option key={w.id} value={w.id}>{w.name}</option>)}</SelectInput>}</Field>
               <Field label="Sector">{({ id }) => <TextInput id={id} value={edit.sector} onChange={(e) => setEdit({ ...edit, sector: e.target.value })} />}</Field>
               <Field label="Status">{({ id }) => <SelectInput id={id} value={edit.status} onChange={(e) => setEdit({ ...edit, status: e.target.value as StaffProject['status'] })}>{statuses.map((s) => <option key={s} value={s}>{label[s]}</option>)}</SelectInput>}</Field>
-              <Field label="Contractor">{({ id }) => <TextInput id={id} disabled value={edit.contractor_name ?? '— awarded through a tender —'} readOnly />}</Field>
+              <Field label="Contractor">{({ id }) => <TextInput id={id} disabled value={edit.contractor_name ?? 'Awarded through a tender'} readOnly />}</Field>
               <Field label="Budget (KES)">{({ id }) => <TextInput id={id} inputMode="numeric" value={edit.budget} onChange={(e) => setEdit({ ...edit, budget: num(e.target.value) })} />}</Field>
               <Field label="Spent so far (KES)">{({ id }) => <TextInput id={id} inputMode="numeric" value={edit.spent} onChange={(e) => setEdit({ ...edit, spent: num(e.target.value) })} />}</Field>
               <Field label="Started" optionalLabel="Optional">{({ id }) => <TextInput id={id} type="date" value={edit.started_at ?? ''} onChange={(e) => setEdit({ ...edit, started_at: e.target.value || null })} />}</Field>

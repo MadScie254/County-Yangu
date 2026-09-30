@@ -9,7 +9,7 @@ type PrefsState = {
   theme: ThemePref;
   highContrast: boolean;
   simpleMode: boolean;
-  textScale: number; // 0.9 – 1.4
+  textScale: number; // 0.9 to 1.4
   wardId: string | null; // the resident's ward, remembered on this device only
   votedCycles: string[]; // voting rounds already voted in on this device (the server enforces one vote per phone)
   setLocale: (l: Locale) => void;

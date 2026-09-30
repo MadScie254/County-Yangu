@@ -333,6 +333,8 @@ describe('AI assistant questions', () => {
     expect(parsePlan('{"tool":"cases_by_ward","args":{"category":"drainage","limit":5}}')).toEqual({ tool: 'cases_by_ward', args: { p_category: 'drainage', p_open_only: true, p_limit: 5 } });
     expect(parsePlan('Sure:\n```json\n{"tool":"revenue_by_stream"}\n```')).toEqual({ tool: 'revenue_by_stream', args: { p_days: 30 } });
     expect(parsePlan('{"tool":"projects_by_status","args":{}}')).toEqual({ tool: 'projects_by_status', args: {} });
+    expect(parsePlan('{"tool":"procurement_flags","args":{"min_severity":"high"}}')).toEqual({ tool: 'procurement_flags', args: { p_min_severity: 'high' } });
+    expect(parsePlan('{"tool":"procurement_flags","args":{"min_severity":"high; drop table x"}}')).toBeNull();
   });
 
   it('refuses anything that is not a known question with sensible arguments', () => {

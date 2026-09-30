@@ -67,8 +67,8 @@ export default function ProjectDetail() {
         </div>
         <dl className="mt-5 grid grid-cols-2 gap-4 border-t border-line pt-5 text-sm sm:grid-cols-3">
           <div><dt className="text-xs font-bold uppercase tracking-[0.1em] text-muted">{t('common.contractor')}</dt><dd className="mt-0.5 font-semibold">{p.contractor ?? t('projects.notAwarded')}</dd></div>
-          <div><dt className="text-xs font-bold uppercase tracking-[0.1em] text-muted">{t('projects.started')}</dt><dd className="mt-0.5 font-semibold">{p.started_at ? date(p.started_at) : '–'}</dd></div>
-          <div><dt className="text-xs font-bold uppercase tracking-[0.1em] text-muted">{p.completed_at ? t('projects.completed') : t('projects.expected')}</dt><dd className="mt-0.5 font-semibold">{p.completed_at ? date(p.completed_at) : p.expected_at ? date(p.expected_at) : '–'}</dd></div>
+          <div><dt className="text-xs font-bold uppercase tracking-[0.1em] text-muted">{t('projects.started')}</dt><dd className="mt-0.5 font-semibold">{p.started_at ? date(p.started_at) : '-'}</dd></div>
+          <div><dt className="text-xs font-bold uppercase tracking-[0.1em] text-muted">{p.completed_at ? t('projects.completed') : t('projects.expected')}</dt><dd className="mt-0.5 font-semibold">{p.completed_at ? date(p.completed_at) : p.expected_at ? date(p.expected_at) : '-'}</dd></div>
         </dl>
       </section>
 

@@ -19,7 +19,7 @@ export function DynamicField({ field, value, onChange, error }: { field: FormFie
           case 'select':
             return (
               <SelectInput {...common} value={value} onChange={(e) => onChange(e.target.value)}>
-                <option value="">–</option>
+                <option value="">-</option>
                 {field.options?.map((o) => <option key={o.value} value={o.value}>{pick(o.label)}</option>)}
               </SelectInput>
             );

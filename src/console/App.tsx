@@ -19,6 +19,7 @@ const Alerts = lazy(() => import('./pages/Alerts'));
 const Ideas = lazy(() => import('./pages/Ideas'));
 const Revenue = lazy(() => import('./pages/Revenue'));
 const Assistant = lazy(() => import('./pages/Assistant'));
+const Procurement = lazy(() => import('./pages/Procurement'));
 const AcceptInvite = lazy(() => import('./pages/AcceptInvite'));
 
 function Fallback() {
@@ -54,6 +55,7 @@ function Console() {
             <Route path="sla" element={<Allow when={(c) => c.working}><SlaBoard /></Allow>} />
             <Route path="applications" element={<Allow when={(c) => c.working}><Applications /></Allow>} />
             <Route path="oversight" element={<Allow when={(c) => c.oversight}><Oversight /></Allow>} />
+            <Route path="procurement" element={<Allow when={(c) => c.oversight}><Procurement /></Allow>} />
             <Route path="projects" element={<Allow when={(c) => c.publish}><Projects /></Allow>} />
             <Route path="tenders" element={<Allow when={(c) => c.publish}><Tenders /></Allow>} />
             <Route path="budget" element={<Allow when={(c) => c.admin}><Budget /></Allow>} />

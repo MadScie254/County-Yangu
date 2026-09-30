@@ -8,7 +8,7 @@ Everything that reaches outside the database, or that a resident or a phone netw
 2. **The functions are thin; the database holds the rules.** Each function validates its input, talks to the outside world (SMS, M-Pesa, the AI provider), then calls one `svc_*` function in the database (`supabase/migrations/…_service_api.sql`). One vote per person, a code that locks after five tries, a payment that settles exactly once: those live next to the data and are covered by `npm run test:db`.
 3. **`svc_*` functions can only be called by the service role.** A signed-in user, even an administrator, cannot call them. A test asserts it.
 4. **Nothing personal is stored that does not need to be.** Votes and "one person, one vote" checks use a keyed hash of the phone number. A report carries no reporter identity; a callback number is opt-in and kept apart. USSD reports store no number at all.
-5. **The AI never acts.** It drafts text, or it picks one of five fixed, read-only questions which the database runs *as the person asking*. Every call is redacted, budget-checked and logged with its cost.
+5. **The AI never acts.** It drafts text, or it picks one of six fixed, read-only questions which the database runs *as the person asking*. Every call is redacted, budget-checked and logged with its cost.
 6. **Errors never explain themselves.** Unexpected failures are logged server-side and the caller sees `server_error`.
 
 ## Endpoints

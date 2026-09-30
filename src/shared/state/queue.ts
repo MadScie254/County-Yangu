@@ -3,6 +3,7 @@ import { persist } from 'zustand/middleware';
 import { idbDel, idbGet, idbSet } from '@/shared/lib/idb';
 import { uuid } from '@/shared/lib/utils';
 import { SubmitError, sendReport, castVote, type ReportResult } from '@/shared/api/submit';
+import { useMyReports } from '@/shared/state/myreports';
 import type { ReportPayload } from '@/shared/lib/schemas';
 
 export type QueueKind = 'report' | 'vote';
@@ -64,6 +65,7 @@ export const useQueue = create<QueueState>()(
                 const photos = (await Promise.all(Array.from({ length: item.photoCount }, (_, i) => idbGet<Blob>(`photo:${item.id}:${i}`)))).filter((b): b is Blob => Boolean(b));
                 const result = await sendReport(item.payload, photos);
                 await Promise.all(Array.from({ length: item.photoCount }, (_, i) => idbDel(`photo:${item.id}:${i}`)));
+                useMyReports.getState().add({ reference: result.reference, ward_id: result.ward_id, category_id: item.payload.category_id, at: item.createdAt });
                 patch(item.id, { status: 'sent', result, error: undefined });
               } else {
                 await castVote({ ...item.payload, client_key: item.id });

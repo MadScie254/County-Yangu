@@ -19,8 +19,11 @@ function NoAccess() {
     <Center>
       <UserX className="size-12 text-muted" aria-hidden />
       <h1 className="mt-5 font-display text-3xl font-extrabold">This account has no staff access</h1>
-      <p className="mt-3 text-ink-2">{email} is signed in, but a county administrator has not given it a role. Looking for permits, payments or reporting? That lives under <a className="font-semibold underline" href="/services">My Services</a>.</p>
-      <Button className="mt-6" variant="secondary" icon={<LogOut className="size-4" aria-hidden />} onClick={() => void signOut()}>Sign out</Button>
+      <p className="mt-3 text-ink-2">{email} is signed in, but a county administrator has not given it a role. Your citizen dashboard, with permits, payments and reports, is one click away.</p>
+      <div className="mt-6 flex flex-wrap gap-3">
+        <a href="/me" className="inline-flex h-11 items-center rounded-full bg-brand px-5 font-semibold text-brand-ink shadow-card hover:bg-brand-strong">Open my dashboard</a>
+        <Button variant="secondary" icon={<LogOut className="size-4" aria-hidden />} onClick={() => void signOut()}>Sign out</Button>
+      </div>
     </Center>
   );
 }

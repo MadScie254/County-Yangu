@@ -61,7 +61,7 @@ export default function Revenue() {
             <Kpi label="Collected" value={kes(stats.total, { compact: true })} hint="last 30 days" />
             <Kpi label="Payments" value={rows.length} />
             <Kpi label="Not yet matched" value={stats.open.length} tone={stats.open.length ? 'warn' : 'good'} hint={kes(stats.openTotal, { compact: true })} />
-            <Kpi label="Top stream" value={stats.streams[0]?.[0] ?? '–'} hint={stats.streams[0] ? kes(stats.streams[0][1], { compact: true }) : undefined} />
+            <Kpi label="Top stream" value={stats.streams[0]?.[0] ?? '-'} hint={stats.streams[0] ? kes(stats.streams[0][1], { compact: true }) : undefined} />
           </div>
 
           <div className="mt-6 grid gap-6 xl:grid-cols-2">

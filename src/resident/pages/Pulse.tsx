@@ -65,7 +65,7 @@ export default function Pulse() {
         {/* the one hero figure */}
         <div className="flex items-center gap-6 rounded-[1.75rem] border border-line bg-surface p-6 shadow-card">
           <Ring value={(trust.value ?? 0) / 100} size={116} stroke={12} tone={trust.value == null ? 'brand' : trust.value >= 65 ? 'good' : trust.value >= 45 ? 'warn' : 'bad'} label={`${t('pulse.trustHero')}: ${trust.value ?? t('pulse.noData')}`}>
-            <span className="font-display text-[2.6rem] font-extrabold leading-none">{trust.value == null ? '–' : Math.round(trust.value)}</span>
+            <span className="font-display text-[2.6rem] font-extrabold leading-none">{trust.value == null ? '-' : Math.round(trust.value)}</span>
           </Ring>
           <div>
             <p className="font-display text-xl font-bold leading-tight">{t('pulse.trustHero')}</p>
@@ -81,8 +81,8 @@ export default function Pulse() {
             <Tile label={t('pulse.filed')} value={compact(filed90 || summary.data?.reports_filed || 0)} trend={filedTrend} />
             <Tile label={t('pulse.fixed')} value={compact(summary.data?.reports_resolved ?? 0)} trend={fixedTrend} tone="good" />
             <Tile label={t('pulse.overdue')} value={number(summary.data?.reports_overdue ?? 0)} tone={summary.data && summary.data.reports_overdue > 0 ? 'bad' : undefined} />
-            <Tile label={t('pulse.medianAck')} value={p?.median_ack_hours != null ? t('pulse.hours', { n: number(p.median_ack_hours) }) : '–'} hint={p?.median_ack_hours == null ? t('pulse.noData') : undefined} />
-            <Tile label={t('pulse.medianFix')} value={p?.median_resolve_days != null ? t('pulse.days', { n: number(p.median_resolve_days) }) : '–'} hint={p?.median_resolve_days == null ? t('pulse.noData') : undefined} />
+            <Tile label={t('pulse.medianAck')} value={p?.median_ack_hours != null ? t('pulse.hours', { n: number(p.median_ack_hours) }) : '-'} hint={p?.median_ack_hours == null ? t('pulse.noData') : undefined} />
+            <Tile label={t('pulse.medianFix')} value={p?.median_resolve_days != null ? t('pulse.days', { n: number(p.median_resolve_days) }) : '-'} hint={p?.median_resolve_days == null ? t('pulse.noData') : undefined} />
           </>
         )}
       </section>
@@ -100,7 +100,7 @@ export default function Pulse() {
         {stats.data && (
           <ChartCard title={t('pulse.leagueTitle')} subtitle={t('pulse.leagueSub')} chartLabel={tableLabels.chart} tableLabel={tableLabels.table}
             legend={<Segmented<'low' | 'high'> label={t('pulse.leagueTitle')} value={league} onChange={setLeague} options={[{ value: 'low', label: t('pulse.needsAttention') }, { value: 'high', label: t('pulse.leading') }]} />}
-            table={{ head: [t('pulse.ward'), t('pulse.leagueTitle')], rows: trustLeague(stats.data, league, 85).map((s) => [s.name, s.trust_index ?? '–']) }}>
+            table={{ head: [t('pulse.ward'), t('pulse.leagueTitle')], rows: trustLeague(stats.data, league, 85).map((s) => [s.name, s.trust_index ?? '-']) }}>
             <BarList ariaLabel={t('pulse.leagueTitle')} max={100} rows={leagueRows.map((s) => ({ key: s.ward_id, label: s.name, segments: [{ value: s.trust_index ?? 0, color: 'var(--series-1)', label: t('pulse.leagueTitle') }] }))} format={(n) => String(Math.round(n))} />
           </ChartCard>
         )}

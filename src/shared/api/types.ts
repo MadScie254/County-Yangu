@@ -67,6 +67,51 @@ export type PublicTender = {
   awarded_to: string | null;
   published_at: string | null;
   closes_at: string | null;
+  procurement_method?: ProcurementMethod;
+  award_amount?: number | null;
+  awarded_at?: string | null;
+  contractor_id?: string | null;
+};
+
+export type ProcurementMethod = 'open_tender' | 'restricted' | 'request_for_quotation' | 'direct' | 'framework';
+
+/** public.procurement_watch(): who wins county money, how, and which patterns deserve a closer look. */
+export type FlagSeverity = 'info' | 'watch' | 'high';
+export type FlagStatus = 'open' | 'reviewing' | 'explained' | 'referred' | 'cleared';
+export type ProcurementFlag = {
+  code: string;
+  severity: FlagSeverity;
+  subject_kind: 'county' | 'contractor' | 'tender' | 'project';
+  subject_key: string;
+  subject_label: string;
+  title: string;
+  detail: string;
+  metrics: Record<string, number | string | null>;
+  status: FlagStatus;
+  response: string | null;
+  first_seen: string | null;
+};
+export type ProcurementContractor = { id: string; name: string; wins: number; value: number; share_value: number; share_count: number; non_open: number; single_bid: number; last_award: string | null };
+export type ProcurementSummary = {
+  awarded_count: number;
+  awarded_value: number;
+  suppliers: number;
+  hhi: number;
+  hhi_band: 'low' | 'moderate' | 'high';
+  top1_share: number;
+  top3_share: number;
+  top5_share: number;
+  non_competitive_share: number;
+  single_bid_share: number;
+  avg_bids: number | null;
+  avg_tender_days: number | null;
+};
+export type ProcurementWatch = {
+  generated_at: string;
+  summary: ProcurementSummary;
+  contractors: ProcurementContractor[];
+  methods: { method: ProcurementMethod; awards: number; value: number }[];
+  flags: ProcurementFlag[];
 };
 
 /** Result of public.case_status(reference) */

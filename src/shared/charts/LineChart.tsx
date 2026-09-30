@@ -65,7 +65,7 @@ export function LineChart({ series, labels, height = 240, ariaLabel, format = (n
 
           {/* hit area is the whole plot, far larger than any mark */}
           <rect
-            x={m.left} y={m.top} width={iw} height={ih} fill="transparent" tabIndex={0} role="group" aria-label={`${ariaLabel} — arrow keys`}
+            x={m.left} y={m.top} width={iw} height={ih} fill="transparent" tabIndex={0} role="group" aria-label={`${ariaLabel}, arrow keys`}
             onMouseMove={(e) => onMove(e.clientX, e.currentTarget.getBoundingClientRect())}
             onTouchMove={(e) => e.touches[0] && onMove(e.touches[0].clientX, e.currentTarget.getBoundingClientRect())}
             onMouseLeave={() => setHover(null)}

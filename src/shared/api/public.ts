@@ -61,6 +61,23 @@ export const getTenders = () =>
     demoTenders,
   );
 
+export type CategorySla = { id: string; ack_value: number; ack_unit: 'hours' | 'working_days'; resolve_value: number; resolve_unit: 'hours' | 'working_days' };
+
+// Mirrors the report categories seeded in supabase/migrations/*_seed_operations.sql, for demo mode.
+const demoCategorySla = (): CategorySla[] => [
+  ['pothole', 2, 'working_days', 21, 'working_days'], ['streetlight', 2, 'working_days', 10, 'working_days'], ['water_main', 2, 'hours', 24, 'hours'],
+  ['sewer', 8, 'hours', 72, 'hours'], ['drainage', 1, 'working_days', 5, 'working_days'], ['garbage', 1, 'working_days', 3, 'working_days'],
+  ['dumping', 2, 'working_days', 7, 'working_days'], ['health_facility', 2, 'working_days', 14, 'working_days'], ['school', 3, 'working_days', 30, 'working_days'],
+  ['market', 2, 'working_days', 14, 'working_days'], ['illegal_build', 2, 'working_days', 14, 'working_days'], ['safety_hazard', 2, 'hours', 48, 'hours'],
+  ['abandoned', 2, 'working_days', 21, 'working_days'], ['missing_funds', 2, 'working_days', 30, 'working_days'],
+].map(([id, ack_value, ack_unit, resolve_value, resolve_unit]) => ({ id, ack_value, ack_unit, resolve_value, resolve_unit }) as CategorySla);
+
+export const getCategorySla = () =>
+  live<CategorySla[]>(
+    async () => (await supabase!.from('report_categories').select('id, ack_value, ack_unit, resolve_value, resolve_unit').order('sort')) as { data: CategorySla[] | null; error: unknown },
+    demoCategorySla,
+  );
+
 export const getActivity = async (): Promise<ActivityItem[]> => ((await dataSource()) === 'demo' ? demoActivity() : []);
 
 export async function getCaseStatus(reference: string): Promise<CaseStatus | null> {

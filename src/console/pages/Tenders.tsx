@@ -52,8 +52,8 @@ export default function Tenders() {
                 <td className={td}><span className="font-semibold">{t.title}</span><p className="text-muted">{t.sector}</p></td>
                 <td className={`${td} font-data`}>{kes(t.estimated_budget, { compact: true })}</td>
                 <td className={td}><Chip tone={tenderTone(t.status === 'draft' ? 'cancelled' : t.status)}>{label[t.status]}</Chip></td>
-                <td className={td}>{t.closes_at ? date(t.closes_at) : '—'}</td>
-                <td className={td}>{t.awarded_name ?? '—'}</td>
+                <td className={td}>{t.closes_at ? date(t.closes_at) : '-'}</td>
+                <td className={td}>{t.awarded_name ?? '-'}</td>
                 <td className={`${td} text-right`}><Button size="sm" variant="ghost" onClick={() => setEdit({ ...t })}>Edit</Button></td>
               </tr>
             ))}

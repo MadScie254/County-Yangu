@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
-import { BellRing, Banknote, Building, Eye, FolderKanban, Gauge, Inbox, LogOut, Menu, MessageSquareText, Scale, Settings, Sparkles, Vote, X, ClipboardCheck, FileStack, Lightbulb, Timer } from 'lucide-react';
+import { BellRing, Banknote, Building, Eye, FolderKanban, Gauge, Inbox, LogOut, Menu, MessageSquareText, Scale, Settings, Sparkles, Vote, X, ClipboardCheck, FileStack, Lightbulb, Timer, UserRound, Globe } from 'lucide-react';
 import { useAuth } from '@/shared/state/auth';
 import { county } from '@/shared/config/county';
 import { LogoMark } from '@/shared/ui/Logo';
@@ -28,7 +28,10 @@ const groups: Group[] = [
     { to: '/ideas', label: 'Ideas & petitions', icon: Lightbulb, show: (c) => c.working },
   ] },
   { title: 'Money', items: [{ to: '/revenue', label: 'Revenue', icon: Banknote, show: (c) => c.finance }] },
-  { title: 'Oversight', items: [{ to: '/oversight', label: 'Overdue & digests', icon: Eye, show: (c) => c.oversight }] },
+  { title: 'Oversight', items: [
+    { to: '/oversight', label: 'Overdue & digests', icon: Eye, show: (c) => c.oversight },
+    { to: '/procurement', label: 'Procurement watch', icon: Scale, show: (c) => c.oversight },
+  ] },
   { title: 'Administer', items: [{ to: '/admin', label: 'Administration', icon: Settings, show: (c) => c.admin }] },
 ];
 
@@ -41,11 +44,11 @@ function Nav({ onNavigate }: { onNavigate?: () => void }) {
         if (!items.length) return null;
         return (
           <div key={g.title}>
-            <p className="px-3 text-[0.68rem] font-bold uppercase tracking-[0.16em] text-bg/50">{g.title}</p>
+            <p className="px-3 text-[0.68rem] font-bold uppercase tracking-[0.16em] text-panel-ink/50">{g.title}</p>
             <ul className="mt-2 space-y-0.5">
               {items.map(({ to, label, icon: Icon, end }) => (
                 <li key={to}>
-                  <NavLink to={to} end={end} onClick={onNavigate} className={({ isActive }) => cn('flex items-center gap-3 rounded-xl px-3 py-2.5 text-[0.92rem] font-semibold transition', isActive ? 'bg-bg text-ink' : 'text-bg/80 hover:bg-bg/10 hover:text-bg')}>
+                  <NavLink to={to} end={end} onClick={onNavigate} className={({ isActive }) => cn('flex items-center gap-3 rounded-xl px-3 py-2.5 text-[0.92rem] font-semibold transition', isActive ? 'bg-bg text-ink' : 'text-panel-ink/80 hover:bg-panel-ink/10 hover:text-panel-ink')}>
                     <Icon className="size-[1.1rem]" aria-hidden /> {label}
                   </NavLink>
                 </li>
@@ -74,34 +77,38 @@ export function ConsoleShell() {
     <div className="flex items-center gap-3">
       <LogoMark className="size-10" />
       <div className="leading-none">
-        <p className="font-display text-lg font-extrabold text-bg">CountyConnect</p>
-        <p className="mt-1 text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-bg/60">{county.name} County</p>
+        <p className="font-display text-lg font-extrabold text-panel-ink">CountyConnect</p>
+        <p className="mt-1 text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-panel-ink/60">{county.name} County</p>
       </div>
     </div>
   );
 
   const account = (
-    <div className="rounded-2xl bg-bg/10 p-3 text-bg">
+    <div className="rounded-2xl bg-panel-ink/10 p-3 text-panel-ink">
       <p className="truncate text-sm font-semibold">{user?.name || user?.email}</p>
-      <p className="truncate text-xs text-bg/70">{can.topRole}</p>
-      <button type="button" onClick={() => void signOut()} className="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold text-bg/80 underline-offset-4 hover:text-bg hover:underline"><LogOut className="size-3.5" aria-hidden />Sign out</button>
+      <p className="truncate text-xs text-panel-ink/70">{can.topRole}</p>
+      <div className="mt-3 space-y-1 border-t border-panel-ink/15 pt-3">
+        <a href="/me" className="flex items-center gap-2 rounded-lg px-1 py-1 text-xs font-semibold text-panel-ink/85 hover:text-panel-ink"><UserRound className="size-3.5" aria-hidden />Citizen view (My Yangu)</a>
+        <a href="/" className="flex items-center gap-2 rounded-lg px-1 py-1 text-xs font-semibold text-panel-ink/85 hover:text-panel-ink"><Globe className="size-3.5" aria-hidden />County website</a>
+        <button type="button" onClick={() => void signOut()} className="flex items-center gap-2 rounded-lg px-1 py-1 text-xs font-semibold text-panel-ink/85 hover:text-panel-ink"><LogOut className="size-3.5" aria-hidden />Sign out</button>
+      </div>
     </div>
   );
 
   return (
     <div className="min-h-dvh lg:grid lg:grid-cols-[17rem_minmax(0,1fr)]">
-      <aside className="sticky top-0 hidden h-dvh flex-col gap-8 overflow-y-auto bg-ink p-5 lg:flex">
+      <aside className="sticky top-0 hidden h-dvh flex-col gap-8 overflow-y-auto bg-panel p-5 lg:flex">
         {brand}
         <div className="flex-1"><Nav /></div>
         {account}
       </aside>
 
-      <header className="sticky top-0 z-40 flex h-14 items-center justify-between bg-ink px-4 lg:hidden">
+      <header className="sticky top-0 z-40 flex h-14 items-center justify-between bg-panel px-4 lg:hidden">
         {brand}
-        <button type="button" aria-label={open ? 'Close menu' : 'Open menu'} aria-expanded={open} onClick={() => setOpen((v) => !v)} className="tap grid place-items-center text-bg">{open ? <X className="size-6" aria-hidden /> : <Menu className="size-6" aria-hidden />}</button>
+        <button type="button" aria-label={open ? 'Close menu' : 'Open menu'} aria-expanded={open} onClick={() => setOpen((v) => !v)} className="tap grid place-items-center text-panel-ink">{open ? <X className="size-6" aria-hidden /> : <Menu className="size-6" aria-hidden />}</button>
       </header>
       {open && (
-        <div className="fixed inset-x-0 bottom-0 top-14 z-30 flex flex-col gap-8 overflow-y-auto bg-ink p-5 lg:hidden">
+        <div className="fixed inset-x-0 bottom-0 top-14 z-30 flex flex-col gap-8 overflow-y-auto bg-panel p-5 lg:hidden">
           <Nav onNavigate={() => setOpen(false)} />
           {account}
         </div>

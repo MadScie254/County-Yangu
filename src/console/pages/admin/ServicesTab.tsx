@@ -81,7 +81,7 @@ export function ServicesTab() {
           {q.data!.map((s) => (
             <tr key={s.id}>
               <td className={td}><span className="font-semibold">{s.name}</span><p className="text-muted capitalize">{s.category}{s.requires_kra_pin ? ' · KRA PIN needed' : ''}</p></td>
-              <td className={td}>{s.department_id ? deptName.get(s.department_id) ?? '—' : '—'}</td>
+              <td className={td}>{s.department_id ? deptName.get(s.department_id) ?? '-' : '-'}</td>
               <td className={`${td} font-data`}>{s.fee > 0 ? kes(s.fee) : 'Free / assessed'}</td>
               <td className={td}>{s.sla_working_days} working days</td>
               <td className={td}><Chip tone={statusTone[s.status]}>{s.status}</Chip></td>

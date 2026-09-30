@@ -192,7 +192,7 @@ export default function ServiceApply() {
               {service.form_schema.map((f) => {
                 const raw = values[f.key] ?? '';
                 const shown = f.type === 'select' ? pick(f.options?.find((o) => o.value === raw)?.label) || raw : f.type === 'ward' ? (wardById.get(raw)?.name ?? raw) : raw;
-                return <div key={f.key} className="flex justify-between gap-4 p-4"><dt className="text-muted">{pick(f.label)}</dt><dd className="max-w-[60%] text-right font-semibold">{shown || '–'}</dd></div>;
+                return <div key={f.key} className="flex justify-between gap-4 p-4"><dt className="text-muted">{pick(f.label)}</dt><dd className="max-w-[60%] text-right font-semibold">{shown || '-'}</dd></div>;
               })}
               <div className="flex justify-between gap-4 bg-brand-soft p-4"><dt className="font-semibold">{t('services.apply_.fee')}</dt><dd className="font-data text-lg font-medium">{service.fee > 0 ? kes(service.fee) : t('services.free')}</dd></div>
             </dl>

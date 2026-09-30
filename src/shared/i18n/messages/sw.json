@@ -46,7 +46,13 @@
     "more": "Zaidi",
     "main": "Urambazaji mkuu",
     "skip": "Ruka hadi maudhui",
-    "language": "Lugha"
+    "language": "Lugha",
+    "me": "Yangu Yangu",
+    "open": "Kaunti Wazi",
+    "staffConsole": "Dawati la wafanyakazi",
+    "citizenView": "Mwonekano wa mwananchi",
+    "roadmap": "Ramani ya njia",
+    "account": "Akaunti"
   },
   "a11y": {
     "settings": "Mipangilio ya kuonyesha",
@@ -512,9 +518,9 @@
     "accessBody": "Kiingereza na Kiswahili, maandishi makubwa, utofautishaji wa juu, hali rahisi kwa simu za polepole, na kila huduma inapatikana bila simu janja."
   },
   "auth": {
-    "signInTitle": "Ingia kwenye Huduma Zangu",
+    "signInTitle": "Ingia kwenye Yangu Yangu",
     "signUpTitle": "Fungua akaunti yako",
-    "signInIntro": "Omba vibali na leseni, lipa ada za kaunti na ufuatilie maombi yako. Akaunti inahitajika kwa haya tu. Kuripoti, kupiga kura na arifa viko wazi kwa kila mtu.",
+    "signInIntro": "Akaunti moja ya dashibodi yako, huduma za kaunti na malipo. Kuripoti, kupiga kura na arifa vinabaki wazi kwa kila mtu. Wafanyakazi wa kaunti pia huingia hapa na wataona dawati lao karibu na dashibodi yao.",
     "email": "Barua pepe",
     "password": "Nenosiri",
     "passwordHint": "Angalau herufi 8.",
@@ -536,8 +542,8 @@
     },
     "demoNote": "Hali ya majaribio: nenosiri lolote linafaa, na data yako inabaki kwenye kifaa hiki.",
     "needAccount": "Ingia ili kuendelea",
-    "staffNote": "Wewe ni mfanyakazi wa kaunti? Tumia kuingia kwa wafanyakazi.",
-    "staffLink": "Kuingia kwa wafanyakazi wa kaunti"
+    "staffNote": "Je, wewe ni mfanyakazi wa kaunti? Ingia hapa kwa barua pepe yako ya kazi, au tumia uingiaji wa dawati.",
+    "staffLink": "Fungua dawati la wafanyakazi"
   },
   "services": {
     "title": "Huduma Zangu",
@@ -643,5 +649,342 @@
       "none": "Hakuna bado. Masasisho kuhusu maombi yako yataonekana hapa.",
       "markRead": "Weka zote kama zimesomwa"
     }
+  },
+  "me": {
+    "greeting": "Habari, {name}",
+    "greetingAnon": "Habari",
+    "lead": "Wadi yako, maombi yako na kila kinachokuhitaji, mahali pamoja.",
+    "signedInAs": "Umeingia kama {email}",
+    "spaces": {
+      "label": "Chagua eneo lako",
+      "citizen": "Mwonekano wa mwananchi",
+      "staff": "Dawati la wafanyakazi",
+      "title": "Pia una ufikiaji wa wafanyakazi",
+      "body": "Fungua dawati kushughulikia kesi, kuchapisha miradi na kukagua ununuzi. Mwonekano wako wa mwananchi unabaki hapa wakati wowote.",
+      "open": "Fungua dawati la wafanyakazi",
+      "role": "Wadhifa wako: {role}"
+    },
+    "quick": {
+      "title": "Ungependa kufanya nini?",
+      "report": "Ripoti tatizo",
+      "reportHint": "Mashimo, maji, taa, taka",
+      "track": "Fuatilia miradi",
+      "trackHint": "Ona pesa zinakoenda",
+      "vote": "Piga kura kwa wadi yako",
+      "voteHint": "Chagua kinachojengwa",
+      "services": "Huduma za kaunti",
+      "servicesHint": "Vibali, leseni, ushuru",
+      "alerts": "Arifa za wadi",
+      "alertsHint": "SMS inapohitajika",
+      "ideas": "Mawazo na maombi",
+      "ideasHint": "Pendekeza, unga mkono, sikilizwa",
+      "open": "Kaunti Wazi",
+      "openHint": "Nani anashinda zabuni",
+      "check": "Angalia ripoti",
+      "checkHint": "Tumia nambari ya ripoti"
+    },
+    "ward": {
+      "title": "Wadi yako",
+      "choose": "Chagua wadi yako uone kinachoendelea karibu nawe.",
+      "change": "Badilisha wadi",
+      "open": "Matatizo wazi",
+      "fixed": "Yaliyorekebishwa siku 90",
+      "overdue": "Yaliyochelewa",
+      "projects": "Miradi",
+      "trust": "Kiwango cha imani",
+      "trustHint": "Kasi ya kujibu ripoti, kumaliza miradi na kutunza bajeti.",
+      "reportHere": "Ripoti katika {ward}",
+      "seeMap": "Tazama kwenye ramani"
+    },
+    "attention": {
+      "title": "Kinachokuhitaji",
+      "none": "Hakuna kinachokuhitaji sasa. Umekamilisha yote.",
+      "pay": "Lipia {ref}",
+      "payHint": "KES {amount} inadaiwa",
+      "changes": "Mabadiliko yanahitajika kwenye {ref}",
+      "changesHint": "Kaunti imeomba maelezo zaidi",
+      "vote": "Kura ya bajeti ya wadi imefunguliwa",
+      "voteHint": "Chagua wadi yako inajenga nini baadaye",
+      "unread_one": "Arifa {count} ambayo haijasomwa",
+      "unread_other": "Arifa {count} ambazo hazijasomwa",
+      "unreadHint": "Taarifa kuhusu maombi yako"
+    },
+    "apps": {
+      "title": "Maombi yangu",
+      "none": "Hakuna maombi bado. Vibali na leseni nyingi zinaweza kuombwa hapa.",
+      "browse": "Tazama huduma",
+      "all": "Maombi yote"
+    },
+    "reports": {
+      "title": "Ripoti kutoka kifaa hiki",
+      "note": "Ripoti hazitambulishi mtu, kwa hiyo orodha hii inahifadhiwa kwenye simu au kompyuta hii tu.",
+      "none": "Ripoti unazotuma kutoka kifaa hiki zitaonekana hapa ili uzifuatilie.",
+      "track": "Fuatilia",
+      "filed": "Ilitumwa {when}"
+    },
+    "near": {
+      "title": "Karibu nawe",
+      "tenders": "Zabuni wazi katika wadi yako",
+      "tendersNone": "Hakuna zabuni wazi katika wadi yako sasa.",
+      "projects": "Miradi katika wadi yako",
+      "projectsNone": "Hakuna miradi iliyochapishwa katika wadi yako bado.",
+      "coming": "Yanayokuja katika wadi yako",
+      "comingNone": "Hakuna hatua zinazokaribia."
+    },
+    "county": {
+      "title": "Kaunti wiki hii",
+      "flags": "Mifumo ya ununuzi iliyotiliwa alama",
+      "flagsHint": "Ona nani anapata pesa za kaunti"
+    },
+    "help": {
+      "title": "Njia nyingine za kupata msaada",
+      "ussd": "Huna data? Piga {code} kwenye simu yoyote.",
+      "sms": "Tuma STATUS na nambari ya ripoti kwa {code}."
+    },
+    "privacy": "Akaunti yako hutumika kwa huduma, malipo na dashibodi hii. Kuripoti, kupiga kura na arifa hazitegemei akaunti."
+  },
+  "open": {
+    "title": "Kaunti Wazi",
+    "intro": "Nani analipwa, alichaguliwaje, na mifumo gani inastahili kuangaliwa kwa karibu. Imejengwa kwa rekodi za umma za zabuni na miradi pekee. Alama ni sababu ya kuangalia, si ushahidi wa makosa.",
+    "stats": {
+      "awarded": "Zabuni zilizotolewa",
+      "value": "Jumla iliyotolewa",
+      "suppliers": "Wasambazaji waliolipwa",
+      "bids": "Wastani wa zabuni kwa kila zabuni",
+      "flags": "Alama zilizotolewa"
+    },
+    "who": {
+      "title": "Nani anashinda pesa za kaunti",
+      "intro": "Sehemu ya thamani iliyotolewa kwa kila msambazaji. Katika soko lenye afya hakuna msambazaji mmoja anayetawala.",
+      "wins_one": "Zabuni {count}",
+      "wins_other": "Zabuni {count}",
+      "share": "{share}% ya thamani",
+      "none": "Hakuna zabuni zilizotolewa bado."
+    },
+    "conc": {
+      "title": "Soko limejikita kiasi gani?",
+      "index": "Kielezo cha ujikitaji",
+      "band": {
+        "low": "Lenye ushindani",
+        "moderate": "Limejikita kiasi",
+        "high": "Limejikita sana"
+      },
+      "top1": "Msambazaji mkubwa",
+      "top3": "Watatu wa juu",
+      "top5": "Watano wa juu",
+      "hint": "Kielezo hujumlisha mraba wa sehemu ya kila msambazaji. Chini ya 1,500 ni ushindani, juu ya 2,500 ni ujikitaji mkubwa."
+    },
+    "how": {
+      "title": "Kandarasi hutolewaje",
+      "intro": "Zabuni wazi humruhusu kila mtu kushindana. Njia nyingine zina matumizi halali lakini zibaki ubaguzi.",
+      "single": "Zilizotolewa kwa mzabuni mmoja au bila mzabuni",
+      "avgDays": "Wastani wa siku zabuni inabaki wazi",
+      "nonComp": "Zilizotolewa moja kwa moja au kwa kikomo",
+      "days": "siku {n}",
+      "methods": {
+        "open_tender": "Zabuni wazi",
+        "restricted": "Zabuni ya kikomo",
+        "request_for_quotation": "Ombi la nukuu",
+        "direct": "Utoaji wa moja kwa moja",
+        "framework": "Mkataba wa mfumo"
+      }
+    },
+    "watch": {
+      "title": "Ufuatiliaji wa kiotomatiki",
+      "intro": "Kila zabuni na mradi hukaguliwa kwa kanuni zilizochapishwa, kila siku. Kila alama inaonyesha sababu yake, na kaunti inaweza kuchapisha jibu kando yake.",
+      "none": "Hakuna kinachoonekana sasa. Ukaguzi unaendelea.",
+      "severity": {
+        "high": "Kipaumbele cha juu",
+        "watch": "Inastahili kuangaliwa",
+        "info": "Kwa taarifa"
+      },
+      "status": {
+        "open": "Haijakaguliwa bado",
+        "reviewing": "Inakaguliwa",
+        "explained": "Imeelezwa na kaunti",
+        "referred": "Imepelekwa kwa chombo cha usimamizi",
+        "cleared": "Haihusiki tena"
+      },
+      "response": "Jibu la kaunti",
+      "firstSeen": "Iligunduliwa kwanza {when}",
+      "filterAll": "Alama zote",
+      "showing": "Inaonyesha {shown} kati ya {total}",
+      "more": "Onyesha zote {count}"
+    },
+    "delivery": {
+      "title": "Je, miradi inakamilika?",
+      "over": "Juu ya bajeti",
+      "stalled": "Imekwama baada ya kutumia pesa",
+      "late": "Imepita tarehe iliyotarajiwa",
+      "ok": "Inaendelea vizuri au imekamilika",
+      "of": "kati ya miradi {total}"
+    },
+    "method": {
+      "title": "Ukaguzi unavyofanya kazi",
+      "intro": "Tunafuata mbinu ya mikataba wazi inayotumika Ukraine, Chile na Colombia: kanuni rahisi juu ya data ya umma, zilizochapishwa ili yeyote azikague.",
+      "rules": [
+        "Msambazaji mmoja ana 25% au zaidi ya thamani iliyotolewa (40% au zaidi ni kipaumbele cha juu)",
+        "Msambazaji mmoja alishinda zabuni nne au zaidi na moja ya tano ya zote",
+        "Wasambazaji watatu wana 60% au zaidi ya thamani iliyotolewa",
+        "30% au zaidi ya thamani iliyotolewa iliruka zabuni wazi",
+        "Zabuni nyingi za msambazaji zilikuwa za moja kwa moja au za kikomo",
+        "Robo au zaidi ya zabuni zilizotolewa zilikuwa na mzabuni mmoja au hakuna",
+        "Msambazaji alishinda zabuni mbili au zaidi zenye mzabuni mmoja",
+        "Zabuni tatu au zaidi zilizotolewa zilikuwa wazi kwa chini ya wiki moja",
+        "Utoaji uko zaidi ya 15% juu ya makadirio (30% ni kipaumbele cha juu)",
+        "Zabuni tatu kwa msambazaji mmoja kwa kazi ileile mahali pamoja ndani ya siku 30",
+        "Msambazaji ana zabuni huku ukaguzi wake wa mwisho wa kodi ukiwa hasi",
+        "Mradi umetumia zaidi ya 10% juu ya bajeti, au umekwama baada ya kutumia nusu"
+      ],
+      "disclaimer": "Alama ni kichocheo cha kuangalia kwa karibu. Mara nyingi kuna sababu nzuri, kama dharura au kazi maalum. Hakuna anayeshtakiwa hapa."
+    },
+    "data": {
+      "title": "Pakua data",
+      "intro": "Kila kitu kwenye ukurasa huu ni data wazi. Kikague, kitumie, chapisha uchambuzi wako.",
+      "tenders": "Zabuni",
+      "projects": "Miradi",
+      "suppliers": "Wasambazaji",
+      "flags": "Alama"
+    }
+  },
+  "landing": {
+    "glance": {
+      "title": "Kaunti kwa muhtasari",
+      "fixed": "Matatizo yaliyorekebishwa",
+      "open": "Bado wazi",
+      "projects": "Miradi inayofuatiliwa",
+      "tenders": "Zabuni wazi",
+      "votes": "Kura zilizopigwa"
+    },
+    "features": {
+      "title": "Kila kitu mahali pamoja",
+      "intro": "Kuripoti, kupiga kura na arifa havihitaji akaunti. Akaunti inaongeza huduma, malipo na dashibodi yako.",
+      "report": {
+        "t": "Ripoti tatizo",
+        "d": "Tuma picha na eneo. Linafika idara sahihi likiwa na tarehe ya mwisho."
+      },
+      "track": {
+        "t": "Fuatilia miradi",
+        "d": "Kila mradi na bajeti yake, matumizi, mkandarasi na hatua."
+      },
+      "vote": {
+        "t": "Piga kura ya vipaumbele",
+        "d": "Chagua wadi yako inajenga nini baadaye. Mtu mmoja, kura moja, kura ya siri."
+      },
+      "services": {
+        "t": "Huduma za kaunti",
+        "d": "Omba vibali na leseni, lipa kwa M-Pesa na fuatilia kila ombi."
+      },
+      "alerts": {
+        "t": "Arifa za wadi",
+        "d": "Kukatwa kwa maji, kazi za barabara na matokeo kwa SMS. Acha wakati wowote."
+      },
+      "ideas": {
+        "t": "Mawazo na maombi",
+        "d": "Pendekeza jambo, kusanya uungwaji mkono na upate jibu rasmi."
+      },
+      "open": {
+        "t": "Kaunti Wazi",
+        "d": "Ona nani anashinda zabuni na mifumo gani imetiliwa alama kukaguliwa."
+      },
+      "pulse": {
+        "t": "Mapigo ya Kaunti",
+        "d": "Kaunti inajibu kwa kasi gani, kwa wadi na idara."
+      },
+      "go": "Fungua"
+    },
+    "audiences": {
+      "title": "Mfumo mmoja, njia tatu za kuingia",
+      "intro": "Kila mtu huingia kwa njia ileile. Unachoweza kufanya kinategemea wadhifa wako, na ni msimamizi wa kaunti pekee anayeweza kubadilisha wadhifa.",
+      "residents": {
+        "t": "Wananchi",
+        "d": "Ripoti, fuatilia, piga kura na omba. Dashibodi yako inaweka maombi, malipo na arifa pamoja.",
+        "cta": "Fungua dashibodi yangu"
+      },
+      "staff": {
+        "t": "Wafanyakazi wa kaunti",
+        "d": "Shughulikia kesi, endesha huduma, chapisha miradi na jibu wananchi. Wafanyakazi pia wana dashibodi ya mwananchi.",
+        "cta": "Dawati la wafanyakazi"
+      },
+      "oversight": {
+        "t": "Bunge na wakaguzi",
+        "d": "Ona kilichochelewa, nani anakishikilia na ununuzi unaendaje. Kusoma tu, na kila kitu kinarekodiwa.",
+        "cta": "Usimamizi unavyofanya kazi"
+      }
+    },
+    "promises": {
+      "title": "Kaunti inapaswa kujibu kwa kasi gani?",
+      "intro": "Kila aina ya ripoti ina saa mbili: muda wa kukiri na muda wa kurekebisha. Ukipita tarehe ya mwisho, inapanda kwa msimamizi.",
+      "category": "Aina ya ripoti",
+      "ack": "Kukiri ndani ya",
+      "fix": "Kurekebisha ndani ya",
+      "hours": "saa {n}",
+      "days": "siku {n} za kazi"
+    },
+    "money": {
+      "title": "Pesa zinakoenda",
+      "intro": "Sehemu ya thamani iliyotolewa ambayo kila msambazaji anashikilia, inasasishwa zabuni zinapotolewa.",
+      "cta": "Ona mifumo yote"
+    },
+    "reach": {
+      "title": "Fikia kaunti kwa njia yako",
+      "web": "Mtandaoni",
+      "webBody": "Ripoti, fuatilia na piga kura kutoka kivinjari chochote. Tovuti inafanya kazi bila mtandao pia.",
+      "ussd": "Piga {code}",
+      "ussdBody": "Simu yoyote, bila vifurushi vya data, kwa Kiingereza au Kiswahili.",
+      "sms": "Tuma SMS kwa {code}",
+      "smsBody": "Tuma STATUS na nambari ya ripoti kuangalia maendeleo."
+    },
+    "faqTitle": "Maswali ambayo watu huuliza",
+    "cta": {
+      "title": "Kaunti yako hufanya kazi vizuri unapoiona",
+      "body": "Ripoti tatizo moja, fuatilia mradi mmoja, au piga kura moja. Inachukua dakika moja."
+    }
+  },
+  "roadmap": {
+    "title": "Tunakoelekea",
+    "intro": "Mpango hai. Kila kipengele ni kitu ambacho wananchi au wafanyakazi waliomba.",
+    "now": "Inafanya kazi sasa",
+    "next": "Tunajenga baadaye",
+    "later": "Baadaye",
+    "nowItems": [
+      "Ripoti tatizo kwa picha na eneo la ramani, kutoka simu yoyote",
+      "Fuatilia kila mradi na zabuni, wadi kwa wadi",
+      "Piga kura ya vipaumbele vya wadi mtandaoni au kwa USSD",
+      "Huduma za kaunti kwa malipo ya M-Pesa na ufuatiliaji",
+      "Ufuatiliaji wa ununuzi wa kiotomatiki na data ya kupakua"
+    ],
+    "nextItems": [
+      "Tuambie kama marekebisho yalifanya kazi, na uyafungue tena kama sivyo",
+      "Awamu za robo mwaka za bajeti ya wadi zenye matokeo yaliyochapishwa",
+      "Ukaguzi wa vibali na risiti kwa msimbo wa QR",
+      "Taarifa za SMS ripoti au ombi lako linapobadilika",
+      "Kuripoti kwa sauti kwa Kiswahili kwa wasioweza kuandika"
+    ],
+    "laterItems": [
+      "API ya data wazi kwa waandishi wa habari na watafiti",
+      "Viungo hai kwa mfumo wa kitaifa wa ununuzi na IFMIS",
+      "Kadi za alama za wadi zinazoshirikiwa na mwakilishi wako wa Bunge",
+      "Kaunti zaidi kwenye jukwaa hilihili"
+    ],
+    "note": "Tarehe zinategemea kaunti. Hakuna kinachohesabiwa kuwa ahadi hadi kionekane chini ya Inafanya kazi sasa."
+  },
+  "faq": {
+    "q1": "Je, ninahitaji akaunti?",
+    "a1": "Hapana. Kuripoti, kupiga kura, arifa na kufuatilia miradi hufanya kazi bila akaunti. Akaunti ni kwa huduma za kaunti, malipo na dashibodi yako.",
+    "q2": "Je, ripoti yangu haitambulishi mtu?",
+    "a2": "Ndiyo. Tunahifadhi wadi, aina, maelezo na picha, si jina lako kamwe. Nambari ya simu ya kukupigia ni hiari na huhifadhiwa kando na ripoti.",
+    "q3": "Kaunti itajibu kwa kasi gani?",
+    "a3": "Kila aina ya ripoti ina lengo la kukiri na lengo la kurekebisha, zilizoonyeshwa kwenye ukurasa huu. Tarehe ikipita kesi hupanda kwa msimamizi na idadi ya zilizochelewa huchapishwa.",
+    "q4": "Nini kikitokea hakuna kinachofanyika?",
+    "a4": "Kesi zilizochelewa hupanda kwa msimamizi wa wadi au kaunti ndogo, kisha afisa mkuu, kisha Bunge la Kaunti. Idadi ya zilizochelewa ni ya umma kwa kila wadi.",
+    "q5": "Kupiga kura kunafanyaje kazi?",
+    "a5": "Unathibitisha simu yako mara moja kwa msimbo. Kura moja kwa kila mtu kwa kila awamu, inahesabiwa kwa wadi. Kura yako huhifadhiwa kama msimbo uliochanganywa, si na nambari yako.",
+    "q6": "Sina simu janja.",
+    "a6": "Piga {code} kwenye simu yoyote kuripoti, kuangalia kesi, kupiga kura au kupata arifa. Hakuna vifurushi vya data vinavyohitajika.",
+    "q7": "Alama ya ununuzi ni nini?",
+    "a7": "Mfumo katika data ya umma ya zabuni unaostahili kuangaliwa kwa karibu, kama msambazaji mmoja kushinda sehemu kubwa. Si mashtaka kamwe, na kaunti inaweza kuchapisha jibu.",
+    "q8": "Nani anaweza kuona ninachofanya?",
+    "a8": "Kurasa za umma zinaonyesha jumla tu. Wafanyakazi huona tu wanachohitaji kwa wadhifa wao, na kila kitendo cha mfanyakazi huandikwa kwenye kumbukumbu ambayo haiwezi kuhaririwa."
   }
 }

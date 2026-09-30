@@ -1,7 +1,7 @@
 // Deterministic sample data. Used only when no backend is reachable, and always labelled
 // "Demo data" in the UI. Seeded per ward so the picture is stable between reloads.
 import { wards, subCountyById, subCounties, county } from '@/shared/config/county';
-import type { ActivityItem, PulseSummary, BudgetCycle, Proposal, ProjectOption, CountySummary, PublicProject, PublicTender, ProjectStatus, WardStat } from './types';
+import type { ActivityItem, PulseSummary, BudgetCycle, Proposal, ProjectOption, CountySummary, ProcurementMethod, PublicProject, PublicTender, ProjectStatus, WardStat } from './types';
 
 function hash(s: string) {
   let h = 2166136261;
@@ -73,9 +73,12 @@ export function demoProjects(): PublicProject[] {
     const w = wards[Math.floor(r() * wards.length)]!;
     const sc = subCountyById.get(w.subCountyId ?? '') ?? subCounties[0]!;
     const t = projectTemplates[i % projectTemplates.length]!;
-    const status = statuses[Math.floor(r() * statuses.length)]!;
+    const rolled = statuses[Math.floor(r() * statuses.length)]!;
+    const status: ProjectStatus = i === 2 ? 'in_progress' : i === 4 ? 'stalled' : rolled; // two sample cases for the watch page
     const budget = Math.round((t.budget * (0.7 + r() * 0.7)) / 100_000) * 100_000;
-    const spentRatio = status === 'completed' ? 0.94 + r() * 0.12 : status === 'planned' || status === 'procurement' ? 0 : 0.2 + r() * 0.6;
+    let spentRatio = status === 'completed' ? 0.94 + r() * 0.12 : status === 'planned' || status === 'procurement' ? 0 : 0.2 + r() * 0.6;
+    if (i === 2) spentRatio = 1.22; // overrun
+    if (i === 4) spentRatio = 0.62; // stalled after spending
     const slug = `${w.id}-${t.sector.toLowerCase()}-${i + 1}`;
     return {
       id: `demo-${i}`,
@@ -105,28 +108,78 @@ export function demoProjects(): PublicProject[] {
   });
 }
 
+// Sample procurement with a deliberate mix: one supplier that dominates, a direct award, a single-bid award above its estimate.
+// It exists so the Open County page can be explored before a county publishes real awards.
+const demoAwards: { by: string; method: ProcurementMethod; bids: number; template: number; award: number; days: number }[] = [
+  { by: 'Kanjo Works Ltd', method: 'open_tender', bids: 4, template: 0, award: 84_000_000, days: 14 },
+  { by: 'Kanjo Works Ltd', method: 'open_tender', bids: 2, template: 6, award: 47_500_000, days: 14 },
+  { by: 'Kanjo Works Ltd', method: 'direct', bids: 1, template: 1, award: 36_000_000, days: 3 },
+  { by: 'Kanjo Works Ltd', method: 'restricted', bids: 2, template: 5, award: 18_000_000, days: 3 },
+  { by: 'Kanjo Works Ltd', method: 'open_tender', bids: 5, template: 7, award: 24_000_000, days: 3 },
+  { by: 'Mwangaza Builders', method: 'open_tender', bids: 6, template: 2, award: 58_000_000, days: 21 },
+  { by: 'Mwangaza Builders', method: 'open_tender', bids: 7, template: 4, award: 27_500_000, days: 21 },
+  { by: 'Savannah Civil Co.', method: 'open_tender', bids: 8, template: 3, award: 21_000_000, days: 21 },
+  { by: 'Tumaini Contractors', method: 'request_for_quotation', bids: 1, template: 3, award: 15_600_000, days: 10 },
+  { by: 'Upendo Supplies', method: 'open_tender', bids: 5, template: 4, award: 9_000_000, days: 14 },
+];
+const contractorId = (name: string) => `demo-c-${name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
+
 export function demoTenders(): PublicTender[] {
   const r = rng('tenders');
-  const statusList = ['open', 'open', 'evaluating', 'awarded', 'awarded', 'open', 'evaluating', 'cancelled'] as const;
-  return Array.from({ length: 8 }, (_, i) => {
-    const w = wards[Math.floor(r() * wards.length)]!;
-    const t = projectTemplates[i % projectTemplates.length]!;
-    const status = statusList[i]!;
+  const prefix = county.slug.slice(0, 3).toUpperCase();
+  const pickWard = () => wards[Math.floor(r() * wards.length)]!;
+  const day = (offset: number) => new Date(Date.UTC(2026, 2, 1 + offset)).toISOString().slice(0, 10);
+
+  const awarded: PublicTender[] = demoAwards.map((a, i) => {
+    const w = pickWard();
+    const t = projectTemplates[a.template]!;
+    const estimate = a.method === 'request_for_quotation' ? 12_000_000 : a.award > t.budget ? t.budget : a.award;
+    const published = day(i * 6);
+    const closes = day(i * 6 + a.days);
     return {
       id: `demo-tender-${i}`,
-      reference: `${county.slug.slice(0, 3).toUpperCase()}/T/${2026}/${String(101 + i)}`,
-      title: `${t.title} — ${w.name}`,
+      reference: `${prefix}/T/2026/${101 + i}`,
+      title: `${t.title}, ${w.name}`,
+      ward_id: w.id,
+      ward_name: w.name,
+      sector: t.sector,
+      status: 'awarded' as const,
+      estimated_budget: estimate,
+      applicants_count: a.bids,
+      awarded_to: a.by,
+      published_at: published,
+      closes_at: closes,
+      procurement_method: a.method,
+      award_amount: a.award,
+      awarded_at: day(i * 6 + a.days + 4),
+      contractor_id: contractorId(a.by),
+    };
+  });
+
+  const others: PublicTender['status'][] = ['open', 'open', 'evaluating', 'open', 'cancelled'];
+  const live: PublicTender[] = others.map((status, k) => {
+    const w = pickWard();
+    const t = projectTemplates[(k * 3 + 1) % projectTemplates.length]!;
+    return {
+      id: `demo-tender-${awarded.length + k}`,
+      reference: `${prefix}/T/2026/${201 + k}`,
+      title: `${t.title}, ${w.name}`,
       ward_id: w.id,
       ward_name: w.name,
       sector: t.sector,
       status,
       estimated_budget: t.budget,
-      applicants_count: 3 + Math.floor(r() * 12),
-      awarded_to: status === 'awarded' ? ['Kanjo Works Ltd', 'Mwangaza Builders'][i % 2]! : null,
-      published_at: '2026-08-01',
+      applicants_count: status === 'open' ? Math.floor(r() * 4) : 3 + Math.floor(r() * 9),
+      awarded_to: null,
+      published_at: '2026-09-01',
       closes_at: '2026-10-30',
+      procurement_method: 'open_tender' as const,
+      award_amount: null,
+      awarded_at: null,
+      contractor_id: null,
     };
   });
+  return [...live, ...awarded];
 }
 
 export function demoActivity(): ActivityItem[] {

@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Link, Navigate, useSearchParams } from 'react-router-dom';
-import { Bell, FileText, LogOut, MailCheck } from 'lucide-react';
+import { MailCheck } from 'lucide-react';
 import { useI18n, type MessageKey } from '@/shared/i18n';
 import { useAuth, type AuthError } from '@/shared/state/auth';
 import { usePageTitle } from '@/shared/lib/hooks';
 import { toE164Kenya } from '@/shared/lib/utils';
-import { Button, ButtonLink } from '@/shared/ui/Button';
+import { Button } from '@/shared/ui/Button';
 import { Field, Segmented, TextInput } from '@/shared/ui/Field';
 
 export default function Account() {
@@ -24,17 +24,7 @@ export default function Account() {
   const next = params.get('next');
   if (auth.status === 'in') {
     if (next && next.startsWith('/') && !next.startsWith('//')) return <Navigate to={next} replace />;
-    return (
-      <div className="mx-auto max-w-lg px-4 py-12">
-        <p className="text-sm font-semibold text-muted">{auth.user?.email}</p>
-        <h1 className="mt-1 font-display text-4xl font-extrabold">{auth.user?.name || t('services.account')}</h1>
-        <div className="mt-8 grid gap-3">
-          <ButtonLink to="/services/applications" variant="secondary" size="lg" icon={<FileText className="size-5" aria-hidden />} className="justify-start">{t('services.myApplications')}</ButtonLink>
-          <ButtonLink to="/services/notifications" variant="secondary" size="lg" icon={<Bell className="size-5" aria-hidden />} className="justify-start">{t('services.notifications')}</ButtonLink>
-          <Button variant="ghost" size="lg" icon={<LogOut className="size-5" aria-hidden />} className="justify-start" onClick={() => void auth.signOut()}>{t('auth.signOut')}</Button>
-        </div>
-      </div>
-    );
+    return <Navigate to="/me" replace />;
   }
 
   const submit = async (e: React.FormEvent) => {

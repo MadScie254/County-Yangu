@@ -60,7 +60,7 @@ export const demoServices: Service[] = [
   },
   {
     id: 'svc-health', slug: 'health-facility-booking', name: 'Health facility booking', name_sw: 'Kuweka miadi ya kituo cha afya', category: 'health',
-    description: 'Book an appointment at a county Level 2–4 health facility.', fee: 0, fee_note: 'Free to book. Service fees apply at the facility.', requires_kra_pin: false, sla_working_days: 1, status: 'active',
+    description: 'Book an appointment at a county Level 2 to 4 health facility.', fee: 0, fee_note: 'Free to book. Service fees apply at the facility.', requires_kra_pin: false, sla_working_days: 1, status: 'active',
     required_documents: [],
     form_schema: [
       { key: 'facility', type: 'text', required: true, label: { en: 'Which facility?', sw: 'Kituo gani?' } },

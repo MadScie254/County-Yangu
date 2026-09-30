@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
-import { dataSource, getActivity, getCaseStatus, getCountySummary, getProjects, getProposals, getPulse, getTenders, getVoteData, getWardStats } from './public';
+import { getProcurementWatch } from './procurement';
+import { dataSource, getActivity, getCategorySla, getCaseStatus, getCountySummary, getProjects, getProposals, getPulse, getTenders, getVoteData, getWardStats } from './public';
 
 const minute = 60_000;
 
@@ -16,3 +17,5 @@ export const useCaseStatus = (reference: string | null) =>
 export const useVoteData = (wardId: string | null) => useQuery({ queryKey: ['vote', wardId], queryFn: () => getVoteData(wardId!), enabled: Boolean(wardId), staleTime: 30_000 });
 export const useProposals = () => useQuery({ queryKey: ['proposals'], queryFn: getProposals, staleTime: 2 * minute });
 export const usePulse = () => useQuery({ queryKey: ['pulse'], queryFn: getPulse, staleTime: 5 * minute });
+export const useProcurementWatch = () => useQuery({ queryKey: ['procurement-watch'], queryFn: getProcurementWatch, staleTime: 5 * minute });
+export const useCategorySla = () => useQuery({ queryKey: ['category-sla'], queryFn: getCategorySla, staleTime: 30 * minute });

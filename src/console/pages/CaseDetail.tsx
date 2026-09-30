@@ -117,11 +117,11 @@ export default function CaseDetail() {
         <aside className="space-y-6">
           <Panel title="Target dates">
             <dl className="space-y-3 text-sm">
-              <div className="flex items-center justify-between"><dt className="text-muted">Resolve by</dt><dd className="flex items-center gap-2 font-semibold">{c.resolve_due_at ? date(c.resolve_due_at) : '—'}<Chip tone={s.tone}>{s.label}</Chip></dd></div>
-              <div className="flex items-center justify-between"><dt className="text-muted">Acknowledge by</dt><dd className="font-semibold">{c.ack_due_at ? date(c.ack_due_at) : '—'}</dd></div>
+              <div className="flex items-center justify-between"><dt className="text-muted">Resolve by</dt><dd className="flex items-center gap-2 font-semibold">{c.resolve_due_at ? date(c.resolve_due_at) : '-'}<Chip tone={s.tone}>{s.label}</Chip></dd></div>
+              <div className="flex items-center justify-between"><dt className="text-muted">Acknowledge by</dt><dd className="font-semibold">{c.ack_due_at ? date(c.ack_due_at) : '-'}</dd></div>
               {ack && <p className={cn('rounded-lg px-3 py-2 text-xs font-semibold', ack.startsWith('Ack') ? 'bg-bad-soft text-bad' : 'bg-warn-soft text-warn')}>{ack}</p>}
               <div className="flex items-center justify-between"><dt className="text-muted">Escalation</dt><dd className={cn('font-semibold', c.escalation_level >= 3 && 'text-bad')}>{levelLabel[c.escalation_level]}</dd></div>
-              <div className="flex items-center justify-between"><dt className="text-muted">Department</dt><dd className="text-right font-semibold">{maps.dept.get(c.department_id ?? '') ?? '—'}</dd></div>
+              <div className="flex items-center justify-between"><dt className="text-muted">Department</dt><dd className="text-right font-semibold">{maps.dept.get(c.department_id ?? '') ?? '-'}</dd></div>
               <div className="flex items-center justify-between"><dt className="text-muted">Assigned to</dt><dd className="font-semibold">{c.assigned_to ? (maps.staff.get(c.assigned_to) ?? 'Officer') : 'Nobody yet'}</dd></div>
             </dl>
           </Panel>

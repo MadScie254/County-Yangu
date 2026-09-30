@@ -49,7 +49,7 @@ export function WardCard({ selection, stats, subStats, onSelect, onClose, classN
                 <button type="button" onClick={() => onSelect({ type: 'ward', id: w.id })} className="flex w-full items-center justify-between gap-3 px-4 py-3 text-left hover:bg-bg-2">
                   <span className="font-semibold">{w.name}</span>
                   <span className="flex items-center gap-2 text-sm text-muted">
-                    <span className="font-data">{s ? number(s.open_reports) : '–'}</span>
+                    <span className="font-data">{s ? number(s.open_reports) : '-'}</span>
                     <ChevronRight className="size-4" aria-hidden />
                   </span>
                 </button>
@@ -78,12 +78,12 @@ export function WardCard({ selection, stats, subStats, onSelect, onClose, classN
 
       <div className="mt-3 flex items-center gap-4">
         <Ring value={(trust ?? 0) / 100} tone={trustTone(trust)} label={`${t('home.trust')}: ${trust ?? t('home.noData')}`}>
-          <span className="font-display text-xl font-extrabold leading-none">{trust == null ? '–' : Math.round(trust)}</span>
+          <span className="font-display text-xl font-extrabold leading-none">{trust == null ? '-' : Math.round(trust)}</span>
         </Ring>
         <div className="grid flex-1 grid-cols-3 gap-2">
-          <Stat label={t('home.openIssues')} value={s ? number(s.open_reports) : '–'} />
-          <Stat label={t('home.overdue')} value={s ? number(s.overdue_reports) : '–'} tone={s && s.overdue_reports > 0 ? 'bad' : undefined} />
-          <Stat label={t('home.resolved')} value={s ? number(s.resolved_90d) : '–'} tone="good" />
+          <Stat label={t('home.openIssues')} value={s ? number(s.open_reports) : '-'} />
+          <Stat label={t('home.overdue')} value={s ? number(s.overdue_reports) : '-'} tone={s && s.overdue_reports > 0 ? 'bad' : undefined} />
+          <Stat label={t('home.resolved')} value={s ? number(s.resolved_90d) : '-'} tone="good" />
         </div>
       </div>
       <p className="mt-2 text-xs text-muted">{t('home.wardCard.trustHint')}</p>

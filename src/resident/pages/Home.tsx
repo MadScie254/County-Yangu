@@ -1,6 +1,6 @@
 import { useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Megaphone, FolderKanban, Vote, ShieldCheck, Smartphone, Route, Eye, Wrench, Radio } from 'lucide-react';
+import { ArrowRight, Megaphone, FolderKanban, Vote, Route, Eye, Wrench, Radio } from 'lucide-react';
 import { useI18n } from '@/shared/i18n';
 import { county, wards } from '@/shared/config/county';
 import { useCountySummary, useProjects, useWardStats } from '@/shared/api/hooks';
@@ -21,6 +21,7 @@ import { toast } from '@/shared/ui/Toast';
 import { useMediaQuery, usePageTitle } from '@/shared/lib/hooks';
 import { WardSearch } from '../components/WardSearch';
 import { WardCard } from '../components/WardCard';
+import { Audiences, Faq, Features, FinalCta, Glance, MoneyTeaser, Promises, Reach, Roadmap } from '../components/Landing';
 
 function Kpis({ className }: { className?: string }) {
   const { t, number } = useI18n();
@@ -31,9 +32,9 @@ function Kpis({ className }: { className?: string }) {
         [0, 1, 2].map((i) => <Skeleton key={i} className="h-14" />)
       ) : (
         <>
-          <Stat label={t('home.openIssues')} value={summary.data ? number(Math.max(0, summary.data.reports_filed - summary.data.reports_resolved)) : '–'} />
-          <Stat label={t('home.resolved')} value={summary.data ? number(summary.data.reports_resolved) : '–'} tone="good" />
-          <Stat label={t('home.overdue')} value={summary.data ? number(summary.data.reports_overdue) : '–'} tone={summary.data && summary.data.reports_overdue > 0 ? 'bad' : undefined} />
+          <Stat label={t('home.openIssues')} value={summary.data ? number(Math.max(0, summary.data.reports_filed - summary.data.reports_resolved)) : '-'} />
+          <Stat label={t('home.resolved')} value={summary.data ? number(summary.data.reports_resolved) : '-'} tone="good" />
+          <Stat label={t('home.overdue')} value={summary.data ? number(summary.data.reports_overdue) : '-'} tone={summary.data && summary.data.reports_overdue > 0 ? 'bad' : undefined} />
         </>
       )}
     </dl>
@@ -155,7 +156,9 @@ export default function Home() {
         </div>
       </section>
 
-      <Kpis className="mx-auto grid max-w-7xl px-4 py-6 sm:px-6 md:hidden" />
+      <Glance />
+      <Features />
+      <Audiences />
 
       {/* ---------- The accountability loop ---------- */}
       <section className="border-y border-line bg-surface">
@@ -177,6 +180,8 @@ export default function Home() {
           </ol>
         </div>
       </section>
+
+      <Promises />
 
       {/* ---------- Follow the shilling ---------- */}
       {topProjects.length > 0 && (
@@ -214,27 +219,11 @@ export default function Home() {
         </section>
       )}
 
-      {/* ---------- Feature phones + privacy ---------- */}
-      <section className="mx-auto grid max-w-7xl gap-5 px-4 pb-20 sm:px-6 lg:grid-cols-2">
-        <div className="relative overflow-hidden rounded-[2rem] bg-ink p-8 text-bg sm:p-10">
-          <div aria-hidden className="paper-grain absolute inset-0 opacity-30" />
-          <Smartphone className="relative size-8 text-brand" aria-hidden />
-          <h2 className="relative mt-5 font-display text-3xl font-extrabold">{t('home.phoneTitle')}</h2>
-          <p className="relative mt-3 max-w-md text-bg/80">{t('home.phoneBody', { code: county.ussdCode })}</p>
-          <p className="relative mt-7 inline-flex items-baseline gap-3 rounded-2xl bg-bg/10 px-5 py-3 ring-1 ring-bg/20">
-            <span className="text-xs font-bold uppercase tracking-[0.16em] text-bg/70">{t('home.dialLabel')}</span>
-            <span className="font-data text-3xl font-medium text-brand">{county.ussdCode}</span>
-          </p>
-        </div>
-        <div className="rounded-[2rem] border border-line bg-surface p-8 sm:p-10">
-          <ShieldCheck className="size-8 text-good" aria-hidden />
-          <h2 className="mt-5 font-display text-3xl font-extrabold">{t('home.trustTitle')}</h2>
-          <p className="mt-3 max-w-md text-ink-2">{t('home.trustBody')}</p>
-          <Link to="/how-it-works#privacy" className="mt-6 inline-flex items-center gap-2 font-semibold underline decoration-brand decoration-2 underline-offset-4">
-            {t('footer.privacy')} <ArrowRight className="size-4" aria-hidden />
-          </Link>
-        </div>
-      </section>
+      <MoneyTeaser />
+      <Roadmap />
+      <Reach />
+      <Faq />
+      <FinalCta />
     </>
   );
 }

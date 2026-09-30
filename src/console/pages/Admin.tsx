@@ -97,11 +97,11 @@ function Categories() {
           {cats.data!.map((c) => (
             <tr key={c.id} className={cn(!c.active && 'opacity-50')}>
               <td className={cn(td, 'font-semibold')}>{c.name}</td>
-              <td className={td}>{depts.data?.find((d) => d.id === c.department_id)?.name ?? '—'}</td>
+              <td className={td}>{depts.data?.find((d) => d.id === c.department_id)?.name ?? '-'}</td>
               <td className={td}>{c.ack_value} {c.ack_unit === 'hours' ? 'hours' : 'working days'}</td>
               <td className={td}>{c.resolve_value} {c.resolve_unit === 'hours' ? 'hours' : 'working days'}</td>
               <td className={td}><Chip tone={c.default_priority === 'urgent' ? 'bad' : c.default_priority === 'high' ? 'warn' : 'neutral'}>{c.default_priority}</Chip></td>
-              <td className={td}>{c.sensitive ? <Chip tone="bad">routed around dept</Chip> : '—'}</td>
+              <td className={td}>{c.sensitive ? <Chip tone="bad">routed around dept</Chip> : '-'}</td>
               <td className={cn(td, 'text-right')}><Button size="sm" variant="ghost" onClick={() => setEdit({ ...c })}>Edit</Button></td>
             </tr>
           ))}
@@ -149,7 +149,7 @@ function Routing() {
       </div>
       <Table head={['Category', 'Where', 'Department', 'Officer', '']}>
         {(rules.data ?? []).sort((a, b) => (maps.cat.get(a.category_id) ?? '').localeCompare(maps.cat.get(b.category_id) ?? '')).map((r) => (
-          <tr key={r.id}><td className={cn(td, 'font-semibold')}>{maps.cat.get(r.category_id)}</td><td className={td}>{r.ward_id ? wards.find((w) => w.id === r.ward_id)?.name : 'Whole county'}</td><td className={td}>{maps.dept.get(r.department_id)}</td><td className={td}>{r.officer_id ? maps.staff.get(r.officer_id) : '—'}</td><td className={cn(td, 'text-right')}><Button size="sm" variant="ghost" icon={<Trash2 className="size-4" aria-hidden />} onClick={() => del.mutate(r.id)}>Delete</Button></td></tr>
+          <tr key={r.id}><td className={cn(td, 'font-semibold')}>{maps.cat.get(r.category_id)}</td><td className={td}>{r.ward_id ? wards.find((w) => w.id === r.ward_id)?.name : 'Whole county'}</td><td className={td}>{maps.dept.get(r.department_id)}</td><td className={td}>{r.officer_id ? maps.staff.get(r.officer_id) : '-'}</td><td className={cn(td, 'text-right')}><Button size="sm" variant="ghost" icon={<Trash2 className="size-4" aria-hidden />} onClick={() => del.mutate(r.id)}>Delete</Button></td></tr>
         ))}
       </Table>
     </Panel>

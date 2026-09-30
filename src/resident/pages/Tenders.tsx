@@ -64,14 +64,14 @@ export default function Tenders() {
           <li key={x.id} className="rounded-[1.5rem] border border-line bg-surface p-5 shadow-card">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div className="min-w-0">
-                <p className="font-data text-xs text-muted">{x.reference} · {x.ward_name ?? '—'} · {x.sector}</p>
+                <p className="font-data text-xs text-muted">{x.reference} · {x.ward_name ?? '-'} · {x.sector}</p>
                 <h2 className="mt-1 font-display text-lg font-bold leading-snug">{x.title}</h2>
               </div>
               <Chip tone={tenderTone(x.status)}>{t(`tenderStatus.${x.status}`)}</Chip>
             </div>
             <dl className="mt-4 flex flex-wrap gap-x-8 gap-y-2 text-sm">
               <div><dt className="sr-only">{t('common.budget')}</dt><dd className="font-data text-lg font-medium">{kes(x.estimated_budget, { compact: true })}</dd></div>
-              <div><dt className="inline text-muted">{t('tenders.closes')}: </dt><dd className="inline font-semibold">{x.closes_at ? date(x.closes_at) : '–'}</dd></div>
+              <div><dt className="inline text-muted">{t('tenders.closes')}: </dt><dd className="inline font-semibold">{x.closes_at ? date(x.closes_at) : '-'}</dd></div>
               <div><dd className="font-semibold text-muted">{t('tenders.applicants', { count: x.applicants_count })}</dd></div>
               {x.awarded_to && <div><dt className="inline text-muted">{t('tenders.awardedTo')}: </dt><dd className="inline font-semibold">{x.awarded_to}</dd></div>}
             </dl>

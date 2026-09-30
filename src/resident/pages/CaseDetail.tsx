@@ -69,7 +69,7 @@ export default function CaseDetail() {
           <div>
             <dt className="text-xs font-bold uppercase tracking-[0.1em] text-muted">{t('status.due')}</dt>
             <dd className={cn('mt-0.5 font-semibold', overdueDays > 0 && 'text-bad')}>
-              {c.resolve_due_at ? date(c.resolve_due_at) : '–'}
+              {c.resolve_due_at ? date(c.resolve_due_at) : '-'}
               {overdueDays > 0 && <span className="ml-2 inline-flex items-center gap-1 text-xs"><TriangleAlert className="size-3.5" aria-hidden />{t('status.overdueBy', { count: overdueDays })}</span>}
             </dd>
           </div>

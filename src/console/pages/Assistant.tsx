@@ -11,6 +11,7 @@ const suggestions = [
   'Which five wards have the most open drainage cases?',
   'How many cases are more than 14 days overdue, by department?',
   'How much permit revenue did we collect this week compared with last week?',
+  'Which procurement patterns are flagged as high priority?',
 ];
 
 type Turn = { q: string; a?: AssistantAnswer; error?: string };
@@ -66,7 +67,7 @@ export default function Assistant() {
                   {t.a.columns && t.a.rows && (
                     <div className="overflow-hidden rounded-xl border border-line">
                       <Table head={t.a.columns}>
-                        {t.a.rows.map((r, ri) => <tr key={ri}>{r.map((c, ci) => <td key={ci} className={`${td} ${ci > 0 ? 'font-data' : ''}`}>{c ?? '—'}</td>)}</tr>)}
+                        {t.a.rows.map((r, ri) => <tr key={ri}>{r.map((c, ci) => <td key={ci} className={`${td} ${ci > 0 ? 'font-data' : ''}`}>{c ?? '-'}</td>)}</tr>)}
                       </Table>
                     </div>
                   )}

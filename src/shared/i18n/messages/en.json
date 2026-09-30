@@ -46,7 +46,13 @@
     "more": "More",
     "main": "Main navigation",
     "skip": "Skip to content",
-    "language": "Language"
+    "language": "Language",
+    "me": "My Yangu",
+    "open": "Open County",
+    "staffConsole": "Staff console",
+    "citizenView": "Citizen view",
+    "roadmap": "Roadmap",
+    "account": "Account"
   },
   "a11y": {
     "settings": "Display settings",
@@ -512,9 +518,9 @@
     "accessBody": "English and Kiswahili, large text, high contrast, a simple mode for slow phones, and every action available without a smartphone."
   },
   "auth": {
-    "signInTitle": "Sign in to My Services",
+    "signInTitle": "Sign in to My Yangu",
     "signUpTitle": "Create your account",
-    "signInIntro": "Apply for permits, pay county fees and track your applications. You only need an account for these. Reporting, voting and alerts stay open to everyone.",
+    "signInIntro": "One account for your dashboard, county services and payments. Reporting, voting and alerts stay open to everyone. County staff sign in here too and will see their console next to their dashboard.",
     "email": "Email address",
     "password": "Password",
     "passwordHint": "At least 8 characters.",
@@ -536,8 +542,8 @@
     },
     "demoNote": "Demo mode: any password works, and your data stays on this device.",
     "needAccount": "Sign in to continue",
-    "staffNote": "Are you county staff? Use the staff sign-in instead.",
-    "staffLink": "County staff sign-in"
+    "staffNote": "Are you county staff? Sign in here with your work email, or use the console sign-in.",
+    "staffLink": "Open the staff console"
   },
   "services": {
     "title": "My Services",
@@ -643,5 +649,342 @@
       "none": "Nothing yet. Updates about your applications will appear here.",
       "markRead": "Mark all as read"
     }
+  },
+  "me": {
+    "greeting": "Hello, {name}",
+    "greetingAnon": "Hello",
+    "lead": "Your ward, your applications and everything that needs you, in one place.",
+    "signedInAs": "Signed in as {email}",
+    "spaces": {
+      "label": "Choose your space",
+      "citizen": "Citizen view",
+      "staff": "Staff console",
+      "title": "You also have staff access",
+      "body": "Open the console to work cases, publish projects and review procurement. Your citizen view stays right here whenever you want it.",
+      "open": "Open staff console",
+      "role": "Your role: {role}"
+    },
+    "quick": {
+      "title": "What would you like to do?",
+      "report": "Report a problem",
+      "reportHint": "Potholes, water, lights, waste",
+      "track": "Follow projects",
+      "trackHint": "See where money is going",
+      "vote": "Vote for your ward",
+      "voteHint": "Choose what gets built",
+      "services": "County services",
+      "servicesHint": "Permits, licences, rates",
+      "alerts": "Ward alerts",
+      "alertsHint": "SMS when it matters",
+      "ideas": "Ideas and petitions",
+      "ideasHint": "Propose, back, be heard",
+      "open": "Open County",
+      "openHint": "Who wins tenders",
+      "check": "Check a report",
+      "checkHint": "Use your report number"
+    },
+    "ward": {
+      "title": "Your ward",
+      "choose": "Choose your ward to see what is happening near you.",
+      "change": "Change ward",
+      "open": "Open issues",
+      "fixed": "Fixed in 90 days",
+      "overdue": "Overdue",
+      "projects": "Projects",
+      "trust": "Trust index",
+      "trustHint": "How fast reports are answered, projects finished and budgets kept.",
+      "reportHere": "Report in {ward}",
+      "seeMap": "See on the map"
+    },
+    "attention": {
+      "title": "Needs your attention",
+      "none": "Nothing needs you right now. You are all caught up.",
+      "pay": "Pay for {ref}",
+      "payHint": "KES {amount} is due",
+      "changes": "Changes needed on {ref}",
+      "changesHint": "The county asked for more information",
+      "vote": "The ward budget vote is open",
+      "voteHint": "Choose what your ward builds next",
+      "unread_one": "{count} unread notification",
+      "unread_other": "{count} unread notifications",
+      "unreadHint": "Updates about your applications"
+    },
+    "apps": {
+      "title": "My applications",
+      "none": "No applications yet. Most permits and licences can be applied for here.",
+      "browse": "Browse services",
+      "all": "All applications"
+    },
+    "reports": {
+      "title": "Reports from this device",
+      "note": "Reports are anonymous, so this list is kept only on this phone or computer.",
+      "none": "Reports you send from this device will appear here so you can follow them.",
+      "track": "Track",
+      "filed": "Sent {when}"
+    },
+    "near": {
+      "title": "Near you",
+      "tenders": "Open tenders in your ward",
+      "tendersNone": "No open tenders in your ward right now.",
+      "projects": "Projects in your ward",
+      "projectsNone": "No published projects in your ward yet.",
+      "coming": "Coming up in your ward",
+      "comingNone": "No milestones due soon."
+    },
+    "county": {
+      "title": "The county this week",
+      "flags": "Procurement patterns flagged",
+      "flagsHint": "See who is winning county money"
+    },
+    "help": {
+      "title": "Other ways to get help",
+      "ussd": "No data? Dial {code} on any phone.",
+      "sms": "Text STATUS and your report number to {code}."
+    },
+    "privacy": "Your account is used for services, payments and this dashboard. Reporting, voting and alerts never depend on it."
+  },
+  "open": {
+    "title": "Open County",
+    "intro": "Who gets paid, how they were chosen, and which patterns deserve a closer look. Built only from public tender and project records. A flag is a reason to look, never proof of wrongdoing.",
+    "stats": {
+      "awarded": "Tenders awarded",
+      "value": "Total awarded",
+      "suppliers": "Suppliers paid",
+      "bids": "Average bids per tender",
+      "flags": "Flags raised"
+    },
+    "who": {
+      "title": "Who wins county money",
+      "intro": "Share of awarded value by supplier. In a healthy market no single supplier dominates.",
+      "wins_one": "{count} award",
+      "wins_other": "{count} awards",
+      "share": "{share}% of value",
+      "none": "No tenders have been awarded yet."
+    },
+    "conc": {
+      "title": "How concentrated is the market?",
+      "index": "Concentration index",
+      "band": {
+        "low": "Competitive",
+        "moderate": "Moderately concentrated",
+        "high": "Highly concentrated"
+      },
+      "top1": "Largest supplier",
+      "top3": "Top three",
+      "top5": "Top five",
+      "hint": "The index adds up each supplier's squared share of value. Below 1,500 is competitive, above 2,500 is highly concentrated."
+    },
+    "how": {
+      "title": "How contracts are awarded",
+      "intro": "Open tendering lets anyone compete. Other methods have real uses but should stay the exception.",
+      "single": "Awarded with one bidder or none",
+      "avgDays": "Average days a tender stays open",
+      "nonComp": "Direct or restricted awards",
+      "days": "{n} days",
+      "methods": {
+        "open_tender": "Open tender",
+        "restricted": "Restricted tender",
+        "request_for_quotation": "Request for quotation",
+        "direct": "Direct award",
+        "framework": "Framework agreement"
+      }
+    },
+    "watch": {
+      "title": "Automated watch",
+      "intro": "Every award and project is checked against published rules, every day. Each flag shows its reason, and the county can publish a response next to it.",
+      "none": "Nothing stands out right now. The checks keep running.",
+      "severity": {
+        "high": "High priority",
+        "watch": "Worth a look",
+        "info": "For information"
+      },
+      "status": {
+        "open": "Not yet reviewed",
+        "reviewing": "Under review",
+        "explained": "Explained by the county",
+        "referred": "Referred to an oversight body",
+        "cleared": "No longer applies"
+      },
+      "response": "County response",
+      "firstSeen": "First noticed {when}",
+      "filterAll": "All flags",
+      "showing": "Showing {shown} of {total}",
+      "more": "Show all {count}"
+    },
+    "delivery": {
+      "title": "Are projects delivered?",
+      "over": "Over budget",
+      "stalled": "Stalled after spending",
+      "late": "Past the expected date",
+      "ok": "On track or done",
+      "of": "of {total} projects"
+    },
+    "method": {
+      "title": "How the checks work",
+      "intro": "We follow the open-contracting approach used in Ukraine, Chile and Colombia: plain rules over public data, published so anyone can check them.",
+      "rules": [
+        "One supplier holds 25% or more of awarded value (40% or more is high priority)",
+        "One supplier won four or more awards and a fifth of all awards",
+        "Three suppliers hold 60% or more of awarded value",
+        "30% or more of awarded value skipped open tendering",
+        "A supplier's awards were mostly direct or restricted",
+        "A quarter or more of awarded tenders had one bidder or none",
+        "A supplier won two or more tenders with a single bidder",
+        "Three or more awarded tenders were open for under a week",
+        "An award is more than 15% above the estimate (30% is high priority)",
+        "Three awards to one supplier for the same work in the same place within 30 days",
+        "A supplier holds awards while its last tax compliance check was negative",
+        "A project has spent more than 10% over budget, or is stalled after spending half"
+      ],
+      "disclaimer": "A flag is a prompt to look closer. There are often good reasons, such as emergencies or specialised work. Nobody is accused of anything here."
+    },
+    "data": {
+      "title": "Download the data",
+      "intro": "Everything on this page is open data. Check it, use it, publish your own analysis.",
+      "tenders": "Tenders",
+      "projects": "Projects",
+      "suppliers": "Suppliers",
+      "flags": "Flags"
+    }
+  },
+  "landing": {
+    "glance": {
+      "title": "The county at a glance",
+      "fixed": "Problems fixed",
+      "open": "Still open",
+      "projects": "Projects followed",
+      "tenders": "Tenders open",
+      "votes": "Votes cast"
+    },
+    "features": {
+      "title": "Everything in one place",
+      "intro": "Reporting, voting and alerts need no account. An account adds services, payments and your own dashboard.",
+      "report": {
+        "t": "Report a problem",
+        "d": "Send a photo and a pin. It reaches the right department with a deadline."
+      },
+      "track": {
+        "t": "Follow projects",
+        "d": "Every project with its budget, spending, contractor and milestones."
+      },
+      "vote": {
+        "t": "Vote on priorities",
+        "d": "Choose what your ward builds next. One person, one vote, a secret ballot."
+      },
+      "services": {
+        "t": "County services",
+        "d": "Apply for permits and licences, pay by M-Pesa and follow each application."
+      },
+      "alerts": {
+        "t": "Ward alerts",
+        "d": "Water shut-offs, road works and results by SMS. Stop any time."
+      },
+      "ideas": {
+        "t": "Ideas and petitions",
+        "d": "Propose something, gather support and get an official answer."
+      },
+      "open": {
+        "t": "Open County",
+        "d": "See who wins tenders and which patterns are flagged for review."
+      },
+      "pulse": {
+        "t": "County Pulse",
+        "d": "How fast the county answers, by ward and department."
+      },
+      "go": "Open"
+    },
+    "audiences": {
+      "title": "One system, three ways in",
+      "intro": "Everyone signs in the same way. What you can do depends on your role, and only a county administrator can change a role.",
+      "residents": {
+        "t": "Residents",
+        "d": "Report, follow, vote and apply. Your dashboard keeps applications, payments and alerts together.",
+        "cta": "Open my dashboard"
+      },
+      "staff": {
+        "t": "County staff",
+        "d": "Work cases, run services, publish projects and answer residents. Staff keep their citizen dashboard too.",
+        "cta": "Staff console"
+      },
+      "oversight": {
+        "t": "Assembly and auditors",
+        "d": "See what is overdue, who holds it and how procurement is going. Read only, and fully logged.",
+        "cta": "How oversight works"
+      }
+    },
+    "promises": {
+      "title": "How fast should the county respond?",
+      "intro": "Every kind of report has two clocks: time to acknowledge and time to fix. Miss the deadline and it climbs to a supervisor.",
+      "category": "Kind of report",
+      "ack": "Acknowledge within",
+      "fix": "Fix within",
+      "hours": "{n} hours",
+      "days": "{n} working days"
+    },
+    "money": {
+      "title": "Where the money goes",
+      "intro": "The share of awarded value each supplier holds, updated as tenders are awarded.",
+      "cta": "See all patterns"
+    },
+    "reach": {
+      "title": "Reach the county your way",
+      "web": "On the web",
+      "webBody": "Report, follow and vote from any browser. The site works offline too.",
+      "ussd": "Dial {code}",
+      "ussdBody": "Any phone, no data bundles, in English or Kiswahili.",
+      "sms": "Text {code}",
+      "smsBody": "Send STATUS and your report number to check progress."
+    },
+    "faqTitle": "Questions people ask",
+    "cta": {
+      "title": "Your county works better when you can see it",
+      "body": "Report one problem, follow one project, or cast one vote. It takes a minute."
+    }
+  },
+  "roadmap": {
+    "title": "Where we are going",
+    "intro": "A living plan. Each item is something residents or staff asked for.",
+    "now": "Live now",
+    "next": "Building next",
+    "later": "Later",
+    "nowItems": [
+      "Report a problem with a photo and a map pin, from any phone",
+      "Follow every project and tender, ward by ward",
+      "Vote on ward priorities on the web or by USSD",
+      "County services with M-Pesa payment and tracking",
+      "Automated procurement watch with open data downloads"
+    ],
+    "nextItems": [
+      "Tell us if a fix really worked, and reopen it if not",
+      "Quarterly ward budget rounds with published results",
+      "Permit and receipt checks by QR code",
+      "SMS updates when your report or application changes",
+      "Voice reporting in Kiswahili for people who cannot type"
+    ],
+    "laterItems": [
+      "An open data API for journalists and researchers",
+      "Live links to the national e-procurement system and IFMIS",
+      "Ward scorecards shared with your Assembly member",
+      "More counties on the same platform"
+    ],
+    "note": "Dates depend on the county. Nothing counts as a promise until it appears under Live now."
+  },
+  "faq": {
+    "q1": "Do I need an account?",
+    "a1": "No. Reporting, voting, alerts and following projects work without one. An account is for county services, payments and your own dashboard.",
+    "q2": "Is my report anonymous?",
+    "a2": "Yes. We keep the ward, category, description and photos, never your name. A phone number for a callback is optional and kept apart from the report.",
+    "q3": "How fast will the county respond?",
+    "a3": "Each kind of report has a target to acknowledge and a target to fix, shown on this page. When a deadline passes the case climbs to a supervisor and the overdue count is published.",
+    "q4": "What if nothing happens?",
+    "a4": "Overdue cases go up to a ward or sub-county administrator, then to the chief officer, then to the County Assembly. Overdue counts are public for every ward.",
+    "q5": "How does voting work?",
+    "a5": "You confirm your phone once with a code. One vote per person per round, counted by ward. Your vote is stored as a scrambled code, never with your number.",
+    "q6": "I do not have a smartphone.",
+    "a6": "Dial {code} on any phone to report, check a case, vote or get alerts. No data bundles needed.",
+    "q7": "What is a procurement flag?",
+    "a7": "A pattern in public tender data that deserves a closer look, such as one supplier winning a large share. It is never an accusation, and the county can publish a response.",
+    "q8": "Who can see what I do?",
+    "a8": "Public pages show totals only. Staff see only what their role needs, and every staff action goes into an audit trail that cannot be edited."
   }
 }

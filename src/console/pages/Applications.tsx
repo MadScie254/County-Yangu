@@ -51,10 +51,10 @@ export default function Applications() {
                 <td className={td}><button type="button" className="font-data text-[0.82rem] font-medium underline-offset-4 hover:underline" onClick={() => { setOpen(a); setNote(a.decision_note ?? ''); }}>{a.reference}</button><p className="text-xs text-muted">{relative(a.created_at)}</p></td>
                 <td className={td}><span className="font-semibold">{a.applicant_name}</span>{a.business_name && <p className="text-muted">{a.business_name}</p>}</td>
                 <td className={td}>{a.service_name}</td>
-                <td className={td}>{a.ward_id ? wardLabel(a.ward_id) : '—'}</td>
+                <td className={td}>{a.ward_id ? wardLabel(a.ward_id) : '-'}</td>
                 <td className={cn(td, 'font-data')}>{a.amount > 0 ? kes(a.amount) : 'Free'}</td>
                 <td className={td}><Chip tone={tone[a.status] ?? 'neutral'}>{label[a.status] ?? a.status}</Chip></td>
-                <td className={td}>{a.due_at ? date(a.due_at) : '—'}</td>
+                <td className={td}>{a.due_at ? date(a.due_at) : '-'}</td>
               </tr>
             ))}
           </Table>
@@ -66,7 +66,7 @@ export default function Applications() {
           <div>
             <p className="font-display text-lg font-bold">{open.service_name}</p>
             <dl className="mt-3 divide-y divide-line rounded-2xl border border-line text-sm">
-              {[['Applicant', open.applicant_name], ['Phone', open.applicant_phone ?? '—'], ['Business', open.business_name ?? '—'], ['KRA PIN', open.kra_pin ?? '—'], ['Fee paid', open.amount > 0 ? kes(open.amount) : 'Free'], ...Object.entries(open.form_data).map(([k, v]) => [k.replace(/_/g, ' '), String(v)])].map(([k, v]) => (
+              {[['Applicant', open.applicant_name], ['Phone', open.applicant_phone ?? '-'], ['Business', open.business_name ?? '-'], ['KRA PIN', open.kra_pin ?? '-'], ['Fee paid', open.amount > 0 ? kes(open.amount) : 'Free'], ...Object.entries(open.form_data).map(([k, v]) => [k.replace(/_/g, ' '), String(v)])].map(([k, v]) => (
                 <div key={k} className="flex justify-between gap-4 px-4 py-2.5"><dt className="capitalize text-muted">{k}</dt><dd className="max-w-[60%] text-right font-semibold">{v}</dd></div>
               ))}
             </dl>
@@ -80,7 +80,7 @@ export default function Applications() {
                   <Button variant="danger" icon={<X className="size-4" aria-hidden />} disabled={!note.trim() || decide.isPending} onClick={() => decide.mutate('rejected')}>Reject</Button>
                 </div>
               </>
-            ) : <p className="mt-4 rounded-xl bg-bg-2 p-3 text-sm text-ink-2">Status: {label[open.status] ?? open.status}{open.decision_note ? ` — ${open.decision_note}` : ''}</p>}
+            ) : <p className="mt-4 rounded-xl bg-bg-2 p-3 text-sm text-ink-2">Status: {label[open.status] ?? open.status}{open.decision_note ? `: ${open.decision_note}` : ''}</p>}
           </div>
         )}
       </Sheet>

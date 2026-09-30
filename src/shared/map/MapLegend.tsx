@@ -3,7 +3,7 @@ import { NO_DATA, scales, type Metric } from './palette';
 /** Legend that mirrors the map colours. `low`/`high` are the human labels for the ends of the scale. */
 export function MapLegend({ metric, low, high, noData }: { metric: Metric; low: string; high: string; noData: string }) {
   return (
-    <div className="flex items-center gap-3 text-xs font-medium text-ink-2" role="group" aria-label={`${low} – ${high}`}>
+    <div className="flex items-center gap-3 text-xs font-medium text-ink-2" role="group" aria-label={`${low} to ${high}`}>
       <span>{low}</span>
       <span className="flex h-2.5 w-28 overflow-hidden rounded-full ring-1 ring-black/10" aria-hidden>
         {scales[metric].map((c) => (

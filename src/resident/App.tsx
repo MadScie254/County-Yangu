@@ -22,6 +22,8 @@ const Account = lazy(() => import('./pages/services/Account'));
 const MyApplications = lazy(() => import('./pages/services/MyApplications'));
 const ApplicationDetail = lazy(() => import('./pages/services/ApplicationDetail'));
 const Notifications = lazy(() => import('./pages/services/Notifications'));
+const Dashboard = lazy(() => import('./pages/Dashboard'));
+const OpenCounty = lazy(() => import('./pages/OpenCounty'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 function PageFallback() {
@@ -48,6 +50,8 @@ export function App() {
           <Route path="ideas" element={<Ideas />} />
           <Route path="tenders" element={<Tenders />} />
           <Route path="pulse" element={<Pulse />} />
+          <Route path="open" element={<OpenCounty />} />
+          <Route path="me" element={<RequireAuth><Dashboard /></RequireAuth>} />
           <Route path="how-it-works" element={<HowItWorks />} />
           <Route path="services" element={<Services />} />
           <Route path="services/account" element={<Account />} />

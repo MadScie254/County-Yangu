@@ -91,14 +91,14 @@ export default function Vote() {
 
       {cycle && (
         <>
-          <div className="mt-8 flex flex-wrap items-center justify-between gap-3 rounded-[1.5rem] bg-ink p-5 text-bg">
+          <div className="mt-8 flex flex-wrap items-center justify-between gap-3 rounded-[1.5rem] bg-panel p-5 text-panel-ink">
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.14em] text-bg/70">{t('vote.cycle')}</p>
+              <p className="text-xs font-bold uppercase tracking-[0.14em] text-panel-ink/70">{t('vote.cycle')}</p>
               <p className="mt-0.5 font-display text-xl font-bold">{cycle.title}</p>
             </div>
             <div className="text-right text-sm">
               <p className="inline-flex items-center gap-1.5 font-semibold text-brand"><CalendarClock className="size-4" aria-hidden />{open ? t('vote.closesIn', { when: relative(cycle.ends_at) }) : t('vote.closed')}</p>
-              {data.data?.envelope != null && <p className="mt-0.5 text-bg/80">{t('vote.envelope')}: <b className="font-data text-bg">{kes(data.data.envelope, { compact: true })}</b></p>}
+              {data.data?.envelope != null && <p className="mt-0.5 text-panel-ink/80">{t('vote.envelope')}: <b className="font-data text-panel-ink">{kes(data.data.envelope, { compact: true })}</b></p>}
             </div>
           </div>
 
