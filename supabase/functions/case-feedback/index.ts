@@ -1,6 +1,7 @@
-// Two things a resident can say about a case they hold the reference for:
+// Three things a resident can tell the county without an account:
 //   { reference, fixed, comment? }     "Was it fixed?" A yes is counted; a no reopens the case.
 //   { reference, action: 'metoo' }     "Me too": the same problem affects me. One voice per address per case.
+//   { slug, action: 'project_check', verdict, comment? }   Does this published project look as the county describes it?
 // The reference is the only key needed (it is the same key that opens the public status page), so the endpoint is
 // rate limited by address and by reference, comments are scrubbed like report text, and a "me too" is stored only as a
 // keyed hash of (case, address), never the address itself.
@@ -9,12 +10,27 @@ import { rpc } from '../_shared/db.ts';
 import { ipKey, limit } from '../_shared/participation.ts';
 import { scrub } from '../_shared/pii.ts';
 import { countySecret, mac, pgBytea } from '../_shared/crypto.ts';
-import { optStr, str } from '../_shared/validate.ts';
+import { oneOf, optStr, str } from '../_shared/validate.ts';
 
 Deno.serve(handler('case-feedback', async (req) => {
   const body = await readJson(req);
-  const reference = str(body, 'reference', 6, 40).toUpperCase();
   const ip = await ipKey(req);
+
+  if (body.action === 'project_check') {
+    const slug = str(body, 'slug', 1, 120).toLowerCase();
+    const verdict = oneOf(body, 'verdict', ['as_shown', 'not_as_shown'] as const);
+    const comment = optStr(body, 'comment', 400);
+    await limit(`pcheck:ip:${ip}`, 3600, 20);
+    const result = await rpc<'ok' | 'duplicate' | 'not_found'>('svc_project_check', {
+      p_slug: slug, p_verdict: verdict, p_comment: comment ? scrub(comment).text : null,
+      p_checker: pgBytea(await mac(countySecret(), 'supporter', `project:${slug}:${ip}`)),
+    });
+    if (result === 'not_found') throw new HttpError(404, 'not_found');
+    if (result === 'duplicate') throw new HttpError(409, 'already_answered');
+    return { ok: true };
+  }
+
+  const reference = str(body, 'reference', 6, 40).toUpperCase();
 
   if (body.action === 'metoo') {
     await limit(`metoo:ip:${ip}`, 3600, 30);

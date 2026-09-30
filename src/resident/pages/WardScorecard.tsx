@@ -58,6 +58,7 @@ export default function WardScorecard() {
         <a className="inline-flex h-9 items-center gap-2 rounded-full border border-line-strong bg-surface px-4 text-sm font-semibold hover:bg-bg-2" href={`mailto:?subject=${encodeURIComponent(t('loop.scorecard.emailSubject', { ward: s.ward }))}&body=${encodeURIComponent(t('loop.scorecard.emailBody', { ward: s.ward, url }))}`}><Mail className="size-4" aria-hidden />{t('loop.scorecard.email')}</a>
         <Button variant="secondary" size="sm" icon={<Printer className="size-4" aria-hidden />} onClick={() => window.print()}>{t('loop.scorecard.print')}</Button>
         <FollowButton kind="ward_tenders" id={s.ward_id} label={s.ward} />
+        <Link to={`/compare?a=${s.ward_id}`} className="inline-flex h-9 items-center rounded-full px-3 text-sm font-semibold text-brand hover:underline">{t('loop.compare.with')}</Link>
       </div>
 
       <section className="mt-8" aria-label={t('nav.report')}>

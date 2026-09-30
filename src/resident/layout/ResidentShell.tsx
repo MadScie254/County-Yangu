@@ -1,7 +1,7 @@
 import { InstallPrompt } from '../components/InstallPrompt';
 import { useEffect, useState } from 'react';
 import { NavLink, Link, Outlet, useLocation } from 'react-router-dom';
-import { Activity, BadgeCheck, BellRing, Briefcase, CalendarDays, ChevronDown, CircleHelp, Database, FileText, Home, Landmark, Lightbulb, Megaphone, FolderKanban, Vote, Menu, Settings2, Smartphone, WifiOff, Building2, ShieldCheck, UserRound, Scale, SearchCheck, Trophy, type LucideIcon } from 'lucide-react';
+import { Activity, BadgeCheck, BellRing, Briefcase, CalendarDays, ChevronDown, CircleHelp, Database, FileText, Home, Landmark, Lightbulb, Megaphone, FolderKanban, Vote, Menu, Settings2, Smartphone, WifiOff, Building2, ShieldCheck, UserRound, Scale, SearchCheck, Trophy, Columns2, type LucideIcon } from 'lucide-react';
 import { useI18n, locales, type MessageKey } from '@/shared/i18n';
 import { county } from '@/shared/config/county';
 import { Wordmark } from '@/shared/ui/Logo';
@@ -31,6 +31,7 @@ const navGroups: NavGroup[] = [
     { to: '/vote/results', key: 'nav.results', icon: Trophy },
     { to: '/assembly', key: 'nav.assembly', icon: Landmark },
     { to: '/pulse', key: 'nav.pulse', icon: Activity },
+    { to: '/compare', key: 'nav.compare', icon: Columns2 },
     { to: '/open/api', key: 'nav.data', icon: Database },
   ] },
   { key: 'nav.groups.take', items: [

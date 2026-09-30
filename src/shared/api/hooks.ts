@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { getMeetings, getAssembly, getBudgetResults, getFixStats, getOcds, getWardScorecard, listFollows, verifyDocument } from './loop';
+import { getOpenCases, getProjectChecks, getMeetings, getAssembly, getBudgetResults, getFixStats, getOcds, getWardScorecard, listFollows, verifyDocument } from './loop';
 import { getProcurementWatch } from './procurement';
 import { dataSource, getActivity, getCategorySla, getCaseStatus, getCountySummary, getProjects, getProposals, getPulse, getTenders, getVoteData, getWardStats } from './public';
 
@@ -28,3 +28,5 @@ export const useVerify = (code: string | null) => useQuery({ queryKey: ['verify'
 export const useFollows = () => useQuery({ queryKey: ['follows'], queryFn: listFollows, staleTime: minute });
 export const useOcds = (limit: number) => useQuery({ queryKey: ['ocds', limit], queryFn: () => getOcds(limit), staleTime: 10 * minute });
 export const useMeetings = () => useQuery({ queryKey: ['meetings'], queryFn: getMeetings, staleTime: 5 * minute });
+export const useOpenCases = (ward: string | null, category: string | null) => useQuery({ queryKey: ['open-cases', ward, category], queryFn: () => getOpenCases(ward!, category), enabled: Boolean(ward), staleTime: minute });
+export const useProjectChecks = (slug: string | null) => useQuery({ queryKey: ['project-checks', slug], queryFn: () => getProjectChecks(slug!), enabled: Boolean(slug), staleTime: minute });

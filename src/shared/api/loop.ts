@@ -200,3 +200,25 @@ export function meetingIcs(m: PublicMeeting, title: string, url: string): string
     'END:VEVENT', 'END:VCALENDAR',
   ].join('\r\n');
 }
+
+// ---- reports already open, and community checks on projects ----
+
+export type OpenCase = { reference: string; category_id: string | null; status: string; created_at: string; supporters: number };
+
+export async function getOpenCases(ward: string, category: string | null): Promise<OpenCase[]> {
+  if (await isDemo()) {
+    const ago = (d: number) => new Date(Date.now() - d * 86_400_000).toISOString();
+    return [
+      { reference: 'NAI-R7K2M9Q4X1', category_id: category, status: 'in_progress', created_at: ago(5), supporters: 7 },
+      { reference: 'NAI-R3H8P2L6W9', category_id: category, status: 'received', created_at: ago(1), supporters: 1 },
+    ];
+  }
+  return rpc<OpenCase[]>('open_cases', { p_ward: ward, p_category: category });
+}
+
+export type ProjectChecks = { as_shown: number; not_as_shown: number; comments: { verdict: 'as_shown' | 'not_as_shown'; comment: string; at: string }[] };
+
+export async function getProjectChecks(slug: string): Promise<ProjectChecks> {
+  if (await isDemo()) return { as_shown: 12, not_as_shown: 3, comments: [{ verdict: 'not_as_shown', comment: 'Drainage on the east side is not finished.', at: new Date(Date.now() - 2 * 86_400_000).toISOString() }] };
+  return (await rpc<ProjectChecks | null>('project_checks', { p_slug: slug })) ?? { as_shown: 0, not_as_shown: 0, comments: [] };
+}

@@ -65,7 +65,8 @@
       "take": "Shiriki",
       "check": "Hakiki na fuatilia",
       "help": "Msaada"
-    }
+    },
+    "compare": "Linganisha wadi"
   },
   "a11y": {
     "settings": "Mipangilio ya kuonyesha",
@@ -1305,6 +1306,34 @@
         "town_hall": "Mkutano wa hadhara",
         "other": "Mkutano"
       }
+    },
+    "dupes": {
+      "title": "Tayari imeripotiwa hapa",
+      "intro": "Ripoti hizi za aina hiyo ziko wazi katika wadi hii. Kama moja ni tatizo lako, ongeza sauti yako badala ya kuandika ripoti mpya. Bado unaweza kutuma yako hapa chini.",
+      "reported": "Iliripotiwa {when}",
+      "view": "Tazama"
+    },
+    "pcheck": {
+      "title": "Je, inaonekana hivi mahali halisi?",
+      "intro": "Kama unaishi au unafanya kazi karibu na mradi huu, iambie kaunti kama unalingana na kilichochapishwa hapa. Haikutambulishi.",
+      "yes": "Ndiyo, kama ilivyoonyeshwa",
+      "no": "Hapana, si kama ilivyoonyeshwa",
+      "commentLabel": "Uliona nini? (si lazima)",
+      "send": "Tuma",
+      "thanks": "Asante. Jibu lako liko kwenye rekodi ya umma hapa chini.",
+      "already": "Umeshajibu kuhusu mradi huu.",
+      "error": "Hatukuweza kutuma. Tafadhali jaribu tena.",
+      "tally": "{yes} wanasema kama ilivyoonyeshwa, {no} wanasema sivyo",
+      "none": "Hakuna mkazi aliyehakiki mradi huu bado.",
+      "said": "Wakazi waliona nini"
+    },
+    "compare": {
+      "title": "Linganisha wadi",
+      "intro": "Wadi mbili pamoja, kutoka rekodi za kaunti yenyewe. Inafaa kwa wakazi, waandishi wa habari na wabunge wa kaunti.",
+      "pick": "Chagua wadi",
+      "with": "Linganisha na wadi nyingine",
+      "better": "bora zaidi",
+      "metric": "Kipimo"
     }
   }
 }

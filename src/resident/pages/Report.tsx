@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
+import { OpenCasesPanel } from '../components/report/OpenCasesPanel';
 import { VoiceInput } from '../components/report/VoiceInput';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -212,6 +213,7 @@ export default function Report() {
 
         {/* ---- 3. details + privacy + send ---- */}
         <section hidden={step !== 2} aria-labelledby="s3">
+          {step === 2 && <OpenCasesPanel ward={ward} category={category ?? null} />}
           <h2 id="s3" className="font-display text-2xl font-bold">{t('report.describe')}</h2>
           <Field className="mt-3" label={t('report.describe')} hint={t('report.describeHelp')} error={errKey(errors.description?.message) && t(errKey(errors.description?.message)!)}>
             {({ id, describedBy }) => <TextArea id={id} aria-describedby={describedBy} invalid={Boolean(errors.description)} maxLength={2000} placeholder={t('report.describePlaceholder')} {...register('description')} />}

@@ -27,6 +27,7 @@ const Verify = lazy(() => import('./pages/Verify'));
 const Results = lazy(() => import('./pages/Results'));
 const Assembly = lazy(() => import('./pages/Assembly'));
 const WardScorecard = lazy(() => import('./pages/WardScorecard'));
+const Compare = lazy(() => import('./pages/Compare'));
 const Meetings = lazy(() => import('./pages/Meetings'));
 const OpenApi = lazy(() => import('./pages/OpenApi'));
 const OpenCounty = lazy(() => import('./pages/OpenCounty'));
@@ -64,6 +65,7 @@ export function App() {
           <Route path="assembly" element={<Assembly />} />
           <Route path="meetings" element={<Meetings />} />
           <Route path="ward/:id" element={<WardScorecard />} />
+          <Route path="compare" element={<Compare />} />
           <Route path="me" element={<RequireAuth><Dashboard /></RequireAuth>} />
           <Route path="how-it-works" element={<HowItWorks />} />
           <Route path="services" element={<Services />} />

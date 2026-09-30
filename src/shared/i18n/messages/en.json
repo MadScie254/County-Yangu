@@ -65,7 +65,8 @@
       "take": "Take part",
       "check": "Check and track",
       "help": "Help"
-    }
+    },
+    "compare": "Compare wards"
   },
   "a11y": {
     "settings": "Display settings",
@@ -1305,6 +1306,34 @@
         "town_hall": "Town hall",
         "other": "Meeting"
       }
+    },
+    "dupes": {
+      "title": "Already reported here",
+      "intro": "These reports of the same kind are open in this ward. If one is your problem, add your voice instead of filing a new report. You can still send yours below.",
+      "reported": "Reported {when}",
+      "view": "View"
+    },
+    "pcheck": {
+      "title": "Does it look like this on the ground?",
+      "intro": "If you live or work near this project, tell the county whether it matches what is published here. It is anonymous.",
+      "yes": "Yes, as shown",
+      "no": "No, not as shown",
+      "commentLabel": "What did you see? (optional)",
+      "send": "Send",
+      "thanks": "Thank you. Your answer is on the public record below.",
+      "already": "You have already answered for this project.",
+      "error": "We could not send that. Please try again.",
+      "tally": "{yes} say as shown, {no} say not as shown",
+      "none": "No resident has checked this project yet.",
+      "said": "What residents saw"
+    },
+    "compare": {
+      "title": "Compare wards",
+      "intro": "Two wards side by side, from the county's own records. Useful for residents, reporters and Assembly members.",
+      "pick": "Choose a ward",
+      "with": "Compare with another ward",
+      "better": "better",
+      "metric": "Measure"
     }
   }
 }

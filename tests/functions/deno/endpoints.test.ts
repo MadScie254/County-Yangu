@@ -589,3 +589,18 @@ Deno.test('me too: hashes the caller, never sends the address, and maps outcomes
     assert.equal((await json(r)).code, code);
   }
 });
+
+Deno.test('project check: validates the verdict, scrubs comments, hashes the caller', async () => {
+  reset(); okRateLimit();
+  const calls: any[] = [];
+  state.rpc.svc_project_check = (a) => { calls.push(a); return 'ok'; };
+  const ok = await call('case-feedback', { json: { action: 'project_check', slug: 'Road-1', verdict: 'not_as_shown', comment: 'Half done, call 0712345678' } });
+  assert.equal(ok.status, 200);
+  assert.equal(calls[0].p_slug, 'road-1');
+  assert.ok(!calls[0].p_comment.includes('0712345678'));
+  assert.match(calls[0].p_checker, /^\\x[0-9a-f]{64}$/);
+  const bad = await call('case-feedback', { json: { action: 'project_check', slug: 'road-1', verdict: 'maybe' } });
+  assert.equal(bad.status, 422);
+  state.rpc.svc_project_check = () => 'duplicate';
+  assert.equal((await call('case-feedback', { json: { action: 'project_check', slug: 'road-1', verdict: 'as_shown' } })).status, 409);
+});
