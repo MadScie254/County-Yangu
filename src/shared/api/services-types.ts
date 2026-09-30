@@ -42,6 +42,9 @@ export type Application = {
   status: ApplicationStatus;
   amount: number;
   decision_note: string | null;
+  verify_code?: string | null;
+  revoked_at?: string | null;
+  revoked_reason?: string | null;
   due_at: string | null;
   created_at: string;
   updated_at: string;

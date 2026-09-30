@@ -552,3 +552,24 @@ Deno.test('errors never leak internals and unsupported methods are refused', asy
   assert.equal((await call('vote', { method: 'GET' })).status, 405);
   assert.equal((await call('vote', { method: 'OPTIONS' })).status, 204);
 });
+
+Deno.test('case feedback: outcomes map to clear errors, comments are scrubbed, "no" says it reopens', async () => {
+  reset(); okRateLimit();
+  const calls: any[] = [];
+  state.rpc.svc_case_feedback = (a) => { calls.push(a); return 'ok'; };
+  const yes = await call('case-feedback', { json: { reference: 'nai-r123456', fixed: true, comment: 'Thanks, call me on 0712345678' } });
+  assert.equal(yes.status, 200);
+  assert.deepEqual(await json(yes), { ok: true, reopened: false });
+  assert.equal(calls[0].p_reference, 'NAI-R123456');
+  assert.ok(!calls[0].p_comment.includes('0712345678'), 'phone numbers are scrubbed from the comment');
+  const no = await call('case-feedback', { json: { reference: 'NAI-R123456', fixed: false } });
+  assert.equal((await json(no)).reopened, true);
+  const bad = await call('case-feedback', { json: { reference: 'NAI-R123456', fixed: 'yes' } });
+  assert.equal(bad.status, 422);
+  for (const [db, status, code] of [['not_found', 404, 'not_found'], ['not_resolved', 409, 'not_resolved'], ['duplicate', 409, 'already_answered']] as const) {
+    state.rpc.svc_case_feedback = () => db;
+    const r = await call('case-feedback', { json: { reference: 'NAI-R123456', fixed: true } });
+    assert.equal(r.status, status);
+    assert.equal((await json(r)).code, code);
+  }
+});

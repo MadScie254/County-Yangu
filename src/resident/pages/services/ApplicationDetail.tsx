@@ -1,3 +1,4 @@
+import { PermitQr } from '../../components/PermitQr';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { ArrowLeft, FileText } from 'lucide-react';
@@ -43,6 +44,9 @@ export default function ApplicationDetail() {
         <Chip tone={appTone[app.status]}>{t(`services.app.statuses.${app.status}` as MessageKey)}</Chip>
         <span className="text-sm text-muted">{t('services.app.submitted')} {date(app.created_at)}</span>
       </div>
+
+      {app.status === 'approved' && app.verify_code && !app.revoked_at && <PermitQr code={app.verify_code} />}
+      {app.revoked_at && <p role="alert" className="mt-6 rounded-2xl bg-bad-soft p-4 font-semibold text-bad">{t('loop.verify.revokedText')}{app.revoked_reason ? ` ${app.revoked_reason}` : ''}</p>}
 
       {app.decision_note && <div className="mt-6 rounded-2xl bg-info-soft p-4"><p className="text-xs font-bold uppercase tracking-[0.12em] text-info">{t('services.app.note')}</p><p className="mt-1">{app.decision_note}</p></div>}
 

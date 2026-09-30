@@ -1,13 +1,15 @@
 import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { useQueries, useQuery } from '@tanstack/react-query';
+import { useMutation, useQueries, useQuery, useQueryClient } from '@tanstack/react-query';
+import type { FollowKind } from '@/shared/api/types';
 import { ArrowRight, Bell, BellRing, Building2, CalendarClock, CreditCard, FileWarning, FolderKanban, Landmark, Lightbulb, LogOut, MapPin, Megaphone, Scale, SearchCheck, ShieldCheck, Smartphone, Vote, type LucideIcon } from 'lucide-react';
 import { useI18n, type MessageKey } from '@/shared/i18n';
 import { county, wardLabel } from '@/shared/config/county';
-import { useCountySummary, useProcurementWatch, useProjects, useTenders, useVoteData, useWardStats } from '@/shared/api/hooks';
+import { useCountySummary, useFollows, useProcurementWatch, useProjects, useTenders, useVoteData, useWardStats } from '@/shared/api/hooks';
 import { getCaseStatus } from '@/shared/api/public';
 import { listMyApplications, listNotifications, listServices } from '@/shared/api/services';
 import type { Application, ApplicationStatus } from '@/shared/api/services-types';
+import { unfollow } from '@/shared/api/loop';
 import { useAuth } from '@/shared/state/auth';
 import { usePrefs } from '@/shared/state/prefs';
 import { useMyReports } from '@/shared/state/myreports';
@@ -71,6 +73,25 @@ function Row({ to, icon: Icon, tone, title, hint }: { to: string; icon: LucideIc
         <ArrowRight className="size-4 shrink-0 text-muted transition group-hover:translate-x-0.5 group-hover:text-ink" aria-hidden />
       </Link>
     </li>
+  );
+}
+
+function FollowsList() {
+  const { t } = useI18n();
+  const qc = useQueryClient();
+  const f = useFollows();
+  const remove = useMutation({ mutationFn: (x: { kind: FollowKind; key: string }) => unfollow(x.kind, x.key), onSuccess: () => void qc.invalidateQueries({ queryKey: ['follows'] }) });
+  const list = f.data ?? [];
+  if (list.length === 0) return <p className="text-sm text-ink-2">{t('loop.follow.empty')}</p>;
+  return (
+    <ul className="space-y-2">
+      {list.map((x) => (
+        <li key={x.id} className="flex items-center justify-between gap-3 text-sm">
+          <span className="min-w-0"><b className="block truncate">{x.label}</b><span className="text-xs text-muted">{t(`loop.follow.kind.${x.kind}` as MessageKey)}</span></span>
+          <button type="button" className="shrink-0 text-xs font-semibold underline underline-offset-4 hover:text-bad" onClick={() => remove.mutate({ kind: x.kind, key: x.key })}>{t('loop.follow.removed')}</button>
+        </li>
+      ))}
+    </ul>
   );
 }
 
@@ -303,6 +324,10 @@ export default function Dashboard() {
 
         {/* ---------- Side column ---------- */}
         <div className="space-y-6 lg:sticky lg:top-24 lg:self-start">
+          <Panel id="follows" title={t('loop.follow.title')}>
+            <FollowsList />
+          </Panel>
+
           <Panel id="mine" title={t('me.reports.title')}>
             {saved.length === 0 ? (
               <p className="text-sm text-ink-2">{t('me.reports.none')}</p>

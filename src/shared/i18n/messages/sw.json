@@ -52,7 +52,11 @@
     "staffConsole": "Dawati la wafanyakazi",
     "citizenView": "Mwonekano wa mwananchi",
     "roadmap": "Ramani ya njia",
-    "account": "Akaunti"
+    "account": "Akaunti",
+    "verify": "Hakiki kibali",
+    "assembly": "Bunge la Kaunti",
+    "results": "Matokeo ya wadi",
+    "data": "Data wazi"
   },
   "a11y": {
     "settings": "Mipangilio ya kuonyesha",
@@ -952,20 +956,25 @@
       "Fuatilia kila mradi na zabuni, wadi kwa wadi",
       "Piga kura ya vipaumbele vya wadi mtandaoni au kwa USSD",
       "Huduma za kaunti kwa malipo ya M-Pesa na ufuatiliaji",
-      "Ufuatiliaji wa ununuzi wa kiotomatiki na data ya kupakua"
-    ],
-    "nextItems": [
+      "Ufuatiliaji wa ununuzi wa kiotomatiki na data ya kupakua",
       "Tuambie kama marekebisho yalifanya kazi, na uyafungue tena kama sivyo",
       "Awamu za robo mwaka za bajeti ya wadi zenye matokeo yaliyochapishwa",
       "Ukaguzi wa vibali na risiti kwa msimbo wa QR",
       "Taarifa za SMS ripoti au ombi lako linapobadilika",
-      "Kuripoti kwa sauti kwa Kiswahili kwa wasioweza kuandika"
+      "Fuatilia mkandarasi, mradi au wadi na uarifiwe unapobadilika",
+      "Dashibodi za kamati na kadi za alama za wadi unazoweza kumtumia MCA wako",
+      "API ya data wazi kwa waandishi wa habari na watafiti",
+      "Kuripoti kwa sauti kwa Kiswahili",
+      "Inafanya kazi bila mtandao na husakinishwa kwenye simu yako"
+    ],
+    "nextItems": [
+      "Viungo hai kwa mfumo wa kitaifa wa ununuzi na IFMIS",
+      "Arifa kwa WhatsApp",
+      "Kaunti zaidi kwenye jukwaa hilihili"
     ],
     "laterItems": [
-      "API ya data wazi kwa waandishi wa habari na watafiti",
-      "Viungo hai kwa mfumo wa kitaifa wa ununuzi na IFMIS",
-      "Kadi za alama za wadi zinazoshirikiwa na mwakilishi wako wa Bunge",
-      "Kaunti zaidi kwenye jukwaa hilihili"
+      "Uthibitisho wa jamii wa miradi iliyokamilika kwa picha",
+      "Vikao vya bajeti ya wananchi kwa video"
     ],
     "note": "Tarehe zinategemea kaunti. Hakuna kinachohesabiwa kuwa ahadi hadi kionekane chini ya Inafanya kazi sasa."
   },
@@ -986,5 +995,226 @@
     "a7": "Mfumo katika data ya umma ya zabuni unaostahili kuangaliwa kwa karibu, kama msambazaji mmoja kushinda sehemu kubwa. Si mashtaka kamwe, na kaunti inaweza kuchapisha jibu.",
     "q8": "Nani anaweza kuona ninachofanya?",
     "a8": "Kurasa za umma zinaonyesha jumla tu. Wafanyakazi huona tu wanachohitaji kwa wadhifa wao, na kila kitendo cha mfanyakazi huandikwa kwenye kumbukumbu ambayo haiwezi kuhaririwa."
+  },
+  "loop": {
+    "feedback": {
+      "title": "Je, imerekebishwa kweli?",
+      "intro": "Kaunti imeweka hili kuwa limerekebishwa. Jibu lako la kweli linaathiri jinsi kaunti inavyopimwa.",
+      "yes": "Ndiyo, imerekebishwa",
+      "no": "Hapana, bado ni tatizo",
+      "commentLabel": "Kuna cha kuongeza? (si lazima)",
+      "commentHint": "Usiandike nambari za simu wala za kitambulisho.",
+      "send": "Tuma jibu langu",
+      "thanksYes": "Asante. Jibu lako limehesabiwa kwenye rekodi ya umma.",
+      "thanksNo": "Asante. Tumefungua tena kesi hii na kaunti ina makataa mapya.",
+      "already": "Umeshajibu kuhusu marekebisho haya.",
+      "error": "Hatukuweza kutuma. Tafadhali jaribu tena.",
+      "reopened_one": "Imefunguliwa tena mara {count}",
+      "reopened_other": "Imefunguliwa tena mara {count}"
+    },
+    "stats": {
+      "title": "Je, marekebisho hudumu?",
+      "intro": "Kesi ikiwekwa kuwa imerekebishwa, wakazi husema kama ni kweli. Hii ni alama ya uaminifu wa kaunti.",
+      "confirmed": "{share}% wamethibitisha imerekebishwa",
+      "answers_one": "jibu {count}",
+      "answers_other": "majibu {count}",
+      "reopened": "{count} zimefunguliwa tena",
+      "none": "Hakuna majibu bado."
+    },
+    "verify": {
+      "title": "Hakiki kibali au risiti",
+      "intro": "Andika msimbo ulioandikwa kwenye hati, au changanua msimbo wake wa QR. Hati halisi za kaunti pekee ndizo hupita.",
+      "label": "Msimbo",
+      "placeholder": "mf. CY-7KQ2-M4PX",
+      "check": "Hakiki",
+      "valid": "Halisi",
+      "revoked": "Imeondolewa",
+      "unknown": "Hakuna rekodi",
+      "validText": "Hii ni hati halisi iliyotolewa na kaunti.",
+      "revokedText": "Kaunti iliondoa kibali hiki. Hakitumiki tena.",
+      "unknownText": "Hatuna hati yenye msimbo huu. Huenda umekosea kuandika, au ni bandia.",
+      "permit": "Kibali",
+      "receipt": "Risiti ya malipo",
+      "service": "Huduma",
+      "holder": "Mmiliki",
+      "ward": "Wadi",
+      "issued": "Ilitolewa",
+      "amount": "Kiasi",
+      "reason": "Sababu",
+      "reference": "Rejeleo",
+      "demoHint": "Msimbo wa kujaribu: CY-DEMO-2026 na CY-VOID-2026."
+    },
+    "qr": {
+      "title": "Msimbo wa uthibitisho",
+      "hint": "Onyesha hii wakati wa ukaguzi. Yeyote anaweza kuichanganua kuthibitisha kibali ni halisi.",
+      "print": "Chapisha kibali"
+    },
+    "results": {
+      "title": "Wadi zilichagua nini",
+      "intro": "Matokeo ya kura za bajeti ya wadi, yaliyochapishwa na kaunti. Chaguo hufadhiliwa kwa mpangilio wa kura hadi fedha za wadi zitakapoisha.",
+      "empty": "Hakuna matokeo yaliyochapishwa bado. Awamu ya kura ikifungwa, kaunti huchapisha matokeo hapa.",
+      "votes_one": "kura {count}",
+      "votes_other": "kura {count}",
+      "funded": "Imefadhiliwa",
+      "notFunded": "Haijafadhiliwa",
+      "envelope": "Bajeti ya wadi",
+      "round": "Awamu",
+      "total": "Kura {count} katika awamu hii",
+      "voteNow": "Piga kura katika awamu iliyo wazi"
+    },
+    "follow": {
+      "follow": "Fuatilia",
+      "following": "Unafuatilia",
+      "signIn": "Ingia ili kufuatilia",
+      "added": "Umefuatilia. Utaarifiwa hili likibadilika.",
+      "removed": "Umeacha kufuatilia",
+      "limit": "Unaweza kufuatilia hadi vitu 40.",
+      "title": "Unavyofuatilia",
+      "empty": "Fuatilia mkandarasi, mradi au wadi ili kuarifiwa kitu kikibadilika.",
+      "kind": {
+        "supplier": "Mkandarasi",
+        "project": "Mradi",
+        "ward_tenders": "Zabuni za wadi",
+        "sector": "Sekta"
+      },
+      "wardTenders": "Fuatilia zabuni za wadi hii"
+    },
+    "assembly": {
+      "title": "Dashibodi za kamati",
+      "intro": "Kwa kamati za Bunge la Kaunti na yeyote anayezifuatilia: jinsi matatizo ya wakazi yanavyoshughulikiwa katika eneo la kila kamati, na kinachojengwa na kununuliwa.",
+      "cases": "Kesi za wakazi (siku 90 zilizopita)",
+      "received": "Zilizopokelewa",
+      "open": "Zilizo wazi sasa",
+      "overdue": "Zilizochelewa",
+      "resolved": "Zilizorekebishwa",
+      "median": "Siku za kawaida za kurekebisha",
+      "reopened": "Zilizofunguliwa tena",
+      "projects": "Miradi",
+      "stalled": "Iliyokwama",
+      "completed": "Iliyokamilika",
+      "spent": "Iliyotumika",
+      "budget": "Bajeti",
+      "tenders": "Zabuni",
+      "openTenders": "Zilizo wazi",
+      "awarded": "Zilizotolewa",
+      "awardedValue": "Thamani iliyotolewa",
+      "flags": "Alama wazi za manunuzi",
+      "attention": "Inahitaji kuangaliwa",
+      "none": "Hakuna iliyokwama wala kuzidi bajeti.",
+      "days": "siku {count}",
+      "note": "Takwimu hizi zinatokana na rekodi za umma zilezile za kurasa nyingine zote. Hakuna hapa kinachoonyesha kosa lolote."
+    },
+    "scorecard": {
+      "title": "Kadi ya alama ya wadi",
+      "intro": "Jinsi {ward} inavyoendelea, kutoka rekodi za kaunti yenyewe. Mtumie MCA wako na umuulize atafanya nini.",
+      "share": "Shiriki",
+      "print": "Chapisha",
+      "copy": "Nakili kiungo",
+      "whatsapp": "WhatsApp",
+      "email": "Mwandikie MCA wako",
+      "emailSubject": "Kadi ya alama ya {ward}",
+      "emailBody": "Habari. Hii ndiyo kadi ya alama ya sasa ya {ward}: {url}\n\nUnaweza kuniambia utafanya nini kuhusu masuala yaliyo wazi na yaliyochelewa?",
+      "received": "Ripoti (siku 90)",
+      "resolved": "Zilizorekebishwa (siku 90)",
+      "open": "Zilizo wazi sasa",
+      "overdue": "Zilizochelewa",
+      "median": "Siku za kawaida za kurekebisha",
+      "confirmed": "Wakazi waliothibitisha marekebisho",
+      "reopened": "Kesi zilizofunguliwa tena",
+      "projects": "Miradi",
+      "tenders": "Zabuni",
+      "budgetVote": "Kura za bajeti",
+      "topIssues": "Masuala yaliyoripotiwa zaidi",
+      "generated": "Imeandaliwa {date}",
+      "notFound": "Hatukuipata wadi hiyo.",
+      "view": "Tazama kadi ya alama"
+    },
+    "api": {
+      "title": "Data wazi kwa waandishi wa habari na watafiti",
+      "intro": "Zabuni na tuzo za kaunti, zilizochapishwa kama matoleo ya Open Contracting Data Standard (OCDS). Bure kutumia kwa kutaja chanzo, hakuna ufunguo unaohitajika.",
+      "download": "Pakua JSON",
+      "endpoint": "Anwani",
+      "example": "Ombi la mfano",
+      "license": "Leseni: Creative Commons Attribution 4.0",
+      "sample": "Sampuli ya moja kwa moja",
+      "tendersCsv": "Zabuni kama CSV",
+      "fields": "Kilichomo katika kila toleo",
+      "f1": "Zabuni: rejeleo, kichwa, sekta, wadi, thamani iliyokadiriwa, njia, muda wa zabuni, idadi ya wazabuni",
+      "f2": "Tuzo: mkandarasi, thamani, tarehe",
+      "f3": "Mnunuzi na mchapishaji, na kitambulisho thabiti (ocid) cha kila manunuzi",
+      "limit": "Hadi matoleo 500 kwa ombi. Tumia limit na offset kupitia kurasa.",
+      "count": "Matoleo {count} katika sampuli hii"
+    },
+    "offline": {
+      "saved": "Huna mtandao. Unaona kilichohifadhiwa mwisho kwenye simu hii.",
+      "install": "Sakinisha programu",
+      "installHint": "Weka County Yangu kwenye skrini yako ya nyumbani. Hufunguka haraka na hufanya kazi hata mtandao ukiwa dhaifu.",
+      "dismiss": "Si sasa"
+    },
+    "voice": {
+      "start": "Sema badala ya kuandika",
+      "stop": "Simamisha",
+      "listening": "Inasikiliza. Sema kwa Kiswahili au Kiingereza.",
+      "unsupported": "Kuandika kwa sauti hakupatikani kwenye kivinjari hiki. Andika ripoti yako.",
+      "error": "Hatukusikia vizuri. Jaribu tena au andika."
+    },
+    "flags": {
+      "dominant_supplier": {
+        "title": "{name} ana {share}% ya thamani ya zabuni zilizotolewa",
+        "why": "Mkandarasi mmoja kushikilia zaidi ya robo ya thamani ni sababu ya kawaida ya kuangalia jinsi kazi inavyogawanywa."
+      },
+      "repeat_winner": {
+        "title": "{name} alishinda zabuni {wins}, {share}% ya zote",
+        "why": "Kushinda mara nyingi kunaweza kuwa halali, na pia ndivyo upendeleo wa kurudiwa unavyoonekana. Inafaa kuangalia kama zabuni zilikuwa na ushindani."
+      },
+      "top3_concentration": {
+        "title": "Wakandarasi watatu wana {share}% ya thamani iliyotolewa",
+        "why": "Soko lililokolea hivi huacha shinikizo dogo la ushindani kwa bei na ubora."
+      },
+      "non_competitive_share": {
+        "title": "{share}% ya thamani ilitolewa bila zabuni wazi",
+        "why": "Ununuzi wa moja kwa moja una matumizi halali, kama dharura, na unapaswa kubaki sehemu ndogo."
+      },
+      "contractor_direct_reliance": {
+        "title": "{name}: tuzo {nonopen} kati ya {wins} hazikutokana na zabuni wazi",
+        "why": "Tuzo nyingi za mkandarasi huyu zilitokana na ununuzi wa moja kwa moja au uliozuiliwa."
+      },
+      "single_bidder_share": {
+        "title": "{share}% ya zabuni zilizotolewa zilikuwa na mzabuni mmoja au hakuna",
+        "why": "Mzabuni mmoja hawezi kuonyesha kwamba bei ilijaribiwa."
+      },
+      "contractor_single_bid": {
+        "title": "{name} alishinda zabuni {count} akiwa mzabuni pekee",
+        "why": "Kushinda zabuni kadhaa ambapo hakuna mwingine aliyezabuni kunastahili kuangalia jinsi zilivyotangazwa."
+      },
+      "short_tender_period": {
+        "title": "Zabuni {count} zilizotolewa zilikuwa wazi kwa chini ya wiki moja",
+        "why": "Muda mfupi sana wa zabuni hupunguza wanaoweza kujibu kwa wakati."
+      },
+      "award_above_estimate": {
+        "title": "{name} ilitolewa kwa {pct}% ya makadirio",
+        "why": "Pengo kubwa kati ya makadirio na tuzo linaweza kumaanisha makadirio hafifu au bei isiyojaribiwa."
+      },
+      "split_awards": {
+        "title": "{name} alipata tuzo {count} za kazi ileile ndani ya siku 30",
+        "why": "Tuzo kadhaa za kazi ya aina ileile mahali pamoja zinaweza kuashiria kazi kubwa iliyogawanywa ili kukwepa kiwango."
+      },
+      "kra_noncompliant": {
+        "title": "{name} alishindwa ukaguzi wake wa mwisho wa kodi",
+        "why": "Taasisi za umma zinatarajiwa kutoa tuzo kwa wakandarasi waliotimiza masharti ya kodi pekee."
+      },
+      "project_overrun": {
+        "title": "{name} imetumia {pct}% ya bajeti yake",
+        "why": "Matumizi yanayozidi bajeti yanapaswa kuambatana na idhini ya mabadiliko na maelezo kwa umma."
+      },
+      "stalled_after_spend": {
+        "title": "{name} imekwama baada ya {pct}% ya bajeti kutumika",
+        "why": "Fedha zimetoka lakini kazi imesimama. Wakazi wanapaswa kuambiwa sababu na lini itaendelea."
+      },
+      "project_late": {
+        "title": "{name} imechelewa siku {days} baada ya tarehe iliyotarajiwa",
+        "why": "Mradi haujakamilika kufikia tarehe iliyochapishwa na kaunti."
+      }
+    }
   }
 }

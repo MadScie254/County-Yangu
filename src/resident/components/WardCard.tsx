@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { X, Megaphone, FolderKanban, BellRing, ChevronRight } from 'lucide-react';
+import { X, Megaphone, FolderKanban, BellRing, ChevronRight, ClipboardList } from 'lucide-react';
 import { useI18n } from '@/shared/i18n';
 import { subCountyById, wardById, wards } from '@/shared/config/county';
 import type { WardStat } from '@/shared/api/types';
@@ -98,6 +98,9 @@ export function WardCard({ selection, stats, subStats, onSelect, onClose, classN
           </Link>
           <Link to={`/alerts?ward=${selection.id}`} className={buttonClass('secondary', 'sm')}>
             <BellRing className="size-4" aria-hidden /> {t('home.wardCard.getAlerts')}
+          </Link>
+          <Link to={`/ward/${selection.id}`} className={buttonClass('secondary', 'sm', 'col-span-2')}>
+            <ClipboardList className="size-4" aria-hidden /> {t('loop.scorecard.view')}
           </Link>
         </div>
       </div>

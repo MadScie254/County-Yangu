@@ -127,6 +127,8 @@ export type CaseStatus = {
   updated_at: string;
   resolve_due_at: string | null;
   project_slug: string | null;
+  reopened_count?: number;
+  feedback_given?: boolean;
   events: { kind: string; message: string | null; at: string }[];
 };
 
@@ -157,3 +159,61 @@ export type PulseSummary = {
   median_ack_hours: number | null;
   median_resolve_days: number | null;
 };
+
+// ---- the resident loop (feedback, verification, results, follows, scorecards, open data) ----
+
+export type FixStats = { responses: number; fixed: number; reopened: number; by_ward: { ward_id: string; ward: string; responses: number; fixed: number }[] };
+
+export type VerifyResult = {
+  kind: 'permit' | 'receipt' | null;
+  valid: boolean;
+  state?: 'valid' | 'revoked' | 'not_valid' | 'unknown';
+  service?: string | null;
+  holder?: string | null;
+  ward?: string | null;
+  amount?: number | null;
+  stream?: string | null;
+  issued_at?: string | null;
+  reference?: string | null;
+  revoked_at?: string | null;
+  revoked_reason?: string | null;
+};
+
+export type BudgetResultOption = { id: string; title: string; sector: string; amount: number; votes: number; funded: boolean };
+export type BudgetResults = {
+  cycle: { id: string; title: string; starts_at: string; ends_at: string; status: string } | null;
+  cycles: { id: string; title: string }[];
+  total_votes?: number;
+  wards: { ward_id: string; ward: string; envelope: number; votes: number; options: BudgetResultOption[] }[];
+};
+
+export type FollowKind = 'supplier' | 'project' | 'ward_tenders' | 'sector';
+export type Follow = { id: string; kind: FollowKind; key: string; label: string; created_at: string };
+
+export type CommitteeView = {
+  code: string;
+  name: string;
+  name_sw: string | null;
+  cases: { received_90d: number; open: number; overdue: number; resolved_90d: number; reopened: number; median_days: number | null };
+  projects: { count: number; budget: number; spent: number; stalled: number; completed: number };
+  tenders: { open: number; awarded: number; awarded_value: number };
+  flags: number;
+  attention: { slug: string; title: string; status: string; budget: number; spent: number }[];
+};
+
+export type WardScorecard = {
+  ward_id: string;
+  ward: string;
+  constituency: string;
+  population: number | null;
+  sub_county: string | null;
+  generated_at: string;
+  cases: { received_90d: number; resolved_90d: number; open: number; overdue: number; median_days: number | null; reopened: number };
+  confirmed: { responses: number; fixed: number };
+  top_categories: { category: string; category_sw: string | null; count: number }[];
+  projects: { count: number; budget: number; spent: number; stalled: number; completed: number };
+  tenders: { open: number; awarded: number; awarded_value: number };
+  budget: { cycle: string; votes: number; envelope: number | null } | null;
+};
+
+export type OcdsPackage = { uri: string; version: string; publishedDate: string; publisher: { name: string }; license: string; releases: Record<string, unknown>[] };

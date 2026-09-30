@@ -23,6 +23,11 @@ const MyApplications = lazy(() => import('./pages/services/MyApplications'));
 const ApplicationDetail = lazy(() => import('./pages/services/ApplicationDetail'));
 const Notifications = lazy(() => import('./pages/services/Notifications'));
 const Dashboard = lazy(() => import('./pages/Dashboard'));
+const Verify = lazy(() => import('./pages/Verify'));
+const Results = lazy(() => import('./pages/Results'));
+const Assembly = lazy(() => import('./pages/Assembly'));
+const WardScorecard = lazy(() => import('./pages/WardScorecard'));
+const OpenApi = lazy(() => import('./pages/OpenApi'));
 const OpenCounty = lazy(() => import('./pages/OpenCounty'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
@@ -51,6 +56,12 @@ export function App() {
           <Route path="tenders" element={<Tenders />} />
           <Route path="pulse" element={<Pulse />} />
           <Route path="open" element={<OpenCounty />} />
+          <Route path="open/api" element={<OpenApi />} />
+          <Route path="verify" element={<Verify />} />
+          <Route path="verify/:code" element={<Verify />} />
+          <Route path="vote/results" element={<Results />} />
+          <Route path="assembly" element={<Assembly />} />
+          <Route path="ward/:id" element={<WardScorecard />} />
           <Route path="me" element={<RequireAuth><Dashboard /></RequireAuth>} />
           <Route path="how-it-works" element={<HowItWorks />} />
           <Route path="services" element={<Services />} />

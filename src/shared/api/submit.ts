@@ -73,6 +73,9 @@ export const verifyOtp = (phone: string, code: string, purpose: 'vote' | 'alerts
 export const castVote = (body: { token: string; cycle_id: string; ward_id: string; option_id: string; client_key: string }) =>
   backendConfigured ? post<SimpleResult>('vote', JSON.stringify(body)) : sleep(500).then(() => ({ ok: true as const }));
 
+export const sendCaseFeedback = (body: { reference: string; fixed: boolean; comment?: string }) =>
+  backendConfigured ? post<{ ok: true; reopened: boolean }>('case-feedback', JSON.stringify(body)) : sleep(500).then(() => ({ ok: true as const, reopened: !body.fixed }));
+
 export const subscribeAlerts = (body: { token: string; ward_id: string; frequency: string }) =>
   backendConfigured ? post<SimpleResult>('alerts-subscribe', JSON.stringify(body)) : sleep(500).then(() => ({ ok: true as const }));
 

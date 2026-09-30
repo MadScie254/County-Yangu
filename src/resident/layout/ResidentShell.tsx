@@ -1,3 +1,4 @@
+import { InstallPrompt } from '../components/InstallPrompt';
 import { useEffect, useState } from 'react';
 import { NavLink, Link, Outlet, useLocation } from 'react-router-dom';
 import { Home, Megaphone, FolderKanban, Vote, Menu, Settings2, Smartphone, WifiOff, Building2, ShieldCheck, UserRound, Scale } from 'lucide-react';
@@ -24,6 +25,10 @@ const primaryNav: { to: string; key: MessageKey; end?: boolean }[] = [
 const secondaryNav: { to: string; key: MessageKey }[] = [
   { to: '/open', key: 'nav.open' },
   { to: '/tenders', key: 'nav.tenders' },
+  { to: '/vote/results', key: 'nav.results' },
+  { to: '/assembly', key: 'nav.assembly' },
+  { to: '/verify', key: 'nav.verify' },
+  { to: '/open/api', key: 'nav.data' },
   { to: '/ideas', key: 'nav.proposals' },
   { to: '/alerts', key: 'nav.alerts' },
   { to: '/how-it-works', key: 'nav.how' },
@@ -201,6 +206,7 @@ export function ResidentShell() {
 
       <main id="main" className="flex-1 pb-24 lg:pb-0" tabIndex={-1}>
         <Outlet />
+        <InstallPrompt />
       </main>
 
       <footer className={cn('border-t border-line bg-bg-2', isHome ? '' : 'mt-8')}>

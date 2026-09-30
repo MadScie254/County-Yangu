@@ -8,6 +8,7 @@ import { Button } from '@/shared/ui/Button';
 import { Chip } from '@/shared/ui/Chip';
 import { Field, SelectInput, TextInput } from '@/shared/ui/Field';
 import { toast } from '@/shared/ui/Toast';
+import { draftNextRound } from '@/shared/api/loop';
 import { deleteOption, listCycles, listOptions, saveCycle, saveOption } from '../api/content';
 import { Empty, PageHeader, Panel } from '../ui/Page';
 
@@ -25,6 +26,11 @@ export default function Budget() {
   const onErr = (e: unknown) => toast({ tone: 'bad', title: 'That did not work', body: e instanceof Error ? e.message : undefined });
 
   const setStatus = useMutation({ mutationFn: (v: { status?: 'draft' | 'open' | 'closed'; published_results?: boolean }) => saveCycle({ id: cycle!.id, title: cycle!.title, ...v }), onSuccess: () => void qc.invalidateQueries({ queryKey: ['c-cycles'] }), onError: onErr });
+  const draftNext = useMutation({
+    mutationFn: draftNextRound,
+    onSuccess: (id) => { toast({ tone: id ? 'good' : 'info', title: id ? `Drafted round ${id} with last round's ward envelopes. Add options, then open it.` : 'Next quarter already has a round.' }); void qc.invalidateQueries({ queryKey: ['c-cycles'] }); },
+    onError: onErr,
+  });
   const create = useMutation({ mutationFn: () => saveCycle({ id: nc.id.trim(), title: nc.title.trim() }), onSuccess: () => { setNc({ id: '', title: '' }); void qc.invalidateQueries({ queryKey: ['c-cycles'] }); }, onError: onErr });
   const addOpt = useMutation({ mutationFn: () => saveOption({ cycle_id: cycle!.id, ward_id: ward, title: opt.title.trim(), sector: opt.sector.trim() || 'General', description: opt.description.trim() || null, amount: Number(opt.amount.replace(/\D/g, '')) || 0 }), onSuccess: () => { setOpt({ title: '', sector: '', amount: '', description: '' }); void qc.invalidateQueries({ queryKey: ['c-options'] }); }, onError: onErr });
   const delOpt = useMutation({ mutationFn: deleteOption, onSuccess: () => void qc.invalidateQueries({ queryKey: ['c-options'] }), onError: onErr });
@@ -57,6 +63,8 @@ export default function Budget() {
             <TextInput aria-label="Round id" placeholder="Short id, e.g. fy2027-28" value={nc.id} onChange={(e) => setNc({ ...nc, id: e.target.value })} />
             <TextInput aria-label="Round title" placeholder="Title" value={nc.title} onChange={(e) => setNc({ ...nc, title: e.target.value })} />
             <Button variant="secondary" icon={<Plus className="size-4" aria-hidden />} disabled={!nc.id.trim() || !nc.title.trim()} onClick={() => create.mutate()}>Create draft round</Button>
+            <Button variant="ghost" icon={<CalendarClock className="size-4" aria-hidden />} loading={draftNext.isPending} onClick={() => draftNext.mutate()}>Schedule next quarter</Button>
+            <p className="text-xs text-muted">Rounds open on their start date once they have options, and close on their end date. Publishing results stays a decision for a person.</p>
           </div>
         </Panel>
 

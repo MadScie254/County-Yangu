@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { CheckCircle2, CircleDot, Clock, Flag, Landmark, Megaphone, MessageSquare, TriangleAlert, ArrowRight } from 'lucide-react';
+import { CheckCircle2, CircleDot, Clock, Flag, Landmark, Megaphone, MessageSquare, RotateCcw, ThumbsUp, TriangleAlert, ArrowRight } from 'lucide-react';
 import { useI18n, type MessageKey } from '@/shared/i18n';
 import { useCaseStatus } from '@/shared/api/hooks';
 import { referenceRegex } from '@/shared/lib/schemas';
@@ -11,8 +11,9 @@ import { Chip, reportTone } from '@/shared/ui/Chip';
 import { Ring } from '@/shared/ui/Meter';
 import { Skeleton } from '@/shared/ui/Card';
 import { ButtonLink } from '@/shared/ui/Button';
+import { CaseFeedback } from '../components/CaseFeedback';
 
-const eventIcon: Record<string, typeof CircleDot> = { created: Megaphone, status: CheckCircle2, public_message: MessageSquare, reminder: Clock, escalated: Flag };
+const eventIcon: Record<string, typeof CircleDot> = { created: Megaphone, status: CheckCircle2, public_message: MessageSquare, reminder: Clock, escalated: Flag, feedback: ThumbsUp, reopened: RotateCcw };
 
 export default function CaseDetail() {
   const { reference = '' } = useParams();
@@ -55,7 +56,10 @@ export default function CaseDetail() {
             <span className="font-display text-2xl font-extrabold leading-none">{done ? '✓' : overdueDays ? `+${overdueDays}` : `${Math.round(progress * 100)}%`}</span>
           </Ring>
           <div className="min-w-0 flex-1">
-            <Chip tone={reportTone(c.status)}>{t(`statuses.${c.status}` as MessageKey)}</Chip>
+            <div className="flex flex-wrap gap-2">
+              <Chip tone={reportTone(c.status)}>{t(`statuses.${c.status}` as MessageKey)}</Chip>
+              {(c.reopened_count ?? 0) > 0 && <Chip tone="warn"><RotateCcw className="size-3.5" aria-hidden />{t('loop.feedback.reopened', { count: c.reopened_count ?? 0 })}</Chip>}
+            </div>
             <p className="mt-2 font-display text-xl font-bold leading-tight">{categoryName}</p>
             <p className="text-sm text-muted">{c.ward}</p>
           </div>
@@ -76,6 +80,8 @@ export default function CaseDetail() {
         </dl>
         {sensitive && <p className="mt-4 flex items-center gap-2 rounded-xl bg-info-soft px-3 py-2 text-sm font-medium text-info"><Landmark className="size-4" aria-hidden /> {t('status.sensitive')}</p>}
       </div>
+
+      {(c.status === 'resolved' || c.status === 'closed') && !c.feedback_given && <CaseFeedback reference={c.reference} />}
 
       <section className="mt-10" aria-labelledby="timeline">
         <h2 id="timeline" className="font-display text-xl font-bold">{t('status.timeline')}</h2>

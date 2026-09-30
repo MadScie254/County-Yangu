@@ -31,6 +31,8 @@ select cron.schedule('escalation-runner',    '5 * * * *',   $$ select private.ca
 select cron.schedule('digest-monthly',       '0 5 1 * *',   $$ select private.call_function('digest-builder?job=monthly') $$);                      -- 08:00 on the 1st
 select cron.schedule('ward-updates-daily',   '30 5 * * *',  $$ select private.call_function('digest-builder?job=ward-updates&frequency=daily') $$); -- 08:30 daily
 select cron.schedule('ward-updates-weekly',  '30 5 * * 1',  $$ select private.call_function('digest-builder?job=ward-updates&frequency=weekly') $$);-- 08:30 Mondays
+select cron.schedule('procurement-scan',     '15 5 * * *',  $$ select public.svc_procurement_scan() $$);                                              -- 08:15 daily: red flags refreshed, new serious ones reported
+select cron.schedule('round-scheduler',      '45 5 * * *',  $$ select public.svc_round_scheduler() $$);                                               -- 08:45 daily: budget rounds open and close on time, next quarter drafted
 
 -- To see what ran:   select * from cron.job_run_details order by start_time desc limit 20;
 -- To stop one:       select cron.unschedule('ward-updates-daily');

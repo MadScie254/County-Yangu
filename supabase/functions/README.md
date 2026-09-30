@@ -18,6 +18,7 @@ Everything that reaches outside the database, or that a resident or a phone netw
 | `report-intake` | resident app | rate limit (hashed address) | Validate, scrub personal details, resolve ward from a pin, sanitise photos (EXIF stripped, type checked by bytes), create the case |
 | `otp-request` / `otp-verify` | resident app | rate limits (address, number, county-wide) | Send a six-digit code by SMS; check it; return a 30-minute signed token bound to the phone and purpose |
 | `vote` | resident app | verified-phone token | One vote per person per round, shared with USSD |
+| `case-feedback` | resident app | case reference, rate limits (address, reference) | "Was it fixed?": a yes is counted, a no reopens the case |
 | `alerts-subscribe` | resident app | verified-phone token | Subscribe a phone to a ward; confirm by SMS |
 | `proposal-submit` / `proposal-support` | resident app | verified-phone token | Post or back an idea/petition (text scrubbed: ideas are public at once) |
 | `ussd-gateway` | Africa's Talking | secret token in the URL (+ optional IP list) | The USSD menu: report, check, budget vote, alerts; English and Kiswahili |

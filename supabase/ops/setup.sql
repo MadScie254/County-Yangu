@@ -3410,3 +3410,769 @@ as $$
 $$;
 revoke all on function public.ai_procurement_flags(text) from public, anon;
 grant execute on function public.ai_procurement_flags(text) to authenticated;
+
+-- ==== 20260930001300_resident_loop.sql ====
+
+-- The resident loop (migration 0013): "Was it fixed?" feedback and reopening, SMS when a case or application moves,
+-- and verification codes for permits and receipts.
+
+-- ---- "Was it fixed?" ----------------------------------------------------------------------------------------------
+
+alter table public.reports add column reopened_count int not null default 0;
+
+alter table public.report_events drop constraint report_events_kind_check;
+alter table public.report_events add constraint report_events_kind_check
+  check (kind in ('created', 'triaged', 'assigned', 'status', 'note', 'public_message', 'reminder', 'escalated', 'merged', 'feedback', 'reopened'));
+
+create table public.case_feedback (
+  id         uuid primary key default gen_random_uuid(),
+  report_id  uuid not null references public.reports (id) on delete cascade,
+  fixed      boolean not null,
+  comment    text check (char_length(comment) <= 500),
+  created_at timestamptz not null default now()
+);
+create index case_feedback_report_idx on public.case_feedback (report_id, created_at);
+alter table public.case_feedback enable row level security;
+-- No policies: nobody reads or writes this table directly. Staff see the totals below; the public sees the totals too.
+
+-- Called only by the case-feedback Edge Function. 'ok' | 'not_found' | 'not_resolved' | 'duplicate'.
+-- A "no, still not fixed" answer reopens the case, puts it back with its team and starts a new target.
+create function public.svc_case_feedback(p_reference text, p_fixed boolean, p_comment text)
+returns text
+language plpgsql
+security definer
+set search_path = ''
+as $$
+declare
+  v_r public.reports;
+  v_comment text := nullif(left(trim(coalesce(p_comment, '')), 500), '');
+begin
+  select r.* into v_r from public.reports r where r.reference = upper(trim(p_reference)) for update;
+  if not found then return 'not_found'; end if;
+  if v_r.status not in ('resolved', 'closed') then return 'not_resolved'; end if;
+  if exists (select 1 from public.case_feedback f where f.report_id = v_r.id and f.created_at >= coalesce(v_r.resolved_at, v_r.created_at)) then
+    return 'duplicate';
+  end if;
+
+  insert into public.case_feedback (report_id, fixed, comment) values (v_r.id, p_fixed, v_comment);
+  insert into public.report_events (report_id, kind, is_public, message, data)
+  values (v_r.id, 'feedback', true,
+          case when p_fixed then 'The resident confirmed it was fixed.' else 'The resident says it is not fixed.' end
+            || coalesce(' "' || v_comment || '"', ''),
+          jsonb_build_object('fixed', p_fixed));
+
+  if not p_fixed then
+    update public.reports
+       set status = 'in_progress', resolved_at = null, reopened_count = reopened_count + 1,
+           resolve_due_at = private.add_sla(now(), 72, 'hours'), escalation_level = 0, last_escalated_at = null
+     where id = v_r.id;
+    insert into public.report_events (report_id, kind, is_public, message, data)
+    values (v_r.id, 'reopened', true, 'Reopened at the resident''s request.', jsonb_build_object('status', 'in_progress'));
+  end if;
+  return 'ok';
+end;
+$$;
+revoke all on function public.svc_case_feedback(text, boolean, text) from public, anon, authenticated;
+
+-- How often the county's "resolved" turns out to be true, county-wide and by ward. Public.
+create function public.fix_confirmation_stats()
+returns jsonb
+language sql
+stable
+security definer
+set search_path = ''
+as $$
+  select jsonb_build_object(
+    'responses', (select count(*) from public.case_feedback),
+    'fixed', (select count(*) from public.case_feedback where fixed),
+    'reopened', (select count(*) from public.case_feedback where not fixed),
+    'by_ward', coalesce((
+      select jsonb_agg(x order by x.responses desc, x.ward)
+      from (
+        select w.id as ward_id, w.name as ward, count(*) as responses, count(*) filter (where f.fixed) as fixed
+        from public.case_feedback f
+        join public.reports r on r.id = f.report_id
+        join public.wards w on w.id = r.ward_id
+        group by w.id, w.name
+      ) x), '[]'::jsonb));
+$$;
+grant execute on function public.fix_confirmation_stats() to anon, authenticated;
+
+-- The public status page now also says whether feedback has been given for the latest resolution.
+create or replace function public.case_status(p_reference text)
+returns jsonb
+language sql
+stable
+security definer
+set search_path = ''
+as $$
+  select jsonb_build_object(
+    'reference', r.reference,
+    'status', r.status,
+    'category_id', r.category_id,
+    'category', c.name,
+    'category_sw', c.name_sw,
+    'ward', w.name,
+    'ward_id', r.ward_id,
+    'created_at', r.created_at,
+    'updated_at', r.updated_at,
+    'resolve_due_at', r.resolve_due_at,
+    'project_slug', p.slug,
+    'reopened_count', r.reopened_count,
+    'feedback_given', exists (select 1 from public.case_feedback f where f.report_id = r.id and f.created_at >= coalesce(r.resolved_at, r.created_at) and r.status in ('resolved', 'closed')),
+    'events', coalesce((
+      select jsonb_agg(jsonb_build_object('kind', e.kind, 'message', e.message, 'at', e.created_at) order by e.created_at)
+      from public.report_events e where e.report_id = r.id and e.is_public), '[]'::jsonb))
+  from public.reports r
+  join public.wards w on w.id = r.ward_id
+  left join public.report_categories c on c.id = r.category_id
+  left join public.projects p on p.id = r.project_id and p.published
+  where r.reference = upper(trim(p_reference));
+$$;
+
+-- ---- SMS when a case moves ----------------------------------------------------------------------------------------
+-- One rule for every path (staff action, escalation, reopening): a public timeline event reaches the reporter.
+
+create function private.notify_report_event()
+returns trigger
+language plpgsql
+security definer
+set search_path = ''
+as $$
+declare
+  v_phone text;
+  v_ref text;
+  v_url text;
+  v_line text;
+begin
+  if not new.is_public or new.kind not in ('status', 'public_message', 'reopened') then return new; end if;
+  select c.phone_e164 into v_phone from private.report_contacts c where c.report_id = new.report_id;
+  if v_phone is null then return new; end if;
+  select r.reference into v_ref from public.reports r where r.id = new.report_id;
+  select c.settings ->> 'web_url' into v_url from public.county c limit 1;
+  v_line := case
+    when new.kind = 'status' then initcap(replace(coalesce(new.data ->> 'status', 'updated'), '_', ' '))
+    else null end;
+  insert into private.outbox (channel, recipient, body, related)
+  values ('sms', v_phone,
+          'County update ' || v_ref || ': ' || coalesce(v_line, '') || case when v_line is not null and new.message is not null then ' - ' else '' end
+            || coalesce(new.message, '') || case when v_url is not null then ' ' || v_url || '/case/' || v_ref else '' end,
+          jsonb_build_object('report_id', new.report_id, 'event', new.kind));
+  return new;
+end;
+$$;
+create trigger report_events_notify after insert on public.report_events
+  for each row execute function private.notify_report_event();
+
+-- case_transition no longer sends its own SMS (the trigger above does, for every path).
+create or replace function public.case_transition(
+  p_report uuid,
+  p_status text,
+  p_message text default null,
+  p_public boolean default false
+) returns void
+language plpgsql
+security definer
+set search_path = ''
+as $$
+declare
+  v_r public.reports;
+begin
+  if p_status not in ('triaged', 'assigned', 'in_progress', 'resolved', 'closed', 'rejected') then
+    raise exception 'Invalid status %', p_status using errcode = '22023';
+  end if;
+  select r.* into v_r from public.reports r where r.id = p_report for update;
+  if not found then raise exception 'Case not found' using errcode = 'P0002'; end if;
+  if not private.can_work_case(v_r.ward_id, v_r.department_id, v_r.assigned_to) then
+    raise exception 'Not allowed to work this case' using errcode = '42501';
+  end if;
+
+  update public.reports
+     set status = p_status,
+         acknowledged_at = coalesce(acknowledged_at, now()),
+         resolved_at = case when p_status in ('resolved', 'closed') then coalesce(resolved_at, now()) else resolved_at end
+   where id = p_report;
+
+  insert into public.report_events (report_id, kind, actor_id, is_public, message, data)
+  values (p_report, 'status', (select auth.uid()), p_public, p_message, jsonb_build_object('status', p_status));
+end;
+$$;
+
+-- ---- permits and receipts you can check ---------------------------------------------------------------------------
+
+alter table public.applications
+  add column verify_code text unique,
+  add column revoked_at timestamptz,
+  add column revoked_reason text;
+
+-- Short, readable, no look-alike characters: CY-XXXX-XXXX.
+create function private.new_verify_code()
+returns text
+language plpgsql
+volatile
+set search_path = ''
+as $$
+declare
+  alphabet constant text := 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+  v_code text;
+  v_bytes bytea;
+begin
+  loop
+    v_bytes := decode(replace(gen_random_uuid()::text, '-', ''), 'hex');
+    v_code := 'CY-' || (select string_agg(substr(alphabet, 1 + (get_byte(v_bytes, i) % 31), 1), '' order by i) from generate_series(0, 3) i)
+              || '-' || (select string_agg(substr(alphabet, 1 + (get_byte(v_bytes, i) % 31), 1), '' order by i) from generate_series(4, 7) i);
+    exit when not exists (select 1 from public.applications a where a.verify_code = v_code);
+  end loop;
+  return v_code;
+end;
+$$;
+
+create function private.applications_verify()
+returns trigger
+language plpgsql
+security definer
+set search_path = ''
+as $$
+begin
+  if (select auth.uid()) is not null and not private.is_staff()
+     and (new.verify_code is distinct from old.verify_code or new.revoked_at is distinct from old.revoked_at or new.revoked_reason is distinct from old.revoked_reason) then
+    raise exception 'Protected application fields cannot be changed' using errcode = '42501';
+  end if;
+  if new.status = 'approved' and old.status is distinct from 'approved' and new.verify_code is null then
+    new.verify_code := private.new_verify_code();
+  end if;
+  return new;
+end;
+$$;
+create trigger applications_verify before update on public.applications
+  for each row execute function private.applications_verify();
+
+-- Anyone holding a code (printed on a permit or receipt, or scanned from its QR) can check it. Reveals only what is
+-- printed on the document: no ID numbers, no phone numbers.
+create function public.verify_document(p_code text)
+returns jsonb
+language plpgsql
+stable
+security definer
+set search_path = ''
+as $$
+declare
+  v_code text := upper(trim(coalesce(p_code, '')));
+  v_a record;
+  v_p record;
+begin
+  if char_length(v_code) < 6 or char_length(v_code) > 40 then return jsonb_build_object('valid', false, 'kind', null); end if;
+
+  select a.reference, a.business_name, a.decided_at, a.revoked_at, a.revoked_reason, a.status, s.name as service, w.name as ward
+    into v_a
+    from public.applications a
+    join public.services s on s.id = a.service_id
+    left join public.wards w on w.id = a.ward_id
+   where a.verify_code = v_code;
+  if found then
+    return jsonb_build_object(
+      'kind', 'permit',
+      'valid', v_a.status = 'approved' and v_a.revoked_at is null,
+      'state', case when v_a.revoked_at is not null then 'revoked' when v_a.status = 'approved' then 'valid' else 'not_valid' end,
+      'service', v_a.service, 'holder', v_a.business_name, 'ward', v_a.ward, 'issued_at', v_a.decided_at,
+      'reference', v_a.reference, 'revoked_at', v_a.revoked_at, 'revoked_reason', v_a.revoked_reason);
+  end if;
+
+  select p.mpesa_receipt, p.amount, p.stream, p.completed_at, p.status into v_p
+    from public.payments p where p.mpesa_receipt = v_code;
+  if found then
+    return jsonb_build_object(
+      'kind', 'receipt', 'valid', v_p.status = 'completed', 'state', case when v_p.status = 'completed' then 'valid' else 'not_valid' end,
+      'amount', v_p.amount, 'stream', v_p.stream, 'issued_at', v_p.completed_at, 'reference', v_p.mpesa_receipt);
+  end if;
+
+  return jsonb_build_object('valid', false, 'kind', null, 'state', 'unknown');
+end;
+$$;
+grant execute on function public.verify_document(text) to anon, authenticated;
+
+-- An administrator can withdraw a permit (fraud, error). The holder is told and the code then reads "revoked".
+create function public.revoke_document(p_application uuid, p_reason text)
+returns void
+language plpgsql
+security definer
+set search_path = ''
+as $$
+declare
+  v_a public.applications;
+begin
+  if not private.is_admin() then raise exception 'Only an administrator can revoke a permit' using errcode = '42501'; end if;
+  if char_length(trim(coalesce(p_reason, ''))) < 5 then raise exception 'Say why' using errcode = '22023'; end if;
+  select a.* into v_a from public.applications a where a.id = p_application for update;
+  if not found or v_a.verify_code is null then raise exception 'No issued permit' using errcode = 'P0002'; end if;
+  update public.applications set revoked_at = now(), revoked_reason = trim(p_reason) where id = p_application;
+  insert into public.notifications (user_id, title, message, kind, link)
+  values (v_a.applicant_id, 'Permit ' || v_a.reference, 'This permit was withdrawn: ' || trim(p_reason), 'error', '/services/applications/' || v_a.id);
+end;
+$$;
+grant execute on function public.revoke_document(uuid, text) to authenticated;
+
+-- ---- SMS when an application moves --------------------------------------------------------------------------------
+
+create function private.notify_application_change()
+returns trigger
+language plpgsql
+security definer
+set search_path = ''
+as $$
+declare
+  v_phone text;
+  v_url text;
+  v_text text;
+begin
+  v_text := case new.status
+    when 'approved' then 'approved. Verify it with code ' || coalesce(new.verify_code, '')
+    when 'rejected' then 'not approved' || coalesce(': ' || new.decision_note, '')
+    when 'changes_requested' then 'waiting for changes' || coalesce(': ' || new.decision_note, '')
+    when 'under_review' then 'under review'
+    else null end;
+  if v_text is null then return new; end if;
+  select p.phone into v_phone from public.profiles p where p.id = new.applicant_id;
+  if v_phone is null or v_phone !~ '^\+[1-9][0-9]{7,14}$' then return new; end if;
+  select c.settings ->> 'web_url' into v_url from public.county c limit 1;
+  insert into private.outbox (channel, recipient, body, related)
+  values ('sms', v_phone, 'County application ' || new.reference || ' is ' || v_text || case when v_url is not null then '. ' || v_url || '/services/applications/' || new.id else '' end,
+          jsonb_build_object('application_id', new.id));
+  return new;
+end;
+$$;
+create trigger applications_notify after update of status on public.applications
+  for each row when (old.status is distinct from new.status) execute function private.notify_application_change();
+
+-- ==== 20260930001400_participation_and_follows.sql ====
+
+-- 0014  Ward budget results and quarterly rounds, and following a supplier, a project or a place.
+
+-- ---- what the ward decided ----------------------------------------------------------------------------------------
+-- Every option in a round with its votes, and a running total in vote order within its ward: an option is funded while
+-- the running total stays inside the ward's envelope.
+create function private.option_tally(p_cycle text)
+returns table (ward_id text, id text, title text, sector text, amount numeric, votes bigint, running numeric)
+language sql
+stable
+security definer
+set search_path = ''
+as $$
+  select x.ward_id, x.id, x.title, x.sector, x.amount, x.votes,
+         sum(x.amount) over (partition by x.ward_id order by x.votes desc, x.title, x.id) as running
+    from (
+      select o.ward_id, o.id, o.title, o.sector, o.amount,
+             (select count(*) from public.votes v where v.option_id = o.id) as votes
+        from public.project_options o where o.cycle_id = p_cycle
+    ) x;
+$$;
+
+create function private.published_cycles()
+returns jsonb
+language sql
+stable
+security definer
+set search_path = ''
+as $$
+  select coalesce(jsonb_agg(jsonb_build_object('id', c.id, 'title', c.title) order by c.ends_at desc), '[]'::jsonb)
+    from public.budget_cycles c where c.published_results and c.status <> 'draft';
+$$;
+
+-- Published results for one round (the latest one when none is named). Only rounds staff have published are visible.
+create function public.budget_results(p_cycle text default null)
+returns jsonb
+language plpgsql
+stable
+security definer
+set search_path = ''
+as $$
+declare
+  v_c public.budget_cycles;
+begin
+  if p_cycle is null then
+    select c.* into v_c from public.budget_cycles c where c.published_results and c.status <> 'draft' order by c.ends_at desc limit 1;
+  else
+    select c.* into v_c from public.budget_cycles c where c.id = p_cycle and c.published_results and c.status <> 'draft';
+  end if;
+  if not found then return jsonb_build_object('cycle', null, 'wards', '[]'::jsonb, 'cycles', private.published_cycles()); end if;
+
+  return jsonb_build_object(
+    'cycle', jsonb_build_object('id', v_c.id, 'title', v_c.title, 'starts_at', v_c.starts_at, 'ends_at', v_c.ends_at, 'status', v_c.status),
+    'cycles', private.published_cycles(),
+    'total_votes', (select count(*) from public.votes v where v.cycle_id = v_c.id),
+    'wards', coalesce((
+      select jsonb_agg(jsonb_build_object(
+               'ward_id', w.id, 'ward', w.name,
+               'envelope', coalesce(e.amount, 0),
+               'votes', (select coalesce(sum(t.votes), 0) from private.option_tally(v_c.id) t where t.ward_id = w.id),
+               'options', (select jsonb_agg(jsonb_build_object(
+                             'id', t.id, 'title', t.title, 'sector', t.sector, 'amount', t.amount, 'votes', t.votes,
+                             'funded', t.running <= coalesce(e.amount, 0)) order by t.votes desc, t.title)
+                           from private.option_tally(v_c.id) t where t.ward_id = w.id))
+             order by w.name)
+      from public.wards w
+      left join public.ward_budget_envelopes e on e.cycle_id = v_c.id and e.ward_id = w.id
+      where exists (select 1 from public.project_options o where o.cycle_id = v_c.id and o.ward_id = w.id)
+    ), '[]'::jsonb));
+end;
+$$;
+grant execute on function public.budget_results(text) to anon, authenticated;
+
+-- ---- a round every quarter ----------------------------------------------------------------------------------------
+-- Draft the next quarter's round: same ward envelopes as the latest round, no options yet (wards propose those), voting
+-- for the first two weeks of the quarter. Idempotent per quarter. Returns the round id, or null if it already exists.
+create function private.draft_quarterly_round()
+returns text
+language plpgsql
+security definer
+set search_path = ''
+as $$
+declare
+  v_start date := (date_trunc('quarter', now() + interval '3 months'))::date;
+  v_id text := to_char(v_start, 'YYYY') || '-q' || to_char(v_start, 'Q');
+  v_prev text;
+begin
+  if exists (select 1 from public.budget_cycles c where c.id = v_id) then return null; end if;
+  select c.id into v_prev from public.budget_cycles c
+   where exists (select 1 from public.ward_budget_envelopes e where e.cycle_id = c.id) order by c.ends_at desc limit 1;
+  insert into public.budget_cycles (id, title, status, starts_at, ends_at, published_results)
+  values (v_id, 'Ward budget, ' || to_char(v_start, 'YYYY') || ' quarter ' || to_char(v_start, 'Q'), 'draft',
+          v_start::timestamptz, (v_start + 14)::timestamptz, false);
+  if v_prev is not null then
+    insert into public.ward_budget_envelopes (cycle_id, ward_id, amount)
+    select v_id, e.ward_id, e.amount from public.ward_budget_envelopes e where e.cycle_id = v_prev;
+  end if;
+  return v_id;
+end;
+$$;
+
+-- Daily: rounds open on their start date and close on their end date; the next quarter's draft appears in the last
+-- month of a quarter. Publishing results stays a human decision.
+create function public.svc_round_scheduler()
+returns jsonb
+language plpgsql
+security definer
+set search_path = ''
+as $$
+declare
+  v_opened int;
+  v_closed int;
+  v_drafted text;
+begin
+  update public.budget_cycles set status = 'closed' where status = 'open' and ends_at < now();
+  get diagnostics v_closed = row_count;
+  update public.budget_cycles set status = 'open' where status = 'draft' and starts_at <= now() and ends_at > now()
+     and exists (select 1 from public.project_options o where o.cycle_id = budget_cycles.id);
+  get diagnostics v_opened = row_count;
+  if extract(month from now())::int % 3 = 0 then v_drafted := private.draft_quarterly_round(); end if;
+  return jsonb_build_object('opened', v_opened, 'closed', v_closed, 'drafted', v_drafted);
+end;
+$$;
+revoke all on function public.svc_round_scheduler() from public, anon, authenticated;
+grant execute on function public.svc_round_scheduler() to service_role;
+
+-- The same drafting, on demand, for an administrator.
+create function public.draft_next_round()
+returns text
+language plpgsql
+security definer
+set search_path = ''
+as $$
+begin
+  if not private.is_admin() then raise exception 'Only an administrator can schedule a round' using errcode = '42501'; end if;
+  return private.draft_quarterly_round();
+end;
+$$;
+grant execute on function public.draft_next_round() to authenticated;
+
+-- ---- follow a supplier, a project or a place -----------------------------------------------------------------------
+create table public.follows (
+  id         uuid primary key default gen_random_uuid(),
+  user_id    uuid not null references auth.users (id) on delete cascade,
+  kind       text not null check (kind in ('supplier', 'project', 'ward_tenders', 'sector')),
+  key        text not null check (char_length(key) between 1 and 80),
+  label      text not null check (char_length(label) between 1 and 160),
+  created_at timestamptz not null default now(),
+  unique (user_id, kind, key)
+);
+create index follows_lookup_idx on public.follows (kind, key);
+alter table public.follows enable row level security;
+create policy "follows: own" on public.follows for all to authenticated
+  using (user_id = (select auth.uid())) with check (user_id = (select auth.uid()));
+grant select, insert, delete on public.follows to authenticated;
+
+create function private.follows_limit()
+returns trigger
+language plpgsql
+security definer
+set search_path = ''
+as $$
+begin
+  if (select count(*) from public.follows f where f.user_id = new.user_id) >= 40 then
+    raise exception 'You can follow up to 40 things' using errcode = '54000';
+  end if;
+  return new;
+end;
+$$;
+create trigger follows_limit before insert on public.follows for each row execute function private.follows_limit();
+
+create function private.tell_followers(p_kind text, p_key text, p_title text, p_message text, p_link text, p_tone text default 'info')
+returns void
+language sql
+security definer
+set search_path = ''
+as $$
+  insert into public.notifications (user_id, title, message, kind, link)
+  select f.user_id, p_title, p_message, p_tone, p_link from public.follows f where f.kind = p_kind and f.key = p_key;
+$$;
+
+-- New tenders, awards and status changes reach the people who follow that place, sector or supplier.
+create function private.follows_on_tender()
+returns trigger
+language plpgsql
+security definer
+set search_path = ''
+as $$
+declare
+  v_link text := '/tenders';
+  v_name text;
+begin
+  if new.status = 'open' and (tg_op = 'INSERT' or old.status is distinct from 'open') then
+    if new.ward_id is not null then
+      perform private.tell_followers('ward_tenders', new.ward_id, 'New tender in your ward', new.reference || ': ' || new.title, v_link);
+    end if;
+    perform private.tell_followers('sector', lower(new.sector), 'New ' || new.sector || ' tender', new.reference || ': ' || new.title, v_link);
+  elsif new.status = 'awarded' and (tg_op = 'INSERT' or old.status is distinct from 'awarded') then
+    select c.name into v_name from public.contractors c where c.id = new.awarded_contractor_id;
+    if new.awarded_contractor_id is not null then
+      perform private.tell_followers('supplier', new.awarded_contractor_id::text, coalesce(v_name, 'A supplier you follow') || ' won a tender',
+                                     new.reference || ': ' || new.title, v_link);
+    end if;
+    if new.ward_id is not null then
+      perform private.tell_followers('ward_tenders', new.ward_id, 'Tender awarded in your ward',
+                                     new.reference || ' went to ' || coalesce(v_name, 'a supplier'), v_link);
+    end if;
+  end if;
+  return new;
+end;
+$$;
+create trigger tenders_follows after insert or update of status on public.tenders
+  for each row execute function private.follows_on_tender();
+
+create function private.follows_on_project()
+returns trigger
+language plpgsql
+security definer
+set search_path = ''
+as $$
+begin
+  if new.published and (old.status is distinct from new.status or old.spent is distinct from new.spent and new.spent > old.spent) then
+    perform private.tell_followers('project', new.id::text, new.title,
+      case when old.status is distinct from new.status then 'Now ' || replace(new.status, '_', ' ') || '.' else 'Spending updated.' end,
+      '/projects/' || new.slug,
+      case when new.status = 'stalled' then 'warning' when new.status = 'completed' then 'success' else 'info' end);
+  end if;
+  return new;
+end;
+$$;
+create trigger projects_follows after update on public.projects
+  for each row execute function private.follows_on_project();
+
+-- A new red flag reaches followers of the supplier or project it names.
+create function private.follows_on_flag()
+returns trigger
+language plpgsql
+security definer
+set search_path = ''
+as $$
+begin
+  if new.severity = 'info' then return new; end if;
+  if new.subject_kind = 'contractor' then
+    perform private.tell_followers('supplier', split_part(new.subject_key, ':', 1), 'New flag on ' || new.subject_label, new.title, '/open', 'warning');
+  elsif new.subject_kind = 'project' then
+    perform private.tell_followers('project', new.subject_key, 'New flag on ' || new.subject_label, new.title, '/open', 'warning');
+  end if;
+  return new;
+end;
+$$;
+create trigger flags_follows after insert on public.procurement_flags
+  for each row execute function private.follows_on_flag();
+
+-- ==== 20260930001500_open_data.sql ====
+
+-- 0015  Views for County Assembly committees and ward scorecards, and open contracting data for researchers.
+-- All of it is aggregate or already-public information; nothing here exposes a resident.
+
+-- ---- committees ---------------------------------------------------------------------------------------------------
+-- A committee oversees departments (for cases) and sectors (for projects and tenders). Editable by administrators.
+create table public.assembly_committees (
+  code         text primary key,
+  name         text not null,
+  name_sw      text,
+  departments  text[] not null default '{}',   -- departments.code
+  sectors      text[] not null default '{}',   -- lower-case sector names used on projects and tenders
+  sort         int not null default 0
+);
+alter table public.assembly_committees enable row level security;
+create policy "committees: public read" on public.assembly_committees for select to anon, authenticated using (true);
+create policy "committees: admin write" on public.assembly_committees for all to authenticated using (private.is_admin()) with check (private.is_admin());
+grant select on public.assembly_committees to anon, authenticated;
+grant insert, update, delete on public.assembly_committees to authenticated;
+create trigger audit_assembly_committees after insert or update or delete on public.assembly_committees
+  for each row execute function private.audit_row();
+
+insert into public.assembly_committees (code, name, name_sw, departments, sectors, sort) values
+  ('roads',       'Roads, Transport and Public Works',   'Barabara, Uchukuzi na Kazi za Umma',   '{roads}',                 '{roads,transport,public works}', 1),
+  ('water',       'Water, Environment and Sanitation',   'Maji, Mazingira na Usafi',             '{water,environment}',     '{water,sanitation,drainage,environment,waste}', 2),
+  ('health',      'Health',                              'Afya',                                 '{health}',                '{health}', 3),
+  ('education',   'Education and Social Services',       'Elimu na Huduma za Jamii',             '{education}',             '{education,social}', 4),
+  ('trade',       'Trade, Markets and Licensing',        'Biashara, Masoko na Leseni',           '{trade}',                 '{markets,trade}', 5),
+  ('planning',    'Planning, Lands and Housing',         'Mipango, Ardhi na Makazi',             '{planning}',              '{planning,housing,lands}', 6),
+  ('safety',      'Public Safety and Disaster',          'Usalama wa Umma na Maafa',             '{safety}',                '{safety,disaster}', 7),
+  ('finance',     'Finance and Budget',                  'Fedha na Bajeti',                      '{finance,integrity}',     '{finance}', 8);
+
+-- One payload for every committee: what residents reported in its area and how the county responded, the projects and
+-- tenders in its sectors, and open procurement flags on them. Last 90 days for cases.
+create function public.assembly_dashboard()
+returns jsonb
+language sql
+stable
+security definer
+set search_path = ''
+as $$
+  select coalesce(jsonb_agg(jsonb_build_object(
+    'code', c.code, 'name', c.name, 'name_sw', c.name_sw,
+    'cases', (
+      select jsonb_build_object(
+        'received_90d', count(*) filter (where r.created_at >= now() - interval '90 days'),
+        'open', count(*) filter (where r.status not in ('resolved', 'closed', 'rejected')),
+        'overdue', count(*) filter (where r.status not in ('resolved', 'closed', 'rejected') and r.resolve_due_at < now()),
+        'resolved_90d', count(*) filter (where r.status in ('resolved', 'closed') and r.resolved_at >= now() - interval '90 days'),
+        'reopened', coalesce(sum(r.reopened_count), 0),
+        'median_days', round((percentile_cont(0.5) within group (order by extract(epoch from (r.resolved_at - r.created_at)) / 86400)
+                              filter (where r.resolved_at >= now() - interval '90 days'))::numeric, 1))
+      from public.reports r join public.departments d on d.id = r.department_id where d.code = any (c.departments)),
+    'projects', (
+      select jsonb_build_object('count', count(*), 'budget', coalesce(sum(p.budget), 0), 'spent', coalesce(sum(p.spent), 0),
+                                'stalled', count(*) filter (where p.status = 'stalled'),
+                                'completed', count(*) filter (where p.status = 'completed'))
+      from public.projects p where p.published and lower(p.sector) = any (c.sectors)),
+    'tenders', (
+      select jsonb_build_object('open', count(*) filter (where t.status = 'open'),
+                                'awarded', count(*) filter (where t.status = 'awarded'),
+                                'awarded_value', coalesce(sum(coalesce(t.award_amount, t.estimated_budget)) filter (where t.status = 'awarded'), 0))
+      from public.tenders t where lower(t.sector) = any (c.sectors)),
+    'flags', (
+      select count(*) from public.procurement_flags f
+       where f.status <> 'cleared' and f.severity <> 'info'
+         and ((f.subject_kind = 'project' and exists (select 1 from public.projects p where p.id::text = f.subject_key and lower(p.sector) = any (c.sectors)))
+           or (f.subject_kind = 'tender' and exists (select 1 from public.tenders t where t.id::text = f.subject_key and lower(t.sector) = any (c.sectors))))),
+    'attention', (
+      select coalesce(jsonb_agg(jsonb_build_object('slug', p.slug, 'title', p.title, 'status', p.status, 'budget', p.budget, 'spent', p.spent) order by p.spent desc), '[]'::jsonb)
+      from (select * from public.projects p2 where p2.published and lower(p2.sector) = any (c.sectors) and (p2.status = 'stalled' or p2.spent > p2.budget)
+             order by p2.spent desc limit 5) p)
+  ) order by c.sort), '[]'::jsonb)
+  from public.assembly_committees c;
+$$;
+grant execute on function public.assembly_dashboard() to anon, authenticated;
+
+-- ---- ward scorecard -----------------------------------------------------------------------------------------------
+-- What one ward can hold its representatives to: how quickly problems are fixed and whether residents agree they were
+-- fixed, what is being built and spent, what was tendered, and how many people took part in the budget vote.
+create function public.ward_scorecard(p_ward text)
+returns jsonb
+language sql
+stable
+security definer
+set search_path = ''
+as $$
+  select jsonb_build_object(
+    'ward_id', w.id, 'ward', w.name, 'constituency', w.constituency, 'population', w.population,
+    'sub_county', (select s.name from public.sub_counties s where s.id = w.sub_county_id),
+    'generated_at', now(),
+    'cases', (
+      select jsonb_build_object(
+        'received_90d', count(*) filter (where r.created_at >= now() - interval '90 days'),
+        'resolved_90d', count(*) filter (where r.status in ('resolved', 'closed') and r.resolved_at >= now() - interval '90 days'),
+        'open', count(*) filter (where r.status not in ('resolved', 'closed', 'rejected')),
+        'overdue', count(*) filter (where r.status not in ('resolved', 'closed', 'rejected') and r.resolve_due_at < now()),
+        'median_days', round((percentile_cont(0.5) within group (order by extract(epoch from (r.resolved_at - r.created_at)) / 86400)
+                              filter (where r.resolved_at >= now() - interval '90 days'))::numeric, 1),
+        'reopened', coalesce(sum(r.reopened_count), 0))
+      from public.reports r where r.ward_id = w.id),
+    'confirmed', (
+      select jsonb_build_object('responses', count(*), 'fixed', count(*) filter (where f.fixed))
+      from public.case_feedback f join public.reports r on r.id = f.report_id where r.ward_id = w.id),
+    'top_categories', (
+      select coalesce(jsonb_agg(x order by (x ->> 'count')::int desc), '[]'::jsonb) from (
+        select jsonb_build_object('category', coalesce(c.name, 'Other'), 'category_sw', c.name_sw, 'count', count(*)) as x
+          from public.reports r left join public.report_categories c on c.id = r.category_id
+         where r.ward_id = w.id and r.created_at >= now() - interval '90 days'
+         group by c.name, c.name_sw order by count(*) desc limit 4) t),
+    'projects', (
+      select jsonb_build_object('count', count(*), 'budget', coalesce(sum(p.budget), 0), 'spent', coalesce(sum(p.spent), 0),
+                                'stalled', count(*) filter (where p.status = 'stalled'),
+                                'completed', count(*) filter (where p.status = 'completed'))
+      from public.projects p where p.ward_id = w.id and p.published),
+    'tenders', (
+      select jsonb_build_object('open', count(*) filter (where t.status = 'open'), 'awarded', count(*) filter (where t.status = 'awarded'),
+                                'awarded_value', coalesce(sum(coalesce(t.award_amount, t.estimated_budget)) filter (where t.status = 'awarded'), 0))
+      from public.tenders t where t.ward_id = w.id and t.status <> 'draft'),
+    'budget', (
+      select jsonb_build_object('cycle', c.title, 'votes', (select count(*) from public.votes v where v.cycle_id = c.id and v.ward_id = w.id),
+                                'envelope', (select e.amount from public.ward_budget_envelopes e where e.cycle_id = c.id and e.ward_id = w.id))
+      from public.budget_cycles c where c.status <> 'draft' order by c.ends_at desc limit 1)
+  )
+  from public.wards w where w.id = p_ward;
+$$;
+grant execute on function public.ward_scorecard(text) to anon, authenticated;
+
+-- ---- open contracting data ----------------------------------------------------------------------------------------
+-- Tenders and awards as an Open Contracting Data Standard release package (https://standard.open-contracting.org),
+-- so journalists and researchers can load the county's data into the same tools used for other governments.
+create function public.ocds_releases(p_limit int default 100, p_offset int default 0)
+returns jsonb
+language sql
+stable
+security definer
+set search_path = ''
+as $$
+  select jsonb_build_object(
+    'uri', coalesce((select c.settings ->> 'web_url' from public.county c limit 1), '') || '/open/api',
+    'version', '1.1',
+    'publishedDate', now(),
+    'publisher', jsonb_build_object('name', coalesce((select c.name from public.county c limit 1), 'County') || ' County Government'),
+    'license', 'https://creativecommons.org/licenses/by/4.0/',
+    'releases', coalesce((
+      select jsonb_agg(r order by r ->> 'date' desc) from (
+        select jsonb_strip_nulls(jsonb_build_object(
+          'ocid', 'ocds-ke-' || lower(coalesce((select c.slug from public.county c limit 1), 'county')) || '-' || lower(t.reference),
+          'id', t.id::text || '-' || t.status,
+          'date', coalesce(t.awarded_at, t.published_at, t.created_at),
+          'tag', jsonb_build_array(case t.status when 'awarded' then 'award' when 'cancelled' then 'tenderCancellation' else 'tender' end),
+          'initiationType', 'tender',
+          'language', 'en',
+          'buyer', jsonb_build_object('name', coalesce((select c.name from public.county c limit 1), 'County') || ' County Government'),
+          'tender', jsonb_build_object(
+            'id', t.reference, 'title', t.title,
+            'status', case t.status when 'open' then 'active' when 'evaluating' then 'active' when 'awarded' then 'complete' when 'cancelled' then 'cancelled' else 'planned' end,
+            'value', jsonb_build_object('amount', t.estimated_budget, 'currency', 'KES'),
+            'procurementMethod', case t.procurement_method when 'open_tender' then 'open' when 'restricted' then 'selective' else 'limited' end,
+            'procurementMethodDetails', t.procurement_method,
+            'mainProcurementCategory', lower(t.sector),
+            'numberOfTenderers', t.applicants_count,
+            'tenderPeriod', jsonb_build_object('startDate', t.published_at, 'endDate', t.closes_at),
+            'deliveryAddresses', case when t.ward_id is null then null else jsonb_build_array(jsonb_build_object('region', t.ward_id)) end),
+          'awards', case when t.status = 'awarded' and t.awarded_contractor_id is not null then jsonb_build_array(jsonb_build_object(
+            'id', t.reference || '-award', 'status', 'active', 'date', t.awarded_at,
+            'value', jsonb_build_object('amount', coalesce(t.award_amount, t.estimated_budget), 'currency', 'KES'),
+            'suppliers', jsonb_build_array(jsonb_build_object('id', t.awarded_contractor_id::text, 'name', c.name)))) else null end
+        )) as r
+        from public.tenders t
+        left join public.contractors c on c.id = t.awarded_contractor_id
+        where t.status <> 'draft'
+        order by coalesce(t.awarded_at, t.published_at, t.created_at) desc
+        limit least(greatest(coalesce(p_limit, 100), 1), 500) offset greatest(coalesce(p_offset, 0), 0)
+      ) x), '[]'::jsonb));
+$$;
+grant execute on function public.ocds_releases(int, int) to anon, authenticated;

@@ -12,6 +12,8 @@ import { Skeleton } from '@/shared/ui/Card';
 import { toast } from '@/shared/ui/Toast';
 import { cn } from '@/shared/lib/utils';
 import { decideApp } from '../api/ops';
+import { revokePermit } from '@/shared/api/loop';
+import { useCan } from '../lib/perm';
 import { useReviewApps } from '../api/hooks';
 import type { ReviewApp } from '../api/types';
 import { Empty, PageHeader, Panel, Table, td } from '../ui/Page';
@@ -31,6 +33,13 @@ export default function Applications() {
 
   const list = useMemo(() => (apps.data ?? []).filter((a) => (tab === 'todo' ? a.status === 'submitted' || a.status === 'under_review' : tab === 'waiting' ? a.status === 'changes_requested' || a.status === 'awaiting_payment' : a.status === 'approved' || a.status === 'rejected')), [apps.data, tab]);
 
+  const can = useCan();
+  const [revokeReason, setRevokeReason] = useState('');
+  const revoke = useMutation({
+    mutationFn: () => revokePermit(open!.id, revokeReason.trim()),
+    onSuccess: () => { toast({ tone: 'good', title: 'Permit withdrawn. The holder has been told.' }); setOpen(null); setRevokeReason(''); void qc.invalidateQueries({ queryKey: ['c-apps'] }); },
+    onError: (e) => toast({ tone: 'bad', title: 'That did not work', body: e instanceof Error ? e.message : undefined }),
+  });
   const decide = useMutation({
     mutationFn: (d: 'approved' | 'rejected' | 'changes_requested') => decideApp(open!.id, d, note.trim() || null),
     onSuccess: () => { toast({ tone: 'good', title: 'Decision recorded. The applicant has been notified.' }); setOpen(null); setNote(''); void qc.invalidateQueries({ queryKey: ['c-apps'] }); },
@@ -81,6 +90,14 @@ export default function Applications() {
                 </div>
               </>
             ) : <p className="mt-4 rounded-xl bg-bg-2 p-3 text-sm text-ink-2">Status: {label[open.status] ?? open.status}{open.decision_note ? `: ${open.decision_note}` : ''}</p>}
+            {open.status === 'approved' && can.admin && (
+              <div className="mt-4 rounded-2xl border border-line p-4">
+                <p className="text-sm font-semibold">Withdraw this permit</p>
+                <p className="mt-1 text-xs text-muted">Use this for a permit issued in error or obtained by fraud. The holder is told, and anyone checking its code sees that it was withdrawn.</p>
+                <TextArea className="mt-2 min-h-16" placeholder="Reason (shown to the holder and on the public check)" value={revokeReason} onChange={(e) => setRevokeReason(e.target.value)} />
+                <Button className="mt-2" variant="danger" size="sm" disabled={revokeReason.trim().length < 5} loading={revoke.isPending} onClick={() => revoke.mutate()}>Withdraw permit</Button>
+              </div>
+            )}
           </div>
         )}
       </Sheet>

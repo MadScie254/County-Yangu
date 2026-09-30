@@ -12,6 +12,8 @@ import { Skeleton, Stat } from '@/shared/ui/Card';
 import { Button } from '@/shared/ui/Button';
 import { ChartCard } from '@/shared/charts/ChartCard';
 import { StackedBar } from '@/shared/charts/StackedBar';
+import { FollowButton } from '@/shared/ui/FollowButton';
+import { flagText } from '@/shared/lib/flagText';
 import { isOverBudget } from '../lib/projects';
 
 const severityTone: Record<FlagSeverity, Tone> = { high: 'bad', watch: 'warn', info: 'info' };
@@ -53,7 +55,9 @@ function HhiGauge({ value, label }: { value: number; label: string }) {
 }
 
 function FlagCard({ f }: { f: ProcurementFlag }) {
-  const { t, relative } = useI18n();
+  const { t, relative, locale } = useI18n();
+  const text = flagText(f, locale, t);
+  const followKind = f.subject_kind === 'contractor' ? 'supplier' : f.subject_kind === 'project' ? 'project' : null;
   const Icon = f.severity === 'high' ? AlertOctagon : f.severity === 'watch' ? Eye : Info;
   return (
     <li className={cn('rounded-2xl border border-l-4 border-line bg-surface p-4 shadow-card sm:p-5', severityBorder[f.severity])}>
@@ -62,8 +66,9 @@ function FlagCard({ f }: { f: ProcurementFlag }) {
         <Chip tone={statusTone[f.status]}>{t(`open.watch.status.${f.status}` as MessageKey)}</Chip>
         {f.first_seen && <span className="text-xs text-muted">{t('open.watch.firstSeen', { when: relative(f.first_seen) })}</span>}
       </div>
-      <h3 className="mt-2 font-display text-lg font-bold leading-snug">{f.title}</h3>
-      <p className="mt-1 text-[0.95rem] text-ink-2">{f.detail}</p>
+      <h3 className="mt-2 font-display text-lg font-bold leading-snug">{text.title}</h3>
+      <p className="mt-1 text-[0.95rem] text-ink-2">{text.why}</p>
+      {followKind && <div className="mt-3"><FollowButton kind={followKind} id={f.subject_key.split(':')[0]!} label={f.subject_label} /></div>}
       {f.response && (
         <div className="mt-3 rounded-xl bg-good-soft p-3.5">
           <p className="text-xs font-bold uppercase tracking-[0.1em] text-good">{t('open.watch.response')}</p>
@@ -147,7 +152,10 @@ export default function OpenCounty() {
                         <ShareBar pct={c.share_value} tone={tone} />
                         <span className="shrink-0 whitespace-nowrap text-right font-data text-sm font-medium">{t('open.who.share', { share: c.share_value })}</span>
                       </div>
-                      <p className="mt-0.5 font-data text-xs text-muted">{kes(c.value, { compact: true })}</p>
+                      <div className="mt-1 flex items-center justify-between gap-3">
+                        <p className="font-data text-xs text-muted">{kes(c.value, { compact: true })}</p>
+                        <FollowButton kind="supplier" id={String(c.id)} label={c.name} />
+                      </div>
                     </li>
                   );
                 })}

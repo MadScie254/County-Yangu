@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { getAssembly, getBudgetResults, getFixStats, getOcds, getWardScorecard, listFollows, verifyDocument } from './loop';
 import { getProcurementWatch } from './procurement';
 import { dataSource, getActivity, getCategorySla, getCaseStatus, getCountySummary, getProjects, getProposals, getPulse, getTenders, getVoteData, getWardStats } from './public';
 
@@ -19,3 +20,10 @@ export const useProposals = () => useQuery({ queryKey: ['proposals'], queryFn: g
 export const usePulse = () => useQuery({ queryKey: ['pulse'], queryFn: getPulse, staleTime: 5 * minute });
 export const useProcurementWatch = () => useQuery({ queryKey: ['procurement-watch'], queryFn: getProcurementWatch, staleTime: 5 * minute });
 export const useCategorySla = () => useQuery({ queryKey: ['category-sla'], queryFn: getCategorySla, staleTime: 30 * minute });
+export const useFixStats = () => useQuery({ queryKey: ['fix-stats'], queryFn: getFixStats, staleTime: 5 * minute });
+export const useBudgetResults = (cycle?: string | null) => useQuery({ queryKey: ['budget-results', cycle ?? 'latest'], queryFn: () => getBudgetResults(cycle), staleTime: 5 * minute });
+export const useAssembly = () => useQuery({ queryKey: ['assembly'], queryFn: getAssembly, staleTime: 5 * minute });
+export const useWardScorecard = (ward: string | null) => useQuery({ queryKey: ['scorecard', ward], queryFn: () => getWardScorecard(ward!), enabled: Boolean(ward), staleTime: 5 * minute });
+export const useVerify = (code: string | null) => useQuery({ queryKey: ['verify', code], queryFn: () => verifyDocument(code!), enabled: Boolean(code), staleTime: 30_000, retry: false });
+export const useFollows = () => useQuery({ queryKey: ['follows'], queryFn: listFollows, staleTime: minute });
+export const useOcds = (limit: number) => useQuery({ queryKey: ['ocds', limit], queryFn: () => getOcds(limit), staleTime: 10 * minute });

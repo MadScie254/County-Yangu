@@ -52,7 +52,11 @@
     "staffConsole": "Staff console",
     "citizenView": "Citizen view",
     "roadmap": "Roadmap",
-    "account": "Account"
+    "account": "Account",
+    "verify": "Check a permit",
+    "assembly": "Assembly",
+    "results": "Ward results",
+    "data": "Open data"
   },
   "a11y": {
     "settings": "Display settings",
@@ -952,20 +956,25 @@
       "Follow every project and tender, ward by ward",
       "Vote on ward priorities on the web or by USSD",
       "County services with M-Pesa payment and tracking",
-      "Automated procurement watch with open data downloads"
-    ],
-    "nextItems": [
+      "Automated procurement watch with open data downloads",
       "Tell us if a fix really worked, and reopen it if not",
       "Quarterly ward budget rounds with published results",
       "Permit and receipt checks by QR code",
       "SMS updates when your report or application changes",
-      "Voice reporting in Kiswahili for people who cannot type"
+      "Follow a supplier, project or ward and get told when it changes",
+      "Committee dashboards and ward scorecards you can share with your MCA",
+      "An open data API for journalists and researchers",
+      "Voice reporting in Kiswahili",
+      "Works offline and installs on your phone"
+    ],
+    "nextItems": [
+      "Live links to the national e-procurement system and IFMIS",
+      "Alerts by WhatsApp",
+      "More counties on the same platform"
     ],
     "laterItems": [
-      "An open data API for journalists and researchers",
-      "Live links to the national e-procurement system and IFMIS",
-      "Ward scorecards shared with your Assembly member",
-      "More counties on the same platform"
+      "Community verification of completed projects with photos",
+      "Citizen budget hearings by video"
     ],
     "note": "Dates depend on the county. Nothing counts as a promise until it appears under Live now."
   },
@@ -986,5 +995,226 @@
     "a7": "A pattern in public tender data that deserves a closer look, such as one supplier winning a large share. It is never an accusation, and the county can publish a response.",
     "q8": "Who can see what I do?",
     "a8": "Public pages show totals only. Staff see only what their role needs, and every staff action goes into an audit trail that cannot be edited."
+  },
+  "loop": {
+    "feedback": {
+      "title": "Was it really fixed?",
+      "intro": "The county marked this as fixed. Your honest answer changes how the county is measured.",
+      "yes": "Yes, it is fixed",
+      "no": "No, still a problem",
+      "commentLabel": "Anything to add? (optional)",
+      "commentHint": "Do not include phone numbers or ID numbers.",
+      "send": "Send my answer",
+      "thanksYes": "Thank you. Your answer is counted on the public record.",
+      "thanksNo": "Thank you. We reopened this case and the county has a new deadline.",
+      "already": "You have already answered for this fix.",
+      "error": "We could not send that. Please try again.",
+      "reopened_one": "Reopened {count} time",
+      "reopened_other": "Reopened {count} times"
+    },
+    "stats": {
+      "title": "Do fixes hold?",
+      "intro": "After a case is marked fixed, residents say whether it really was. This is the county's honesty score.",
+      "confirmed": "{share}% confirmed fixed",
+      "answers_one": "{count} answer",
+      "answers_other": "{count} answers",
+      "reopened": "{count} reopened",
+      "none": "No answers yet."
+    },
+    "verify": {
+      "title": "Check a permit or receipt",
+      "intro": "Type the code printed on the document, or scan its QR code. Only real county documents pass.",
+      "label": "Code",
+      "placeholder": "e.g. CY-7KQ2-M4PX",
+      "check": "Check",
+      "valid": "Genuine",
+      "revoked": "Withdrawn",
+      "unknown": "No record",
+      "validText": "This is a genuine document issued by the county.",
+      "revokedText": "The county withdrew this permit. It is no longer valid.",
+      "unknownText": "We have no document with this code. It may be mistyped, or it may be fake.",
+      "permit": "Permit",
+      "receipt": "Payment receipt",
+      "service": "Service",
+      "holder": "Holder",
+      "ward": "Ward",
+      "issued": "Issued",
+      "amount": "Amount",
+      "reason": "Reason",
+      "reference": "Reference",
+      "demoHint": "Sample codes to try: CY-DEMO-2026 and CY-VOID-2026."
+    },
+    "qr": {
+      "title": "Verification code",
+      "hint": "Show this at inspections. Anyone can scan it to check the permit is real.",
+      "print": "Print permit"
+    },
+    "results": {
+      "title": "What wards decided",
+      "intro": "The results of ward budget voting, published by the county. Options are funded in vote order until the ward's money runs out.",
+      "empty": "No results have been published yet. When a voting round closes, the county publishes the outcome here.",
+      "votes_one": "{count} vote",
+      "votes_other": "{count} votes",
+      "funded": "Funded",
+      "notFunded": "Not funded",
+      "envelope": "Ward budget",
+      "round": "Round",
+      "total": "{count} votes in this round",
+      "voteNow": "Vote in the open round"
+    },
+    "follow": {
+      "follow": "Follow",
+      "following": "Following",
+      "signIn": "Sign in to follow",
+      "added": "Followed. You will be told when this changes.",
+      "removed": "Unfollowed",
+      "limit": "You can follow up to 40 things.",
+      "title": "Things you follow",
+      "empty": "Follow a supplier, project or ward to be told when something changes.",
+      "kind": {
+        "supplier": "Supplier",
+        "project": "Project",
+        "ward_tenders": "Ward tenders",
+        "sector": "Sector"
+      },
+      "wardTenders": "Follow tenders in this ward"
+    },
+    "assembly": {
+      "title": "Committee dashboards",
+      "intro": "For County Assembly committees and anyone watching them: how residents' problems in each committee's area are handled, and what is being built and bought.",
+      "cases": "Resident cases (last 90 days)",
+      "received": "Received",
+      "open": "Open now",
+      "overdue": "Overdue",
+      "resolved": "Fixed",
+      "median": "Median days to fix",
+      "reopened": "Reopened",
+      "projects": "Projects",
+      "stalled": "Stalled",
+      "completed": "Completed",
+      "spent": "Spent",
+      "budget": "Budget",
+      "tenders": "Tenders",
+      "openTenders": "Open",
+      "awarded": "Awarded",
+      "awardedValue": "Awarded value",
+      "flags": "Open procurement flags",
+      "attention": "Needs a look",
+      "none": "Nothing stalled or over budget.",
+      "days": "{count} days",
+      "note": "These figures are computed from the same public records as every other page. Nothing here is a finding of wrongdoing."
+    },
+    "scorecard": {
+      "title": "Ward scorecard",
+      "intro": "How {ward} is doing, from the county's own records. Share it with your MCA and ask what they will do about it.",
+      "share": "Share",
+      "print": "Print",
+      "copy": "Copy link",
+      "whatsapp": "WhatsApp",
+      "email": "Email your MCA",
+      "emailSubject": "Scorecard for {ward}",
+      "emailBody": "Habari. Here is the current scorecard for {ward}: {url}\n\nCould you tell me what you will do about the open and overdue issues?",
+      "received": "Reports (90 days)",
+      "resolved": "Fixed (90 days)",
+      "open": "Open now",
+      "overdue": "Overdue",
+      "median": "Median days to fix",
+      "confirmed": "Residents who confirmed the fix",
+      "reopened": "Reopened cases",
+      "projects": "Projects",
+      "tenders": "Tenders",
+      "budgetVote": "Budget votes",
+      "topIssues": "Most reported issues",
+      "generated": "Prepared {date}",
+      "notFound": "We could not find that ward.",
+      "view": "View scorecard"
+    },
+    "api": {
+      "title": "Open data for journalists and researchers",
+      "intro": "The county's tenders and awards, published as Open Contracting Data Standard (OCDS) releases. Free to use with credit, no key needed.",
+      "download": "Download JSON",
+      "endpoint": "Endpoint",
+      "example": "Example request",
+      "license": "Licence: Creative Commons Attribution 4.0",
+      "sample": "Live sample",
+      "tendersCsv": "Tenders as CSV",
+      "fields": "What is in each release",
+      "f1": "Tender: reference, title, sector, ward, estimated value, method, bidding period, number of bidders",
+      "f2": "Award: supplier, value, date",
+      "f3": "Buyer and publisher, and a stable identifier (ocid) for each procurement",
+      "limit": "Up to 500 releases per request. Use limit and offset to page.",
+      "count": "{count} releases in this sample"
+    },
+    "offline": {
+      "saved": "You are offline. Showing what was last saved on this phone.",
+      "install": "Install the app",
+      "installHint": "Add County Yangu to your home screen. It opens fast and keeps working on weak signal.",
+      "dismiss": "Not now"
+    },
+    "voice": {
+      "start": "Speak instead",
+      "stop": "Stop",
+      "listening": "Listening. Speak in Kiswahili or English.",
+      "unsupported": "Voice typing is not available in this browser. Type your report instead.",
+      "error": "We could not hear that. Try again or type."
+    },
+    "flags": {
+      "dominant_supplier": {
+        "title": "{name} holds {share}% of awarded value",
+        "why": "One supplier holding more than a quarter of awarded value is a common reason to look at how work is being shared."
+      },
+      "repeat_winner": {
+        "title": "{name} won {wins} awards, {share}% of all",
+        "why": "Winning many awards can be legitimate, and is also what repeated favouritism looks like. Worth checking the tenders were competitive."
+      },
+      "top3_concentration": {
+        "title": "Three suppliers hold {share}% of awarded value",
+        "why": "A market this concentrated leaves little competitive pressure on price and quality."
+      },
+      "non_competitive_share": {
+        "title": "{share}% of awarded value skipped open tendering",
+        "why": "Direct and restricted procurement have legitimate uses, such as emergencies, and should stay a small share."
+      },
+      "contractor_direct_reliance": {
+        "title": "{name}: {nonopen} of {wins} awards were not openly tendered",
+        "why": "Most of this supplier's awards came through direct or restricted procurement."
+      },
+      "single_bidder_share": {
+        "title": "{share}% of awarded tenders had one bidder or none",
+        "why": "A single bidder cannot show that the price was tested."
+      },
+      "contractor_single_bid": {
+        "title": "{name} won {count} tenders with a single bidder",
+        "why": "Winning several tenders where nobody else bid deserves a look at how they were advertised."
+      },
+      "short_tender_period": {
+        "title": "{count} awarded tenders were open for under a week",
+        "why": "Very short tender periods limit who can respond in time."
+      },
+      "award_above_estimate": {
+        "title": "{name} was awarded at {pct}% of its estimate",
+        "why": "A large gap between estimate and award can mean a poor estimate or a price that was not tested."
+      },
+      "split_awards": {
+        "title": "{name} received {count} awards for the same work within 30 days",
+        "why": "Several awards for the same kind of work in the same place can indicate a larger job split up to stay under a threshold."
+      },
+      "kra_noncompliant": {
+        "title": "{name} failed its last tax compliance check",
+        "why": "Public bodies are expected to award only to tax compliant suppliers."
+      },
+      "project_overrun": {
+        "title": "{name} has spent {pct}% of its budget",
+        "why": "Spending above budget should come with an approved variation and a public explanation."
+      },
+      "stalled_after_spend": {
+        "title": "{name} is stalled after {pct}% of its budget was spent",
+        "why": "Money has left but work has stopped. Residents should be told why and when it will resume."
+      },
+      "project_late": {
+        "title": "{name} is {days} days past its expected date",
+        "why": "The project has not reached completion by the date the county published."
+      }
+    }
   }
 }

@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
+import { VoiceInput } from '../components/report/VoiceInput';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ArrowLeft, ArrowRight, Check, Copy, Share2, ShieldCheck, TriangleAlert, WifiOff, Landmark } from 'lucide-react';
@@ -215,6 +216,7 @@ export default function Report() {
           <Field className="mt-3" label={t('report.describe')} hint={t('report.describeHelp')} error={errKey(errors.description?.message) && t(errKey(errors.description?.message)!)}>
             {({ id, describedBy }) => <TextArea id={id} aria-describedby={describedBy} invalid={Boolean(errors.description)} maxLength={2000} placeholder={t('report.describePlaceholder')} {...register('description')} />}
           </Field>
+          <VoiceInput onText={(text) => setValue('description', `${form.getValues('description')} ${text}`.trim().slice(0, 2000), { shouldValidate: true, shouldDirty: true })} />
           <p className="mt-1 text-right text-xs text-muted">{t('report.charsLeft', { count: remaining })}</p>
 
           <Card className="mt-6 p-5">

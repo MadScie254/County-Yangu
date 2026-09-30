@@ -1,3 +1,4 @@
+import { FollowButton } from '@/shared/ui/FollowButton';
 import { Link, useParams } from 'react-router-dom';
 import { ArrowLeft, Check, Circle, Megaphone, Share2, TriangleAlert, Hammer } from 'lucide-react';
 import { useI18n } from '@/shared/i18n';
@@ -45,6 +46,7 @@ export default function ProjectDetail() {
           <span className="text-sm font-semibold text-muted">{p.ward_name} · {p.sector}</span>
         </div>
         <h1 className="mt-3 font-display text-[clamp(1.9rem,5.5vw,2.8rem)] font-extrabold leading-[1.05]">{p.title}</h1>
+        <div className="mt-4"><FollowButton kind="project" id={p.id} label={p.title} /></div>
         {p.description && <p className="mt-4 text-[1.05rem] text-ink-2">{p.description}</p>}
       </header>
 
