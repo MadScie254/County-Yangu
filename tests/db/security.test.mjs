@@ -274,7 +274,7 @@ test('oversight: assembly members see named officers, auditors see the departmen
 });
 
 test('the public overdue counter never names anyone', async () => {
-  const cols = (await db.query(`select column_name from information_schema.columns where table_name = 'public_overdue_counts'`)).rows.map((c) => c.column_name);
+  const cols = (await db.query(`select column_name from information_schema.columns where table_schema = 'public' and table_name = 'public_overdue_counts'`)).rows.map((c) => c.column_name);
   assert.deepEqual(cols.sort(), ['department_id', 'open_count', 'overdue_count', 'ward_id']);
 });
 
