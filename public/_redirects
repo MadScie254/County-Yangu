@@ -1,3 +1,0 @@
-# Cloudflare Pages: each door is a single-page app.
-/console/*  /console/index.html  200
-/*          /index.html          200

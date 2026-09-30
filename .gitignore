@@ -54,3 +54,6 @@ public/swe-worker*
 
 # Claude Code local (per-person) settings
 /.claude/settings.local.json
+
+# production browser config is committed on purpose (public values only)
+!.env.production
