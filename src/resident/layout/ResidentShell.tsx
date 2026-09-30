@@ -1,7 +1,8 @@
+import { NoticesStrip } from '../components/NoticesStrip';
 import { InstallPrompt } from '../components/InstallPrompt';
 import { useEffect, useState } from 'react';
 import { NavLink, Link, Outlet, useLocation } from 'react-router-dom';
-import { Activity, BadgeCheck, BellRing, Briefcase, CalendarDays, ChevronDown, CircleHelp, Database, FileText, Home, Landmark, Lightbulb, Megaphone, FolderKanban, Vote, Menu, Settings2, Smartphone, WifiOff, Building2, ShieldCheck, UserRound, Scale, SearchCheck, Trophy, Columns2, type LucideIcon } from 'lucide-react';
+import { Activity, BadgeCheck, BellRing, Briefcase, CalendarDays, ChevronDown, CircleHelp, Database, FileText, Home, Landmark, Lightbulb, Megaphone, FolderKanban, Vote, Menu, Settings2, Smartphone, WifiOff, Building2, ShieldCheck, UserRound, Scale, SearchCheck, Trophy, Columns2, Siren, Handshake, type LucideIcon } from 'lucide-react';
 import { useI18n, locales, type MessageKey } from '@/shared/i18n';
 import { county } from '@/shared/config/county';
 import { Wordmark } from '@/shared/ui/Logo';
@@ -32,6 +33,7 @@ const navGroups: NavGroup[] = [
     { to: '/assembly', key: 'nav.assembly', icon: Landmark },
     { to: '/pulse', key: 'nav.pulse', icon: Activity },
     { to: '/compare', key: 'nav.compare', icon: Columns2 },
+    { to: '/promises', key: 'nav.promises', icon: Handshake },
     { to: '/open/api', key: 'nav.data', icon: Database },
   ] },
   { key: 'nav.groups.take', items: [
@@ -42,6 +44,7 @@ const navGroups: NavGroup[] = [
     { to: '/alerts', key: 'nav.alerts', icon: BellRing },
   ] },
   { key: 'nav.groups.check', items: [
+    { to: '/notices', key: 'nav.notices', icon: Siren },
     { to: '/case', key: 'nav.checkReport', icon: SearchCheck },
     { to: '/verify', key: 'nav.verify', icon: BadgeCheck },
     { to: '/projects', key: 'nav.track', icon: FolderKanban },
@@ -198,6 +201,7 @@ export function ResidentShell() {
       </a>
       <OfflineStrip />
       <DemoRibbon />
+      <NoticesStrip />
 
       <header className="glass sticky top-0 z-40 border-b border-line/70">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">

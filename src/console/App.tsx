@@ -15,6 +15,8 @@ const Admin = lazy(() => import('./pages/Admin'));
 const Projects = lazy(() => import('./pages/Projects'));
 const Tenders = lazy(() => import('./pages/Tenders'));
 const Meetings = lazy(() => import('./pages/Meetings'));
+const Notices = lazy(() => import('./pages/Notices'));
+const Promises = lazy(() => import('./pages/Promises'));
 const Budget = lazy(() => import('./pages/Budget'));
 const Alerts = lazy(() => import('./pages/Alerts'));
 const Ideas = lazy(() => import('./pages/Ideas'));
@@ -60,6 +62,8 @@ function Console() {
             <Route path="projects" element={<Allow when={(c) => c.publish}><Projects /></Allow>} />
             <Route path="tenders" element={<Allow when={(c) => c.publish}><Tenders /></Allow>} />
             <Route path="meetings" element={<Allow when={(c) => c.publish}><Meetings /></Allow>} />
+            <Route path="notices" element={<Allow when={(c) => c.publish}><Notices /></Allow>} />
+            <Route path="promises" element={<Allow when={(c) => c.has('super_admin', 'admin', 'chief_officer')}><Promises /></Allow>} />
             <Route path="budget" element={<Allow when={(c) => c.admin}><Budget /></Allow>} />
             <Route path="alerts" element={<Allow when={(c) => c.working}><Alerts /></Allow>} />
             <Route path="ideas" element={<Allow when={(c) => c.working}><Ideas /></Allow>} />

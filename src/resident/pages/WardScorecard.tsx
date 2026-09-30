@@ -1,7 +1,7 @@
 import { Link, useParams } from 'react-router-dom';
 import { Copy, Mail, MessageCircle, Printer } from 'lucide-react';
 import { useI18n } from '@/shared/i18n';
-import { useIsDemo, useWardScorecard } from '@/shared/api/hooks';
+import { useIsDemo, useNotices, useWardScorecard } from '@/shared/api/hooks';
 import { usePageTitle } from '@/shared/lib/hooks';
 import { cn } from '@/shared/lib/utils';
 import { Button, ButtonLink } from '@/shared/ui/Button';
@@ -14,6 +14,7 @@ export default function WardScorecard() {
   const { t, number, kes, date, locale } = useI18n();
   const q = useWardScorecard(id || null);
   const demo = useIsDemo();
+  const notices = useNotices();
   const s = q.data;
   usePageTitle(s ? t('loop.scorecard.emailSubject', { ward: s.ward }) : t('loop.scorecard.title'));
 
@@ -60,6 +61,16 @@ export default function WardScorecard() {
         <FollowButton kind="ward_tenders" id={s.ward_id} label={s.ward} />
         <Link to={`/compare?a=${s.ward_id}`} className="inline-flex h-9 items-center rounded-full px-3 text-sm font-semibold text-brand hover:underline">{t('loop.compare.with')}</Link>
       </div>
+
+      {(() => {
+        const live = (notices.data ?? []).filter((n) => n.status === 'active' && n.ward_id === s.ward_id);
+        return live.length > 0 && (
+          <Link to={`/notices?ward=${s.ward_id}`} className="mt-6 flex items-center justify-between gap-3 rounded-2xl bg-warn-soft p-4 text-sm font-semibold print:hidden">
+            <span>{live.length === 1 ? live[0]!.title : t('loop.notices.inWard', { count: live.length, ward: s.ward })}</span>
+            <span className="shrink-0 underline underline-offset-4">{t('loop.notices.see')}</span>
+          </Link>
+        );
+      })()}
 
       <section className="mt-8" aria-label={t('nav.report')}>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">

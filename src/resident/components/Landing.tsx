@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Activity, ArrowRight, BadgeCheck, BellRing, Building2, CalendarDays, CheckCircle2, ChevronDown, CircleHelp, Clock3, Compass, Database, FileText, FolderKanban, Globe, Landmark, Lightbulb, Megaphone, MessageSquareText, Scale, SearchCheck, ShieldCheck, Smartphone, Trophy, UserRound, Vote, type LucideIcon } from 'lucide-react';
+import { Activity, ArrowRight, BadgeCheck, BellRing, Building2, CalendarDays, CheckCircle2, ChevronDown, CircleHelp, Clock3, Compass, Database, FileText, FolderKanban, Globe, Handshake, Landmark, Lightbulb, Megaphone, MessageSquareText, Scale, SearchCheck, ShieldCheck, Siren, Smartphone, Trophy, UserRound, Vote, type LucideIcon } from 'lucide-react';
 import { useI18n, type MessageKey } from '@/shared/i18n';
 import { county } from '@/shared/config/county';
 import { useCategorySla, useCountySummary, useProcurementWatch, useTenders } from '@/shared/api/hooks';
@@ -38,10 +38,11 @@ export function Glance() {
   );
 }
 
-type Feature = { to: string; icon: LucideIcon; k: 'report' | 'track' | 'vote' | 'services' | 'alerts' | 'ideas' | 'open' | 'pulse' | 'check' | 'meetings' | 'results' | 'assembly' | 'verify' | 'tenders' | 'data' | 'how'; tone: string };
+type Feature = { to: string; icon: LucideIcon; k: 'report' | 'track' | 'vote' | 'services' | 'alerts' | 'ideas' | 'open' | 'pulse' | 'check' | 'meetings' | 'results' | 'assembly' | 'verify' | 'tenders' | 'data' | 'how' | 'notices' | 'promises'; tone: string };
 const features: Feature[] = [
   { to: '/report', icon: Megaphone, k: 'report', tone: 'bg-brand text-brand-ink' },
   { to: '/case', icon: SearchCheck, k: 'check', tone: 'bg-brand-soft text-ink' },
+  { to: '/notices', icon: Siren, k: 'notices', tone: 'bg-warn-soft text-warn' },
   { to: '/projects', icon: FolderKanban, k: 'track', tone: 'bg-info-soft text-info' },
   { to: '/vote', icon: Vote, k: 'vote', tone: 'bg-vote-soft text-vote' },
   { to: '/meetings', icon: CalendarDays, k: 'meetings', tone: 'bg-vote-soft text-vote' },
@@ -50,6 +51,7 @@ const features: Feature[] = [
   { to: '/verify', icon: BadgeCheck, k: 'verify', tone: 'bg-info-soft text-info' },
   { to: '/open', icon: Scale, k: 'open', tone: 'bg-bad-soft text-bad' },
   { to: '/tenders', icon: FileText, k: 'tenders', tone: 'bg-bad-soft text-bad' },
+  { to: '/promises', icon: Handshake, k: 'promises', tone: 'bg-good-soft text-good' },
   { to: '/assembly', icon: Building2, k: 'assembly', tone: 'bg-bg-2 text-ink' },
   { to: '/pulse', icon: Activity, k: 'pulse', tone: 'bg-bg-2 text-ink' },
   { to: '/alerts', icon: BellRing, k: 'alerts', tone: 'bg-warn-soft text-warn' },

@@ -66,7 +66,9 @@
       "check": "Check and track",
       "help": "Help"
     },
-    "compare": "Compare wards"
+    "compare": "Compare wards",
+    "notices": "Service notices",
+    "promises": "Promise tracker"
   },
   "a11y": {
     "settings": "Display settings",
@@ -699,7 +701,11 @@
       "meetings": "Public meetings",
       "meetingsHint": "Barazas and budget hearings near you",
       "verify": "Check a permit",
-      "verifyHint": "Is this permit or receipt genuine?"
+      "verifyHint": "Is this permit or receipt genuine?",
+      "notices": "Service notices",
+      "noticesHint": "Water, roads, power near you",
+      "promises": "Promise tracker",
+      "promisesHint": "Did the county deliver?"
     },
     "ward": {
       "title": "Your ward",
@@ -941,6 +947,14 @@
       "how": {
         "t": "How it works",
         "d": "Deadlines, privacy and what happens after you report."
+      },
+      "notices": {
+        "t": "Service notices",
+        "d": "Water cuts, road closures and collection changes in your ward, with when it should be back."
+      },
+      "promises": {
+        "t": "Promise tracker",
+        "d": "What the county promised, by when, and whether it delivered. Every change stays on the record."
       }
     },
     "audiences": {
@@ -1124,7 +1138,8 @@
         "supplier": "Supplier",
         "project": "Project",
         "ward_tenders": "Ward updates",
-        "sector": "Sector"
+        "sector": "Sector",
+        "commitment": "Promise"
       },
       "wardTenders": "Follow this ward"
     },
@@ -1334,6 +1349,67 @@
       "with": "Compare with another ward",
       "better": "better",
       "metric": "Measure"
+    },
+    "notices": {
+      "title": "Service notices",
+      "intro": "Water interruptions, road closures, power and collection changes, posted by the county for each ward. Follow your ward to hear when something starts and when it is back to normal.",
+      "now": "Happening now",
+      "recent": "Resolved in the last 30 days",
+      "none": "No disruptions reported for this area right now.",
+      "allWards": "All wards",
+      "countyWide": "County-wide",
+      "area": "Where",
+      "expected": "Expected back {when}",
+      "unknownEnd": "No time given for the fix yet",
+      "since": "Since {when}",
+      "resolved": "Back to normal {when}",
+      "cancelled": "Cancelled",
+      "followHint": "Pick your ward to follow it and get these notices in My Yangu, or by SMS through Ward alerts.",
+      "smsLink": "Get them by SMS",
+      "banner": "{count} active notices in Nairobi",
+      "bannerOne": "1 active notice in Nairobi",
+      "see": "See notices",
+      "kind": {
+        "water": "Water",
+        "power": "Power and lights",
+        "road": "Roads",
+        "waste": "Garbage",
+        "health": "Health",
+        "other": "Notice"
+      },
+      "severity": {
+        "info": "For information",
+        "disruption": "Disruption",
+        "emergency": "Emergency"
+      },
+      "inWard": "{count} active notices in {ward}",
+      "until": "Until {when}"
+    },
+    "promises": {
+      "title": "Promise tracker",
+      "intro": "What the county has promised, where it was said, when it is due and what has happened since. The county updates the status; every change and every moved deadline stays on the public record.",
+      "total": "Promises",
+      "overdue": "Past due",
+      "source": "Promised in",
+      "due": "Due {date}",
+      "noDue": "No due date given",
+      "overdueBy": "{days} days past due",
+      "history": "History",
+      "evidence": "Latest",
+      "all": "All",
+      "sector": "Sector",
+      "none": "The county has not published any promises yet.",
+      "noneFilter": "No promises match this filter.",
+      "readSource": "Read the source",
+      "project": "See the project",
+      "follow": "Follow",
+      "status": {
+        "not_started": "Not started",
+        "in_progress": "In progress",
+        "delivered": "Delivered",
+        "delayed": "Delayed",
+        "dropped": "Dropped"
+      }
     }
   }
 }

@@ -66,7 +66,9 @@
       "check": "Hakiki na fuatilia",
       "help": "Msaada"
     },
-    "compare": "Linganisha wadi"
+    "compare": "Linganisha wadi",
+    "notices": "Taarifa za huduma",
+    "promises": "Ahadi za kaunti"
   },
   "a11y": {
     "settings": "Mipangilio ya kuonyesha",
@@ -699,7 +701,11 @@
       "meetings": "Mikutano ya umma",
       "meetingsHint": "Mabaraza na vikao vya bajeti karibu nawe",
       "verify": "Hakiki kibali",
-      "verifyHint": "Je, kibali au risiti hii ni halisi?"
+      "verifyHint": "Je, kibali au risiti hii ni halisi?",
+      "notices": "Taarifa za huduma",
+      "noticesHint": "Maji, barabara, umeme karibu nawe",
+      "promises": "Ahadi za kaunti",
+      "promisesHint": "Je, kaunti ilitimiza?"
     },
     "ward": {
       "title": "Wadi yako",
@@ -941,6 +947,14 @@
       "how": {
         "t": "Jinsi inavyofanya kazi",
         "d": "Makataa, faragha na kinachotokea baada ya kuripoti."
+      },
+      "notices": {
+        "t": "Taarifa za huduma",
+        "d": "Kukatika kwa maji, barabara zilizofungwa na mabadiliko ya ukusanyaji wa taka katika wadi yako, na lini huduma itarudi."
+      },
+      "promises": {
+        "t": "Ahadi za kaunti",
+        "d": "Kaunti iliahidi nini, kufikia lini, na kama ilitimiza. Kila mabadiliko yanabaki kwenye rekodi."
       }
     },
     "audiences": {
@@ -1124,7 +1138,8 @@
         "supplier": "Mkandarasi",
         "project": "Mradi",
         "ward_tenders": "Habari za wadi",
-        "sector": "Sekta"
+        "sector": "Sekta",
+        "commitment": "Ahadi"
       },
       "wardTenders": "Fuatilia wadi hii"
     },
@@ -1334,6 +1349,67 @@
       "with": "Linganisha na wadi nyingine",
       "better": "bora zaidi",
       "metric": "Kipimo"
+    },
+    "notices": {
+      "title": "Taarifa za huduma",
+      "intro": "Kukatika kwa maji, barabara zilizofungwa, umeme na mabadiliko ya ukusanyaji wa taka, zinazotolewa na kaunti kwa kila wadi. Fuata wadi yako ujue tatizo linapoanza na huduma inaporudi.",
+      "now": "Yanayoendelea sasa",
+      "recent": "Yaliyotatuliwa siku 30 zilizopita",
+      "none": "Hakuna usumbufu ulioripotiwa eneo hili kwa sasa.",
+      "allWards": "Wadi zote",
+      "countyWide": "Kaunti nzima",
+      "area": "Wapi",
+      "expected": "Inatarajiwa kurudi {when}",
+      "unknownEnd": "Bado hakuna muda uliotolewa wa kurekebisha",
+      "since": "Tangu {when}",
+      "resolved": "Imerudi kawaida {when}",
+      "cancelled": "Imefutwa",
+      "followHint": "Chagua wadi yako uifuate upate taarifa hizi katika Yangu Yangu, au kwa SMS kupitia Arifa za wadi.",
+      "smsLink": "Zipate kwa SMS",
+      "banner": "Taarifa {count} zinazoendelea Nairobi",
+      "bannerOne": "Taarifa 1 inayoendelea Nairobi",
+      "see": "Ona taarifa",
+      "kind": {
+        "water": "Maji",
+        "power": "Umeme na taa",
+        "road": "Barabara",
+        "waste": "Taka",
+        "health": "Afya",
+        "other": "Taarifa"
+      },
+      "severity": {
+        "info": "Kwa taarifa",
+        "disruption": "Usumbufu",
+        "emergency": "Dharura"
+      },
+      "inWard": "Taarifa {count} zinazoendelea {ward}",
+      "until": "Hadi {when}"
+    },
+    "promises": {
+      "title": "Ahadi za kaunti",
+      "intro": "Kaunti imeahidi nini, ilisemwa wapi, inatarajiwa lini na nini kimetokea tangu hapo. Kaunti inasasisha hali; kila mabadiliko na kila tarehe iliyosogezwa inabaki kwenye rekodi ya umma.",
+      "total": "Ahadi",
+      "overdue": "Zimepitwa na muda",
+      "source": "Iliahidiwa katika",
+      "due": "Inatarajiwa {date}",
+      "noDue": "Hakuna tarehe iliyotolewa",
+      "overdueBy": "Siku {days} baada ya muda",
+      "history": "Historia",
+      "evidence": "Karibuni",
+      "all": "Zote",
+      "sector": "Sekta",
+      "none": "Kaunti bado haijachapisha ahadi yoyote.",
+      "noneFilter": "Hakuna ahadi zinazolingana na kichujio hiki.",
+      "readSource": "Soma chanzo",
+      "project": "Ona mradi",
+      "follow": "Fuata",
+      "status": {
+        "not_started": "Haijaanza",
+        "in_progress": "Inaendelea",
+        "delivered": "Imetimizwa",
+        "delayed": "Imechelewa",
+        "dropped": "Imeachwa"
+      }
     }
   }
 }

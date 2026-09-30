@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useMutation, useQueries, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { FollowKind } from '@/shared/api/types';
-import { BadgeCheck, CalendarDays, ArrowRight, Bell, BellRing, Building2, CalendarClock, CreditCard, FileWarning, FolderKanban, Landmark, Lightbulb, LogOut, MapPin, Megaphone, Scale, SearchCheck, ShieldCheck, Smartphone, Vote, type LucideIcon } from 'lucide-react';
+import { BadgeCheck, CalendarDays, ArrowRight, Bell, BellRing, Building2, CalendarClock, CreditCard, FileWarning, FolderKanban, Handshake, Landmark, Lightbulb, LogOut, MapPin, Megaphone, Scale, SearchCheck, ShieldCheck, Siren, Smartphone, Vote, type LucideIcon } from 'lucide-react';
 import { useI18n, type MessageKey } from '@/shared/i18n';
 import { county, wardLabel } from '@/shared/config/county';
 import { useCountySummary, useFollows, useProcurementWatch, useProjects, useTenders, useVoteData, useWardStats } from '@/shared/api/hooks';
@@ -192,6 +192,8 @@ export default function Dashboard() {
           <Tile to="/case" icon={SearchCheck} tone="neutral" title={t('me.quick.check')} hint={t('me.quick.checkHint')} />
           <Tile to="/meetings" icon={CalendarDays} tone="vote" title={t('me.quick.meetings')} hint={t('me.quick.meetingsHint')} />
           <Tile to="/verify" icon={BadgeCheck} tone="info" title={t('me.quick.verify')} hint={t('me.quick.verifyHint')} />
+          <Tile to="/notices" icon={Siren} tone="warn" title={t('me.quick.notices')} hint={t('me.quick.noticesHint')} />
+          <Tile to="/promises" icon={Handshake} tone="good" title={t('me.quick.promises')} hint={t('me.quick.promisesHint')} />
         </div>
       </section>
 

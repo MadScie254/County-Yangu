@@ -188,7 +188,7 @@ export type BudgetResults = {
   wards: { ward_id: string; ward: string; envelope: number; votes: number; options: BudgetResultOption[] }[];
 };
 
-export type FollowKind = 'supplier' | 'project' | 'ward_tenders' | 'sector';
+export type FollowKind = 'supplier' | 'project' | 'ward_tenders' | 'sector' | 'commitment';
 export type Follow = { id: string; kind: FollowKind; key: string; label: string; created_at: string };
 
 export type CommitteeView = {
@@ -233,4 +233,43 @@ export type PublicMeeting = {
   status: 'scheduled' | 'cancelled' | 'held';
   outcome: string | null;
   attendance: number | null;
+};
+
+export type NoticeKind = 'water' | 'power' | 'road' | 'waste' | 'health' | 'other';
+export type ServiceNotice = {
+  id: string;
+  ward_id: string | null;
+  kind: NoticeKind;
+  severity: 'info' | 'disruption' | 'emergency';
+  title: string;
+  title_sw: string | null;
+  body: string | null;
+  area: string | null;
+  starts_at: string;
+  ends_at: string | null;
+  status: 'active' | 'resolved' | 'cancelled';
+  resolved_at: string | null;
+  resolved_note: string | null;
+  updated_at: string;
+};
+
+export type CommitmentStatus = 'not_started' | 'in_progress' | 'delivered' | 'delayed' | 'dropped';
+export type CommitmentUpdate = { id: number; commitment_id: string; status: CommitmentStatus; due_on: string | null; note: string | null; created_at: string };
+export type Commitment = {
+  id: string;
+  slug: string;
+  title: string;
+  title_sw: string | null;
+  detail: string | null;
+  source: string;
+  source_url: string | null;
+  made_on: string | null;
+  due_on: string | null;
+  sector: string | null;
+  ward_id: string | null;
+  project_id: string | null;
+  status: CommitmentStatus;
+  evidence: string | null;
+  updated_at: string;
+  updates: CommitmentUpdate[];
 };

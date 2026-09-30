@@ -3,7 +3,7 @@
 import { supabase } from './client';
 import { dataSource, getWardStats } from './public';
 import { demoProjects, demoTenders } from './demo';
-import type { PublicMeeting, BudgetResults, CommitteeView, FixStats, Follow, FollowKind, OcdsPackage, VerifyResult, WardScorecard } from './types';
+import type { Commitment, CommitmentUpdate, ServiceNotice, PublicMeeting, BudgetResults, CommitteeView, FixStats, Follow, FollowKind, OcdsPackage, VerifyResult, WardScorecard } from './types';
 
 const isDemo = async () => (await dataSource()) === 'demo' || !supabase;
 
@@ -222,3 +222,81 @@ export async function getProjectChecks(slug: string): Promise<ProjectChecks> {
   if (await isDemo()) return { as_shown: 12, not_as_shown: 3, comments: [{ verdict: 'not_as_shown', comment: 'Drainage on the east side is not finished.', at: new Date(Date.now() - 2 * 86_400_000).toISOString() }] };
   return (await rpc<ProjectChecks | null>('project_checks', { p_slug: slug })) ?? { as_shown: 0, not_as_shown: 0, comments: [] };
 }
+
+// ---- service notices ----
+
+function demoNotices(): ServiceNotice[] {
+  const at = (h: number) => new Date(Date.now() + h * 3_600_000).toISOString();
+  const n = (id: string, ward_id: string | null, kind: ServiceNotice['kind'], severity: ServiceNotice['severity'], title: string, title_sw: string, starts: number, ends: number | null, extra: Partial<ServiceNotice> = {}): ServiceNotice =>
+    ({ id, ward_id, kind, severity, title, title_sw, body: null, area: null, starts_at: at(starts), ends_at: ends === null ? null : at(ends), status: 'active', resolved_at: null, resolved_note: null, updated_at: at(starts), ...extra });
+  return [
+    n('n1', 'kawangware', 'water', 'disruption', 'No piped water while a main is repaired', 'Hakuna maji ya bomba wakati bomba kuu linarekebishwa', -5, 30, { area: 'Gatina, Congo and Kabiria', body: 'Water bowsers will be at Kawangware market from 8am to 5pm each day.' }),
+    n('n2', 'kilimani', 'road', 'disruption', 'Argwings Kodhek Road closed for drainage works', 'Barabara ya Argwings Kodhek imefungwa kwa kazi ya mifereji', -20, 52, { area: 'Between Yaya Centre and Hurlingham', body: 'Use Ngong Road or Lenana Road. Matatus are diverted.' }),
+    n('n3', null, 'health', 'info', 'Free cholera vaccination at all county health centres this week', 'Chanjo ya kipindupindu bila malipo katika vituo vyote vya afya vya kaunti wiki hii', -30, 120),
+    n('n4', 'embakasi', 'waste', 'info', 'Garbage collection moves to Saturday this week', 'Ukusanyaji wa taka unahamia Jumamosi wiki hii', -2, 70),
+    n('n5', 'kileleshwa', 'power', 'disruption', 'Street lights off on Othaya Road', 'Taa za barabarani zimezimwa barabara ya Othaya', -72, null, { status: 'resolved', resolved_at: at(-3), resolved_note: 'A damaged cable was replaced. Lights are back on.' }),
+  ];
+}
+
+export async function getNotices(): Promise<ServiceNotice[]> {
+  if (await isDemo()) return demoNotices();
+  const since = new Date(Date.now() - 30 * 86_400_000).toISOString();
+  const { data, error } = await supabase!.from('service_notices').select('*').or(`status.eq.active,updated_at.gte.${since}`).order('starts_at', { ascending: false }).limit(300);
+  if (error) throw error;
+  return (data ?? []) as ServiceNotice[];
+}
+
+export async function saveNotice(n: Partial<ServiceNotice> & Pick<ServiceNotice, 'title' | 'kind' | 'severity'>): Promise<void> {
+  if (await isDemo()) return;
+  const { id, ...rest } = n;
+  const q = id ? supabase!.from('service_notices').update(rest).eq('id', id) : supabase!.from('service_notices').insert(rest);
+  const { error } = await q;
+  if (error) throw error;
+}
+
+// ---- county commitments ----
+
+function demoCommitments(): Commitment[] {
+  const d = (days: number) => new Date(Date.now() + days * 86_400_000).toISOString().slice(0, 10);
+  const up = (cid: string, i: number, status: Commitment['status'], ago: number, note: string | null, due: string | null): CommitmentUpdate =>
+    ({ id: i, commitment_id: cid, status, due_on: due, note, created_at: new Date(Date.now() - ago * 86_400_000).toISOString() });
+  const c = (id: string, slug: string, title: string, title_sw: string, source: string, sector: string, status: Commitment['status'], due: number, updates: CommitmentUpdate[], extra: Partial<Commitment> = {}): Commitment =>
+    ({ id, slug, title, title_sw, detail: null, source, source_url: null, made_on: d(-400), due_on: d(due), sector, ward_id: null, project_id: null, status, evidence: null, updated_at: updates[updates.length - 1]?.created_at ?? new Date().toISOString(), updates, ...extra });
+  return [
+    c('c1', 'ward-dev-fund-clinics', 'A working clinic with a nurse in every ward', 'Zahanati inayofanya kazi yenye muuguzi katika kila wadi', 'Demo: County plan 2023-2027', 'Health', 'in_progress', 240,
+      [up('c1', 1, 'not_started', 400, 'Published', d(240)), up('c1', 2, 'in_progress', 90, '31 of 85 wards have a clinic open five days a week.', d(240))], { detail: 'Each ward gets at least one clinic open five days a week, staffed by a county nurse.', evidence: '31 of 85 wards have a clinic open five days a week.' }),
+    c('c2', 'street-lights-main-roads', 'Street lights on every main road in informal settlements', 'Taa za barabarani katika kila barabara kuu ya mitaa ya mabanda', 'Demo: Budget speech', 'Roads', 'delivered', -30,
+      [up('c2', 3, 'not_started', 380, 'Published', d(-30)), up('c2', 4, 'in_progress', 200, 'Contracts signed for 1,200 poles.', d(-30)), up('c2', 5, 'delivered', 20, '1,236 poles lit. Map of poles published with the project.', d(-30))], { evidence: '1,236 poles lit. Map of poles published with the project.' }),
+    c('c3', 'garbage-trucks', 'Garbage collected every week in every estate', 'Taka kukusanywa kila wiki katika kila mtaa', 'Demo: Governor statement', 'Environment', 'delayed', -45,
+      [up('c3', 6, 'not_started', 360, 'Published', d(-120)), up('c3', 7, 'in_progress', 250, 'Twenty new trucks ordered.', d(-120)), up('c3', 8, 'in_progress', 130, 'Due date changed from ' + d(-120), d(-45)), up('c3', 9, 'delayed', 30, 'Eight trucks delivered. The rest are held up at the port.', d(-45))], { evidence: 'Eight trucks delivered. The rest are held up at the port.' }),
+    c('c4', 'online-permits', 'Every county permit applied for and paid online', 'Kila kibali cha kaunti kuombwa na kulipiwa mtandaoni', 'Demo: County plan 2023-2027', 'Services', 'in_progress', 120,
+      [up('c4', 10, 'not_started', 300, 'Published', d(120)), up('c4', 11, 'in_progress', 60, 'Business permits and parking are online. Building plans next.', d(120))]),
+    c('c5', 'ecde-meals', 'Free lunch for every child in county nursery schools', 'Chakula cha mchana bila malipo kwa kila mtoto katika shule za chekechea za kaunti', 'Demo: Budget speech', 'Education', 'not_started', 300,
+      [up('c5', 12, 'not_started', 100, 'Published', d(300))]),
+  ];
+}
+
+export async function getCommitments(): Promise<Commitment[]> {
+  if (await isDemo()) return demoCommitments();
+  const [c, u] = await Promise.all([
+    supabase!.from('commitments').select('*').order('due_on', { ascending: true, nullsFirst: false }).limit(500),
+    supabase!.from('commitment_updates').select('*').order('created_at').limit(5000),
+  ]);
+  if (c.error) throw c.error;
+  if (u.error) throw u.error;
+  const by = new Map<string, CommitmentUpdate[]>();
+  for (const x of (u.data ?? []) as CommitmentUpdate[]) by.set(x.commitment_id, [...(by.get(x.commitment_id) ?? []), x]);
+  return ((c.data ?? []) as Omit<Commitment, 'updates'>[]).map((x) => ({ ...x, updates: by.get(x.id) ?? [] }));
+}
+
+export async function saveCommitment(c: Partial<Omit<Commitment, 'updates'>> & Pick<Commitment, 'title' | 'slug' | 'source' | 'status'>): Promise<void> {
+  if (await isDemo()) return;
+  const { id, ...rest } = c;
+  const q = id ? supabase!.from('commitments').update(rest).eq('id', id) : supabase!.from('commitments').insert(rest);
+  const { error } = await q;
+  if (error) throw error;
+}
+
+/** Past its due date and neither delivered nor dropped. */
+export const isOverdue = (c: Pick<Commitment, 'due_on' | 'status'>, today = new Date().toISOString().slice(0, 10)) =>
+  Boolean(c.due_on && c.due_on < today && c.status !== 'delivered' && c.status !== 'dropped');
