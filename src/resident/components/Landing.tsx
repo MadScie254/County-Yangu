@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight, BellRing, Building2, CheckCircle2, ChevronDown, Clock3, Compass, FolderKanban, Globe, Landmark, Lightbulb, Megaphone, MessageSquareText, Scale, ShieldCheck, Smartphone, UserRound, Vote, Activity, type LucideIcon } from 'lucide-react';
+import { Activity, ArrowRight, BadgeCheck, BellRing, Building2, CalendarDays, CheckCircle2, ChevronDown, CircleHelp, Clock3, Compass, Database, FileText, FolderKanban, Globe, Landmark, Lightbulb, Megaphone, MessageSquareText, Scale, SearchCheck, ShieldCheck, Smartphone, Trophy, UserRound, Vote, type LucideIcon } from 'lucide-react';
 import { useI18n, type MessageKey } from '@/shared/i18n';
 import { county } from '@/shared/config/county';
 import { useCategorySla, useCountySummary, useProcurementWatch, useTenders } from '@/shared/api/hooks';
@@ -38,16 +38,24 @@ export function Glance() {
   );
 }
 
-type Feature = { to: string; icon: LucideIcon; k: 'report' | 'track' | 'vote' | 'services' | 'alerts' | 'ideas' | 'open' | 'pulse'; tone: string };
+type Feature = { to: string; icon: LucideIcon; k: 'report' | 'track' | 'vote' | 'services' | 'alerts' | 'ideas' | 'open' | 'pulse' | 'check' | 'meetings' | 'results' | 'assembly' | 'verify' | 'tenders' | 'data' | 'how'; tone: string };
 const features: Feature[] = [
   { to: '/report', icon: Megaphone, k: 'report', tone: 'bg-brand text-brand-ink' },
+  { to: '/case', icon: SearchCheck, k: 'check', tone: 'bg-brand-soft text-ink' },
   { to: '/projects', icon: FolderKanban, k: 'track', tone: 'bg-info-soft text-info' },
   { to: '/vote', icon: Vote, k: 'vote', tone: 'bg-vote-soft text-vote' },
+  { to: '/meetings', icon: CalendarDays, k: 'meetings', tone: 'bg-vote-soft text-vote' },
+  { to: '/vote/results', icon: Trophy, k: 'results', tone: 'bg-good-soft text-good' },
   { to: '/services', icon: Landmark, k: 'services', tone: 'bg-good-soft text-good' },
+  { to: '/verify', icon: BadgeCheck, k: 'verify', tone: 'bg-info-soft text-info' },
+  { to: '/open', icon: Scale, k: 'open', tone: 'bg-bad-soft text-bad' },
+  { to: '/tenders', icon: FileText, k: 'tenders', tone: 'bg-bad-soft text-bad' },
+  { to: '/assembly', icon: Building2, k: 'assembly', tone: 'bg-bg-2 text-ink' },
+  { to: '/pulse', icon: Activity, k: 'pulse', tone: 'bg-bg-2 text-ink' },
   { to: '/alerts', icon: BellRing, k: 'alerts', tone: 'bg-warn-soft text-warn' },
   { to: '/ideas', icon: Lightbulb, k: 'ideas', tone: 'bg-brand-soft text-ink' },
-  { to: '/open', icon: Scale, k: 'open', tone: 'bg-bad-soft text-bad' },
-  { to: '/pulse', icon: Activity, k: 'pulse', tone: 'bg-bg-2 text-ink' },
+  { to: '/open/api', icon: Database, k: 'data', tone: 'bg-bg-2 text-ink' },
+  { to: '/how-it-works', icon: CircleHelp, k: 'how', tone: 'bg-bg-2 text-ink' },
 ];
 
 export function Features() {

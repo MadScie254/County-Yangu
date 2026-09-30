@@ -3,7 +3,7 @@
 import { supabase } from './client';
 import { dataSource, getWardStats } from './public';
 import { demoProjects, demoTenders } from './demo';
-import type { BudgetResults, CommitteeView, FixStats, Follow, FollowKind, OcdsPackage, VerifyResult, WardScorecard } from './types';
+import type { PublicMeeting, BudgetResults, CommitteeView, FixStats, Follow, FollowKind, OcdsPackage, VerifyResult, WardScorecard } from './types';
 
 const isDemo = async () => (await dataSource()) === 'demo' || !supabase;
 
@@ -154,4 +154,49 @@ export async function getOcds(limit = 100, offset = 0): Promise<OcdsPackage> {
     };
   }
   return rpc<OcdsPackage>('ocds_releases', { p_limit: limit, p_offset: offset });
+}
+
+// ---- public participation calendar ----
+
+function demoMeetings(): PublicMeeting[] {
+  const day = (d: number, h: number) => { const x = new Date(); x.setDate(x.getDate() + d); x.setHours(h, 0, 0, 0); return x.toISOString(); };
+  const m = (id: string, ward_id: string | null, kind: PublicMeeting['kind'], title: string, title_sw: string, venue: string, d: number, h: number, extra: Partial<PublicMeeting> = {}): PublicMeeting =>
+    ({ id, ward_id, kind, title, title_sw, venue, agenda: null, starts_at: day(d, h), ends_at: day(d, h + 2), status: 'scheduled', outcome: null, attendance: null, ...extra });
+  return [
+    m('m1', 'kileleshwa', 'baraza', 'Ward baraza: drainage and street lighting', 'Baraza la wadi: mifereji na taa za barabarani', "Chief's camp, Kileleshwa", 4, 10, { agenda: 'Blocked drains on Othaya Road; streetlights promised in the last budget round; questions from residents.' }),
+    m('m2', null, 'budget_hearing', 'County budget hearing 2027/28', 'Kikao cha bajeti ya kaunti 2027/28', 'City Hall, Nairobi', 9, 9, { agenda: 'Draft budget estimates for each department. Residents may speak for up to three minutes each.' }),
+    m('m3', 'kawangware', 'town_hall', 'Town hall: water supply schedule', 'Mkutano wa hadhara: ratiba ya maji', 'Kawangware social hall', 12, 14),
+    m('m4', 'kilimani', 'baraza', 'Ward baraza: parking and hawkers', 'Baraza la wadi: maegesho na wachuuzi', 'Kilimani primary school', -6, 10, { status: 'held', attendance: 142, outcome: 'Residents asked for a hawkers market off Ngong Road. The ward administrator will bring a site proposal to the next baraza.' }),
+    m('m5', 'embakasi', 'baraza', 'Ward baraza: garbage collection', 'Baraza la wadi: ukusanyaji wa taka', 'Embakasi social hall', -2, 11, { status: 'cancelled' }),
+  ];
+}
+
+export async function getMeetings(): Promise<PublicMeeting[]> {
+  if (await isDemo()) return demoMeetings();
+  const since = new Date(Date.now() - 120 * 86_400_000).toISOString();
+  const { data, error } = await supabase!.from('public_meetings').select('*').gte('starts_at', since).order('starts_at').limit(300);
+  if (error) throw error;
+  return (data ?? []) as PublicMeeting[];
+}
+
+export async function saveMeeting(m: Partial<PublicMeeting> & Pick<PublicMeeting, 'title' | 'venue' | 'starts_at' | 'ends_at' | 'kind'>): Promise<void> {
+  if (await isDemo()) return;
+  const { id, ...rest } = m;
+  const q = id ? supabase!.from('public_meetings').update(rest).eq('id', id) : supabase!.from('public_meetings').insert(rest);
+  const { error } = await q;
+  if (error) throw error;
+}
+
+/** An .ics file so a resident can put the meeting in their phone's calendar. */
+export function meetingIcs(m: PublicMeeting, title: string, url: string): string {
+  const stamp = (iso: string) => iso.replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+  const esc = (s: string) => s.replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\n/g, '\\n');
+  return [
+    'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//County Yangu//Meetings//EN', 'BEGIN:VEVENT',
+    `UID:${m.id}@county-yangu`, `DTSTAMP:${stamp(new Date().toISOString())}`,
+    `DTSTART:${stamp(new Date(m.starts_at).toISOString())}`, `DTEND:${stamp(new Date(m.ends_at).toISOString())}`,
+    `SUMMARY:${esc(title)}`, `LOCATION:${esc(m.venue)}`, `DESCRIPTION:${esc((m.agenda ? `${m.agenda}\n\n` : '') + url)}`,
+    ...(m.status === 'cancelled' ? ['STATUS:CANCELLED'] : []),
+    'END:VEVENT', 'END:VCALENDAR',
+  ].join('\r\n');
 }

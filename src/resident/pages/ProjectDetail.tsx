@@ -1,4 +1,5 @@
 import { FollowButton } from '@/shared/ui/FollowButton';
+import { ShareListen } from '@/shared/ui/ShareListen';
 import { Link, useParams } from 'react-router-dom';
 import { ArrowLeft, Check, Circle, Megaphone, Share2, TriangleAlert, Hammer } from 'lucide-react';
 import { useI18n } from '@/shared/i18n';
@@ -46,7 +47,10 @@ export default function ProjectDetail() {
           <span className="text-sm font-semibold text-muted">{p.ward_name} · {p.sector}</span>
         </div>
         <h1 className="mt-3 font-display text-[clamp(1.9rem,5.5vw,2.8rem)] font-extrabold leading-[1.05]">{p.title}</h1>
-        <div className="mt-4"><FollowButton kind="project" id={p.id} label={p.title} /></div>
+        <div className="mt-4 flex flex-wrap gap-2">
+          <FollowButton kind="project" id={p.id} label={p.title} />
+          <ShareListen className="contents" text={t('loop.share.projectText', { title: p.title, ward: p.ward_name })} speak={[p.title, p.ward_name, p.description ?? ''].filter(Boolean).join('. ')} />
+        </div>
         {p.description && <p className="mt-4 text-[1.05rem] text-ink-2">{p.description}</p>}
       </header>
 

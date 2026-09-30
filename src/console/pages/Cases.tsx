@@ -110,7 +110,7 @@ export default function Cases() {
                     </td>
                     <td className={td}>
                       <span className="block font-semibold">{maps.cat.get(c.category_id ?? '') ?? '-'}</span>
-                      <span className="mt-1 flex flex-wrap gap-1">{(c.priority === 'urgent' || c.priority === 'high') && <Chip tone={priorityTone[c.priority]!}>{c.priority}</Chip>}{c.flagged_financial && <Chip tone="bad"><Flag className="size-3" aria-hidden />integrity</Chip>}</span>
+                      <span className="mt-1 flex flex-wrap gap-1">{(c.priority === 'urgent' || c.priority === 'high') && <Chip tone={priorityTone[c.priority]!}>{c.priority}</Chip>}{c.flagged_financial && <Chip tone="bad"><Flag className="size-3" aria-hidden />integrity</Chip>}{(c.supporters ?? 0) > 0 && <Chip tone="info">+{c.supporters} residents</Chip>}</span>
                     </td>
                     <td className={td}>{wardLabel(c.ward_id)}</td>
                     <td className={td}><Chip tone={statusTone[c.status]}>{statusLabel[c.status]}</Chip><p className="mt-1 text-xs text-muted">{relative(c.created_at)}</p></td>

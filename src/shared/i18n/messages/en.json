@@ -56,7 +56,16 @@
     "verify": "Check a permit",
     "assembly": "Assembly",
     "results": "Ward results",
-    "data": "Open data"
+    "data": "Open data",
+    "meetings": "Meetings",
+    "checkReport": "Track a report",
+    "explore": "Explore",
+    "groups": {
+      "money": "Money and accountability",
+      "take": "Take part",
+      "check": "Check and track",
+      "help": "Help"
+    }
   },
   "a11y": {
     "settings": "Display settings",
@@ -685,7 +694,11 @@
       "open": "Open County",
       "openHint": "Who wins tenders",
       "check": "Check a report",
-      "checkHint": "Use your report number"
+      "checkHint": "Use your report number",
+      "meetings": "Public meetings",
+      "meetingsHint": "Barazas and budget hearings near you",
+      "verify": "Check a permit",
+      "verifyHint": "Is this permit or receipt genuine?"
     },
     "ward": {
       "title": "Your ward",
@@ -895,7 +908,39 @@
         "t": "County Pulse",
         "d": "How fast the county answers, by ward and department."
       },
-      "go": "Open"
+      "go": "Open",
+      "check": {
+        "t": "Track a report",
+        "d": "Type your report number to see who has it, the deadline and every update."
+      },
+      "meetings": {
+        "t": "Public meetings",
+        "d": "Ward barazas and budget hearings: when, where, and what was decided."
+      },
+      "results": {
+        "t": "Ward budget results",
+        "d": "What each ward voted for, and which projects the money covers."
+      },
+      "assembly": {
+        "t": "Committee dashboards",
+        "d": "How each County Assembly committee area is doing, in numbers."
+      },
+      "verify": {
+        "t": "Check a permit",
+        "d": "Scan or type the code on a permit or receipt to see if it is genuine."
+      },
+      "tenders": {
+        "t": "Tenders",
+        "d": "Every county tender: what is bought, for how much, and who won."
+      },
+      "data": {
+        "t": "Open data",
+        "d": "Download tenders and awards for your own analysis. No key needed."
+      },
+      "how": {
+        "t": "How it works",
+        "d": "Deadlines, privacy and what happens after you report."
+      }
     },
     "audiences": {
       "title": "One system, three ways in",
@@ -965,7 +1010,10 @@
       "Committee dashboards and ward scorecards you can share with your MCA",
       "An open data API for journalists and researchers",
       "Voice reporting in Kiswahili",
-      "Works offline and installs on your phone"
+      "Works offline and installs on your phone",
+      "Public meetings calendar with reminders and published outcomes",
+      "\"Me too\" on reports, so the county sees how many people are affected",
+      "Share on WhatsApp and listen to any report or project read aloud"
     ],
     "nextItems": [
       "Live links to the national e-procurement system and IFMIS",
@@ -1074,10 +1122,10 @@
       "kind": {
         "supplier": "Supplier",
         "project": "Project",
-        "ward_tenders": "Ward tenders",
+        "ward_tenders": "Ward updates",
         "sector": "Sector"
       },
-      "wardTenders": "Follow tenders in this ward"
+      "wardTenders": "Follow this ward"
     },
     "assembly": {
       "title": "Committee dashboards",
@@ -1214,6 +1262,48 @@
       "project_late": {
         "title": "{name} is {days} days past its expected date",
         "why": "The project has not reached completion by the date the county published."
+      }
+    },
+    "metoo": {
+      "title": "Same problem where you are?",
+      "hint": "Add your voice instead of filing a new report. It is anonymous, and it shows the county how many people are affected.",
+      "button": "Me too",
+      "added": "Thank you. Your voice is counted.",
+      "already": "You have already added your voice to this report.",
+      "count_one": "{count} person has this problem",
+      "count_other": "{count} people have this problem",
+      "error": "We could not add that. Please try again."
+    },
+    "share": {
+      "share": "Share",
+      "whatsapp": "WhatsApp",
+      "listen": "Listen",
+      "stop": "Stop",
+      "caseText": "Report {ref} in {ward} is {status}. Follow it here:",
+      "projectText": "{title} in {ward}. Budget, spending and progress:"
+    },
+    "meetings": {
+      "title": "Public meetings",
+      "intro": "Barazas, budget hearings and Assembly sittings where residents have a say. The law requires the county to involve you; this is where it says when and where, and what was decided.",
+      "upcoming": "Coming up",
+      "past": "Held and cancelled",
+      "allWards": "All wards",
+      "countyWide": "County-wide",
+      "addCal": "Add to calendar",
+      "cancelled": "Cancelled",
+      "held": "Held",
+      "outcome": "What was decided",
+      "attendance_one": "{count} person attended",
+      "attendance_other": "{count} people attended",
+      "agenda": "Agenda",
+      "none": "No meetings announced for this choice yet.",
+      "followHint": "Follow your ward to be told about new meetings.",
+      "kind": {
+        "baraza": "Ward baraza",
+        "budget_hearing": "Budget hearing",
+        "assembly_sitting": "Assembly sitting",
+        "town_hall": "Town hall",
+        "other": "Meeting"
       }
     }
   }

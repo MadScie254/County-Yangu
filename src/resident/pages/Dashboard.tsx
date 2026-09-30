@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useMutation, useQueries, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { FollowKind } from '@/shared/api/types';
-import { ArrowRight, Bell, BellRing, Building2, CalendarClock, CreditCard, FileWarning, FolderKanban, Landmark, Lightbulb, LogOut, MapPin, Megaphone, Scale, SearchCheck, ShieldCheck, Smartphone, Vote, type LucideIcon } from 'lucide-react';
+import { BadgeCheck, CalendarDays, ArrowRight, Bell, BellRing, Building2, CalendarClock, CreditCard, FileWarning, FolderKanban, Landmark, Lightbulb, LogOut, MapPin, Megaphone, Scale, SearchCheck, ShieldCheck, Smartphone, Vote, type LucideIcon } from 'lucide-react';
 import { useI18n, type MessageKey } from '@/shared/i18n';
 import { county, wardLabel } from '@/shared/config/county';
 import { useCountySummary, useFollows, useProcurementWatch, useProjects, useTenders, useVoteData, useWardStats } from '@/shared/api/hooks';
@@ -181,7 +181,7 @@ export default function Dashboard() {
       {/* ---------- Quick actions ---------- */}
       <section aria-labelledby="quick">
         <h2 id="quick" className="mb-3 font-display text-xl font-bold">{t('me.quick.title')}</h2>
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
           <Tile to="/report" icon={Megaphone} tone="brand" title={t('me.quick.report')} hint={t('me.quick.reportHint')} />
           <Tile to="/projects" icon={FolderKanban} tone="info" title={t('me.quick.track')} hint={t('me.quick.trackHint')} />
           <Tile to="/vote" icon={Vote} tone="vote" title={t('me.quick.vote')} hint={t('me.quick.voteHint')} />
@@ -190,6 +190,8 @@ export default function Dashboard() {
           <Tile to="/ideas" icon={Lightbulb} tone="soft" title={t('me.quick.ideas')} hint={t('me.quick.ideasHint')} />
           <Tile to="/open" icon={Scale} tone="neutral" title={t('me.quick.open')} hint={t('me.quick.openHint')} />
           <Tile to="/case" icon={SearchCheck} tone="neutral" title={t('me.quick.check')} hint={t('me.quick.checkHint')} />
+          <Tile to="/meetings" icon={CalendarDays} tone="vote" title={t('me.quick.meetings')} hint={t('me.quick.meetingsHint')} />
+          <Tile to="/verify" icon={BadgeCheck} tone="info" title={t('me.quick.verify')} hint={t('me.quick.verifyHint')} />
         </div>
       </section>
 

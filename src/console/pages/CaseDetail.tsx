@@ -82,6 +82,7 @@ export default function CaseDetail() {
           <h1 className="font-data text-2xl font-medium tracking-wide">{c.reference}</h1>
           <Chip tone={statusTone[c.status]}>{statusLabel[c.status]}</Chip>
           {(c.priority === 'high' || c.priority === 'urgent') && <Chip tone={priorityTone[c.priority]!}>{c.priority}</Chip>}
+          {(c.supporters ?? 0) > 0 && <Chip tone="info">{c.supporters} more residents report the same problem</Chip>}
           {c.flagged_financial && <Chip tone="bad"><Flag className="size-3" aria-hidden />Integrity desk</Chip>}
         </div>
         <p className="mt-1.5 text-ink-2">{maps.cat.get(c.category_id ?? '') ?? 'Report'} · {wardLabel(c.ward_id)} · via {c.channel} · {relative(c.created_at)}</p>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
-import { BellRing, Banknote, Building, Eye, FolderKanban, Gauge, Inbox, LogOut, Menu, MessageSquareText, Scale, Settings, Sparkles, Vote, X, ClipboardCheck, FileStack, Lightbulb, Timer, UserRound, Globe } from 'lucide-react';
+import { BellRing, Banknote, Building, Eye, FolderKanban, Gauge, Inbox, LogOut, Menu, MessageSquareText, Scale, Settings, Sparkles, Vote, X, ClipboardCheck, FileStack, Lightbulb, Timer, UserRound, Globe, CalendarDays } from 'lucide-react';
 import { useAuth } from '@/shared/state/auth';
 import { county } from '@/shared/config/county';
 import { LogoMark } from '@/shared/ui/Logo';
@@ -23,6 +23,7 @@ const groups: Group[] = [
   { title: 'Publish', items: [
     { to: '/projects', label: 'Projects', icon: FolderKanban, show: (c) => c.publish },
     { to: '/tenders', label: 'Tenders', icon: FileStack, show: (c) => c.publish },
+    { to: '/meetings', label: 'Public meetings', icon: CalendarDays, show: (c) => c.publish },
     { to: '/budget', label: 'Budget cycles', icon: Vote, show: (c) => c.admin },
     { to: '/alerts', label: 'Ward alerts', icon: BellRing, show: (c) => c.working },
     { to: '/ideas', label: 'Ideas & petitions', icon: Lightbulb, show: (c) => c.working },

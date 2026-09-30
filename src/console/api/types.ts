@@ -35,6 +35,7 @@ export type CaseRow = {
   acknowledged_at: string | null;
   resolved_at: string | null;
   escalation_level: number;
+  supporters?: number;
   created_at: string;
   updated_at: string;
   lat: number | null;

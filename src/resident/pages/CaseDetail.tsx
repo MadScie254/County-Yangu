@@ -12,6 +12,8 @@ import { Ring } from '@/shared/ui/Meter';
 import { Skeleton } from '@/shared/ui/Card';
 import { ButtonLink } from '@/shared/ui/Button';
 import { CaseFeedback } from '../components/CaseFeedback';
+import { MeToo } from '../components/MeToo';
+import { ShareListen } from '@/shared/ui/ShareListen';
 
 const eventIcon: Record<string, typeof CircleDot> = { created: Megaphone, status: CheckCircle2, public_message: MessageSquare, reminder: Clock, escalated: Flag, feedback: ThumbsUp, reopened: RotateCcw };
 
@@ -81,6 +83,13 @@ export default function CaseDetail() {
         {sensitive && <p className="mt-4 flex items-center gap-2 rounded-xl bg-info-soft px-3 py-2 text-sm font-medium text-info"><Landmark className="size-4" aria-hidden /> {t('status.sensitive')}</p>}
       </div>
 
+      <ShareListen
+        className="mt-5 flex flex-wrap gap-2"
+        text={t('loop.share.caseText', { ref: c.reference, ward: c.ward, status: t(`statuses.${c.status}` as MessageKey).toLowerCase() })}
+        speak={[categoryName, c.ward, t(`statuses.${c.status}` as MessageKey), ...[...c.events].reverse().slice(0, 3).map((e) => e.message ?? '')].filter(Boolean).join('. ')}
+      />
+
+      {!done && <MeToo reference={c.reference} count={c.supporters ?? 0} />}
       {(c.status === 'resolved' || c.status === 'closed') && !c.feedback_given && <CaseFeedback reference={c.reference} />}
 
       <section className="mt-10" aria-labelledby="timeline">

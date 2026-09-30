@@ -128,6 +128,7 @@ export type CaseStatus = {
   resolve_due_at: string | null;
   project_slug: string | null;
   reopened_count?: number;
+  supporters?: number;
   feedback_given?: boolean;
   events: { kind: string; message: string | null; at: string }[];
 };
@@ -217,3 +218,19 @@ export type WardScorecard = {
 };
 
 export type OcdsPackage = { uri: string; version: string; publishedDate: string; publisher: { name: string }; license: string; releases: Record<string, unknown>[] };
+
+export type MeetingKind = 'baraza' | 'budget_hearing' | 'assembly_sitting' | 'town_hall' | 'other';
+export type PublicMeeting = {
+  id: string;
+  ward_id: string | null;
+  kind: MeetingKind;
+  title: string;
+  title_sw: string | null;
+  agenda: string | null;
+  venue: string;
+  starts_at: string;
+  ends_at: string;
+  status: 'scheduled' | 'cancelled' | 'held';
+  outcome: string | null;
+  attendance: number | null;
+};

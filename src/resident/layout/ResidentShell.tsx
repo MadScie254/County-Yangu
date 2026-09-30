@@ -1,7 +1,7 @@
 import { InstallPrompt } from '../components/InstallPrompt';
 import { useEffect, useState } from 'react';
 import { NavLink, Link, Outlet, useLocation } from 'react-router-dom';
-import { Home, Megaphone, FolderKanban, Vote, Menu, Settings2, Smartphone, WifiOff, Building2, ShieldCheck, UserRound, Scale } from 'lucide-react';
+import { Activity, BadgeCheck, BellRing, Briefcase, CalendarDays, ChevronDown, CircleHelp, Database, FileText, Home, Landmark, Lightbulb, Megaphone, FolderKanban, Vote, Menu, Settings2, Smartphone, WifiOff, Building2, ShieldCheck, UserRound, Scale, SearchCheck, Trophy, type LucideIcon } from 'lucide-react';
 import { useI18n, locales, type MessageKey } from '@/shared/i18n';
 import { county } from '@/shared/config/county';
 import { Wordmark } from '@/shared/ui/Logo';
@@ -18,21 +18,83 @@ const primaryNav: { to: string; key: MessageKey; end?: boolean }[] = [
   { to: '/report', key: 'nav.report' },
   { to: '/projects', key: 'nav.track' },
   { to: '/vote', key: 'nav.vote' },
+  { to: '/open', key: 'nav.open' },
   { to: '/services', key: 'nav.services' },
-  { to: '/pulse', key: 'nav.pulse' },
 ];
 
-const secondaryNav: { to: string; key: MessageKey }[] = [
-  { to: '/open', key: 'nav.open' },
-  { to: '/tenders', key: 'nav.tenders' },
-  { to: '/vote/results', key: 'nav.results' },
-  { to: '/assembly', key: 'nav.assembly' },
-  { to: '/verify', key: 'nav.verify' },
-  { to: '/open/api', key: 'nav.data' },
-  { to: '/ideas', key: 'nav.proposals' },
-  { to: '/alerts', key: 'nav.alerts' },
-  { to: '/how-it-works', key: 'nav.how' },
+type NavGroup = { key: MessageKey; items: { to: string; key: MessageKey; icon: LucideIcon }[] };
+/** Every public page, grouped the same way in the Explore menu, the phone menu and the footer. */
+const navGroups: NavGroup[] = [
+  { key: 'nav.groups.money', items: [
+    { to: '/open', key: 'nav.open', icon: Scale },
+    { to: '/tenders', key: 'nav.tenders', icon: FileText },
+    { to: '/vote/results', key: 'nav.results', icon: Trophy },
+    { to: '/assembly', key: 'nav.assembly', icon: Landmark },
+    { to: '/pulse', key: 'nav.pulse', icon: Activity },
+    { to: '/open/api', key: 'nav.data', icon: Database },
+  ] },
+  { key: 'nav.groups.take', items: [
+    { to: '/report', key: 'nav.report', icon: Megaphone },
+    { to: '/vote', key: 'nav.vote', icon: Vote },
+    { to: '/meetings', key: 'nav.meetings', icon: CalendarDays },
+    { to: '/ideas', key: 'nav.proposals', icon: Lightbulb },
+    { to: '/alerts', key: 'nav.alerts', icon: BellRing },
+  ] },
+  { key: 'nav.groups.check', items: [
+    { to: '/case', key: 'nav.checkReport', icon: SearchCheck },
+    { to: '/verify', key: 'nav.verify', icon: BadgeCheck },
+    { to: '/projects', key: 'nav.track', icon: FolderKanban },
+    { to: '/services', key: 'nav.services', icon: Briefcase },
+  ] },
+  { key: 'nav.groups.help', items: [
+    { to: '/how-it-works', key: 'nav.how', icon: CircleHelp },
+  ] },
 ];
+
+function ExploreMenu() {
+  const { t } = useI18n();
+  const [open, setOpen] = useState(false);
+  const { pathname } = useLocation();
+  const [at, setAt] = useState(pathname);
+  if (at !== pathname) { setAt(pathname); if (open) setOpen(false); }
+  useEffect(() => {
+    if (!open) return;
+    const esc = (e: KeyboardEvent) => { if (e.key === 'Escape') setOpen(false); };
+    window.addEventListener('keydown', esc);
+    return () => window.removeEventListener('keydown', esc);
+  }, [open]);
+  return (
+    <div className="relative">
+      <button type="button" aria-expanded={open} aria-haspopup="true" onClick={() => setOpen((v) => !v)}
+        className={cn('inline-flex items-center gap-1 rounded-full px-3.5 py-2 text-[0.92rem] font-semibold transition', open ? 'bg-bg-2 text-ink' : 'text-ink-2 hover:bg-bg-2 hover:text-ink')}>
+        {t('nav.explore')} <ChevronDown className={cn('size-4 transition', open && 'rotate-180')} aria-hidden />
+      </button>
+      {open && (
+        <>
+          <button type="button" aria-label={t('common.close')} className="fixed inset-0 z-40 cursor-default" onClick={() => setOpen(false)} />
+          <div className="absolute left-1/2 top-full z-50 mt-2 w-[min(58rem,calc(100vw-2rem))] -translate-x-1/2 rounded-[1.5rem] border border-line bg-surface p-5 shadow-pop">
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              {navGroups.map((g) => (
+                <div key={g.key}>
+                  <p className="px-2 text-xs font-bold uppercase tracking-[0.12em] text-muted">{t(g.key)}</p>
+                  <ul className="mt-2 space-y-0.5">
+                    {g.items.map((n) => (
+                      <li key={n.to + n.key}>
+                        <NavLink to={n.to} end className={({ isActive }) => cn('flex items-center gap-2.5 rounded-xl px-2 py-2 text-sm font-semibold', isActive ? 'bg-bg-2' : 'hover:bg-bg-2')}>
+                          <n.icon className="size-4 shrink-0 text-ink-2" aria-hidden /> {t(n.key)}
+                        </NavLink>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
 
 function LangToggle({ className }: { className?: string }) {
   const { locale, setLocale, t } = useI18n();
@@ -148,6 +210,7 @@ export function ResidentShell() {
                 {t(n.key)}
               </NavLink>
             ))}
+            <ExploreMenu />
           </nav>
 
           <div className="flex items-center gap-1.5">
@@ -181,30 +244,44 @@ export function ResidentShell() {
 
         {more && (
           <nav aria-label={t('nav.more')} className="border-t border-line bg-surface lg:hidden">
-            <ul className="mx-auto grid max-w-7xl grid-cols-2 gap-1 p-3 sm:grid-cols-3">
-              {[...primaryNav, ...secondaryNav].map((n) => (
-                <li key={n.to}>
-                  <NavLink to={n.to} className={({ isActive }) => cn('flex h-12 items-center rounded-xl px-3 font-semibold', isActive ? 'bg-bg-2' : 'hover:bg-bg-2')}>
-                    {t(n.key)}
+            <div className="mx-auto max-w-7xl space-y-4 p-3">
+              {navGroups.map((g) => (
+                <div key={g.key}>
+                  <p className="px-3 text-xs font-bold uppercase tracking-[0.12em] text-muted">{t(g.key)}</p>
+                  <ul className="mt-1 grid grid-cols-2 gap-1 sm:grid-cols-3">
+                    {g.items.map((n) => (
+                      <li key={n.to + n.key}>
+                        <NavLink to={n.to} end className={({ isActive }) => cn('flex h-12 items-center gap-2 rounded-xl px-3 font-semibold', isActive ? 'bg-bg-2' : 'hover:bg-bg-2')}>
+                          <n.icon className="size-4 shrink-0 text-ink-2" aria-hidden /> {t(n.key)}
+                        </NavLink>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+              <ul className="grid grid-cols-2 gap-1 border-t border-line pt-3 sm:grid-cols-3">
+                <li>
+                  <NavLink to={authStatus === 'in' ? '/me' : '/services/account'} className={({ isActive }) => cn('flex h-12 items-center gap-2 rounded-xl px-3 font-semibold', isActive ? 'bg-bg-2' : 'hover:bg-bg-2')}>
+                    <UserRound className="size-4" aria-hidden /> {authStatus === 'in' ? t('nav.me') : t('nav.signIn')}
                   </NavLink>
                 </li>
-              ))}
-              <li>
-                <NavLink to={authStatus === 'in' ? '/me' : '/services/account'} className={({ isActive }) => cn('flex h-12 items-center gap-2 rounded-xl px-3 font-semibold', isActive ? 'bg-bg-2' : 'hover:bg-bg-2')}>
-                  <UserRound className="size-4" aria-hidden /> {authStatus === 'in' ? t('nav.me') : t('nav.signIn')}
-                </NavLink>
-              </li>
-              {staff && (
+                {authStatus !== 'in' && (
+                  <li>
+                    <Link to="/services/account?mode=up" className="flex h-12 items-center gap-2 rounded-xl bg-brand px-3 font-semibold text-brand-ink">{t('auth.signUp')}</Link>
+                  </li>
+                )}
+                {staff && (
+                  <li>
+                    <a href="/console/" className="flex h-12 items-center gap-2 rounded-xl px-3 font-semibold hover:bg-bg-2"><Building2 className="size-4" aria-hidden /> {t('nav.staffConsole')}</a>
+                  </li>
+                )}
                 <li>
-                  <a href="/console/" className="flex h-12 items-center gap-2 rounded-xl px-3 font-semibold hover:bg-bg-2"><Building2 className="size-4" aria-hidden /> {t('nav.staffConsole')}</a>
+                  <button type="button" onClick={() => setSettings(true)} className="flex h-12 w-full items-center gap-2 rounded-xl px-3 text-left font-semibold hover:bg-bg-2">
+                    <Settings2 className="size-4" aria-hidden /> {t('a11y.settings')}
+                  </button>
                 </li>
-              )}
-              <li>
-                <button type="button" onClick={() => setSettings(true)} className="flex h-12 w-full items-center gap-2 rounded-xl px-3 text-left font-semibold hover:bg-bg-2">
-                  <Settings2 className="size-4" aria-hidden /> {t('a11y.settings')}
-                </button>
-              </li>
-            </ul>
+              </ul>
+            </div>
           </nav>
         )}
       </header>
@@ -215,7 +292,7 @@ export function ResidentShell() {
       </main>
 
       <footer className={cn('border-t border-line bg-bg-2', isHome ? '' : 'mt-8')}>
-        <div className="mx-auto grid max-w-7xl gap-8 px-4 py-10 sm:px-6 md:grid-cols-[1.4fr_1fr_1fr]">
+        <div className="mx-auto grid max-w-7xl gap-8 px-4 py-10 sm:px-6 md:grid-cols-[1.1fr_2fr_0.8fr]">
           <div>
             <Wordmark sub={county.name} />
             <p className="mt-4 max-w-sm text-sm text-ink-2">{t('footer.about', { county: county.name })}</p>
@@ -223,16 +300,22 @@ export function ResidentShell() {
               <Smartphone className="size-4 text-brand-strong" aria-hidden /> {t('footer.dial', { code: county.ussdCode })}
             </p>
           </div>
-          <ul className="space-y-2 text-sm font-medium">
-            {secondaryNav.map((n) => (
-              <li key={n.to}>
-                <Link to={n.to} className="text-ink-2 hover:text-ink hover:underline">
-                  {t(n.key)}
-                </Link>
-              </li>
+          <div className="grid grid-cols-2 gap-6 text-sm font-medium sm:grid-cols-3">
+            {navGroups.slice(0, 3).map((g) => (
+              <div key={g.key}>
+                <p className="text-xs font-bold uppercase tracking-[0.12em] text-muted">{t(g.key)}</p>
+                <ul className="mt-2 space-y-2">
+                  {g.items.map((n) => (
+                    <li key={n.to + n.key}><Link to={n.to} className="text-ink-2 hover:text-ink hover:underline">{t(n.key)}</Link></li>
+                  ))}
+                </ul>
+              </div>
             ))}
-          </ul>
+          </div>
           <ul className="space-y-2 text-sm font-medium">
+            <li>
+              <Link to="/how-it-works" className="inline-flex items-center gap-2 text-ink-2 hover:text-ink hover:underline"><CircleHelp className="size-4" aria-hidden /> {t('nav.how')}</Link>
+            </li>
             <li>
               <a href="/#roadmap" className="inline-flex items-center gap-2 text-ink-2 hover:text-ink hover:underline"><Scale className="size-4" aria-hidden /> {t('nav.roadmap')}</a>
             </li>

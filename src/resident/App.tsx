@@ -27,6 +27,7 @@ const Verify = lazy(() => import('./pages/Verify'));
 const Results = lazy(() => import('./pages/Results'));
 const Assembly = lazy(() => import('./pages/Assembly'));
 const WardScorecard = lazy(() => import('./pages/WardScorecard'));
+const Meetings = lazy(() => import('./pages/Meetings'));
 const OpenApi = lazy(() => import('./pages/OpenApi'));
 const OpenCounty = lazy(() => import('./pages/OpenCounty'));
 const NotFound = lazy(() => import('./pages/NotFound'));
@@ -61,6 +62,7 @@ export function App() {
           <Route path="verify/:code" element={<Verify />} />
           <Route path="vote/results" element={<Results />} />
           <Route path="assembly" element={<Assembly />} />
+          <Route path="meetings" element={<Meetings />} />
           <Route path="ward/:id" element={<WardScorecard />} />
           <Route path="me" element={<RequireAuth><Dashboard /></RequireAuth>} />
           <Route path="how-it-works" element={<HowItWorks />} />

@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { getAssembly, getBudgetResults, getFixStats, getOcds, getWardScorecard, listFollows, verifyDocument } from './loop';
+import { getMeetings, getAssembly, getBudgetResults, getFixStats, getOcds, getWardScorecard, listFollows, verifyDocument } from './loop';
 import { getProcurementWatch } from './procurement';
 import { dataSource, getActivity, getCategorySla, getCaseStatus, getCountySummary, getProjects, getProposals, getPulse, getTenders, getVoteData, getWardStats } from './public';
 
@@ -27,3 +27,4 @@ export const useWardScorecard = (ward: string | null) => useQuery({ queryKey: ['
 export const useVerify = (code: string | null) => useQuery({ queryKey: ['verify', code], queryFn: () => verifyDocument(code!), enabled: Boolean(code), staleTime: 30_000, retry: false });
 export const useFollows = () => useQuery({ queryKey: ['follows'], queryFn: listFollows, staleTime: minute });
 export const useOcds = (limit: number) => useQuery({ queryKey: ['ocds', limit], queryFn: () => getOcds(limit), staleTime: 10 * minute });
+export const useMeetings = () => useQuery({ queryKey: ['meetings'], queryFn: getMeetings, staleTime: 5 * minute });

@@ -573,3 +573,19 @@ Deno.test('case feedback: outcomes map to clear errors, comments are scrubbed, "
     assert.equal((await json(r)).code, code);
   }
 });
+
+Deno.test('me too: hashes the caller, never sends the address, and maps outcomes', async () => {
+  reset(); okRateLimit();
+  const calls: any[] = [];
+  state.rpc.svc_case_metoo = (a) => { calls.push(a); return 'ok'; };
+  const ok = await call('case-feedback', { json: { reference: 'nai-r123456', action: 'metoo' } });
+  assert.equal(ok.status, 200);
+  assert.equal(calls[0].p_reference, 'NAI-R123456');
+  assert.match(calls[0].p_supporter, /^\\x[0-9a-f]{64}$/);
+  for (const [db, status, code] of [['duplicate', 409, 'already_added'], ['closed', 409, 'closed'], ['not_found', 404, 'not_found']] as const) {
+    state.rpc.svc_case_metoo = () => db;
+    const r = await call('case-feedback', { json: { reference: 'NAI-R123456', action: 'metoo' } });
+    assert.equal(r.status, status);
+    assert.equal((await json(r)).code, code);
+  }
+});

@@ -76,6 +76,9 @@ export const castVote = (body: { token: string; cycle_id: string; ward_id: strin
 export const sendCaseFeedback = (body: { reference: string; fixed: boolean; comment?: string }) =>
   backendConfigured ? post<{ ok: true; reopened: boolean }>('case-feedback', JSON.stringify(body)) : sleep(500).then(() => ({ ok: true as const, reopened: !body.fixed }));
 
+export const sendMeToo = (reference: string) =>
+  backendConfigured ? post<{ ok: true }>('case-feedback', JSON.stringify({ reference, action: 'metoo' })) : sleep(400).then(() => ({ ok: true as const }));
+
 export const subscribeAlerts = (body: { token: string; ward_id: string; frequency: string }) =>
   backendConfigured ? post<SimpleResult>('alerts-subscribe', JSON.stringify(body)) : sleep(500).then(() => ({ ok: true as const }));
 

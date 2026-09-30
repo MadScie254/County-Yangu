@@ -56,7 +56,16 @@
     "verify": "Hakiki kibali",
     "assembly": "Bunge la Kaunti",
     "results": "Matokeo ya wadi",
-    "data": "Data wazi"
+    "data": "Data wazi",
+    "meetings": "Mikutano",
+    "checkReport": "Fuatilia ripoti",
+    "explore": "Gundua",
+    "groups": {
+      "money": "Fedha na uwajibikaji",
+      "take": "Shiriki",
+      "check": "Hakiki na fuatilia",
+      "help": "Msaada"
+    }
   },
   "a11y": {
     "settings": "Mipangilio ya kuonyesha",
@@ -685,7 +694,11 @@
       "open": "Kaunti Wazi",
       "openHint": "Nani anashinda zabuni",
       "check": "Angalia ripoti",
-      "checkHint": "Tumia nambari ya ripoti"
+      "checkHint": "Tumia nambari ya ripoti",
+      "meetings": "Mikutano ya umma",
+      "meetingsHint": "Mabaraza na vikao vya bajeti karibu nawe",
+      "verify": "Hakiki kibali",
+      "verifyHint": "Je, kibali au risiti hii ni halisi?"
     },
     "ward": {
       "title": "Wadi yako",
@@ -895,7 +908,39 @@
         "t": "Mapigo ya Kaunti",
         "d": "Kaunti inajibu kwa kasi gani, kwa wadi na idara."
       },
-      "go": "Fungua"
+      "go": "Fungua",
+      "check": {
+        "t": "Fuatilia ripoti",
+        "d": "Andika nambari ya ripoti yako uone nani anaishughulikia, makataa na kila taarifa."
+      },
+      "meetings": {
+        "t": "Mikutano ya umma",
+        "d": "Mabaraza ya wadi na vikao vya bajeti: lini, wapi, na kilichoamuliwa."
+      },
+      "results": {
+        "t": "Matokeo ya bajeti ya wadi",
+        "d": "Kila wadi ilipigia kura nini, na miradi ipi fedha zinagharamia."
+      },
+      "assembly": {
+        "t": "Dashibodi za kamati",
+        "d": "Jinsi eneo la kila kamati ya Bunge la Kaunti linavyoendelea, kwa takwimu."
+      },
+      "verify": {
+        "t": "Hakiki kibali",
+        "d": "Changanua au andika msimbo wa kibali au risiti uone kama ni halisi."
+      },
+      "tenders": {
+        "t": "Zabuni",
+        "d": "Kila zabuni ya kaunti: kinachonunuliwa, kwa kiasi gani, na nani alishinda."
+      },
+      "data": {
+        "t": "Data wazi",
+        "d": "Pakua zabuni na tuzo kwa uchambuzi wako mwenyewe. Hakuna ufunguo unaohitajika."
+      },
+      "how": {
+        "t": "Jinsi inavyofanya kazi",
+        "d": "Makataa, faragha na kinachotokea baada ya kuripoti."
+      }
     },
     "audiences": {
       "title": "Mfumo mmoja, njia tatu za kuingia",
@@ -965,7 +1010,10 @@
       "Dashibodi za kamati na kadi za alama za wadi unazoweza kumtumia MCA wako",
       "API ya data wazi kwa waandishi wa habari na watafiti",
       "Kuripoti kwa sauti kwa Kiswahili",
-      "Inafanya kazi bila mtandao na husakinishwa kwenye simu yako"
+      "Inafanya kazi bila mtandao na husakinishwa kwenye simu yako",
+      "Kalenda ya mikutano ya umma yenye vikumbusho na maamuzi yaliyochapishwa",
+      "\"Mimi pia\" kwenye ripoti, ili kaunti ione watu wangapi wameathirika",
+      "Shiriki kwa WhatsApp na usikilize ripoti au mradi wowote ukisomwa kwa sauti"
     ],
     "nextItems": [
       "Viungo hai kwa mfumo wa kitaifa wa ununuzi na IFMIS",
@@ -1074,10 +1122,10 @@
       "kind": {
         "supplier": "Mkandarasi",
         "project": "Mradi",
-        "ward_tenders": "Zabuni za wadi",
+        "ward_tenders": "Habari za wadi",
         "sector": "Sekta"
       },
-      "wardTenders": "Fuatilia zabuni za wadi hii"
+      "wardTenders": "Fuatilia wadi hii"
     },
     "assembly": {
       "title": "Dashibodi za kamati",
@@ -1214,6 +1262,48 @@
       "project_late": {
         "title": "{name} imechelewa siku {days} baada ya tarehe iliyotarajiwa",
         "why": "Mradi haujakamilika kufikia tarehe iliyochapishwa na kaunti."
+      }
+    },
+    "metoo": {
+      "title": "Tatizo hili lipo kwako pia?",
+      "hint": "Ongeza sauti yako badala ya kuandika ripoti mpya. Haitambulishi jina lako, na inaonyesha kaunti watu wangapi wameathirika.",
+      "button": "Mimi pia",
+      "added": "Asante. Sauti yako imehesabiwa.",
+      "already": "Umeshaongeza sauti yako kwenye ripoti hii.",
+      "count_one": "Mtu {count} ana tatizo hili",
+      "count_other": "Watu {count} wana tatizo hili",
+      "error": "Hatukuweza kuongeza. Tafadhali jaribu tena."
+    },
+    "share": {
+      "share": "Shiriki",
+      "whatsapp": "WhatsApp",
+      "listen": "Sikiliza",
+      "stop": "Simamisha",
+      "caseText": "Ripoti {ref} katika {ward} iko {status}. Ifuatilie hapa:",
+      "projectText": "{title} katika {ward}. Bajeti, matumizi na maendeleo:"
+    },
+    "meetings": {
+      "title": "Mikutano ya umma",
+      "intro": "Mabaraza, vikao vya bajeti na vikao vya Bunge ambapo wakazi wana sauti. Sheria inaitaka kaunti ikushirikishe; hapa ndipo inasema lini na wapi, na kilichoamuliwa.",
+      "upcoming": "Inayokuja",
+      "past": "Iliyofanyika na iliyoahirishwa",
+      "allWards": "Wadi zote",
+      "countyWide": "Kaunti nzima",
+      "addCal": "Weka kwenye kalenda",
+      "cancelled": "Imeahirishwa",
+      "held": "Imefanyika",
+      "outcome": "Kilichoamuliwa",
+      "attendance_one": "Mtu {count} alihudhuria",
+      "attendance_other": "Watu {count} walihudhuria",
+      "agenda": "Ajenda",
+      "none": "Hakuna mikutano iliyotangazwa kwa chaguo hili bado.",
+      "followHint": "Fuatilia wadi yako ili kuarifiwa kuhusu mikutano mipya.",
+      "kind": {
+        "baraza": "Baraza la wadi",
+        "budget_hearing": "Kikao cha bajeti",
+        "assembly_sitting": "Kikao cha Bunge",
+        "town_hall": "Mkutano wa hadhara",
+        "other": "Mkutano"
       }
     }
   }
