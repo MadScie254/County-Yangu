@@ -61,6 +61,8 @@ supabase functions deploy --project-ref <ref>      # all of them
 # 6. Supabase Auth > Hooks > Send SMS > HTTPS: .../functions/v1/sms-hook   (secret goes in SEND_SMS_HOOK_SECRET)
 ```
 
+`COUNTY_SERVICE_KEY` (optional) is a new-style secret key (`sb_secret_...`). Functions use it before the legacy `service_role` key, so the legacy JWT keys can be disabled. Order: `COUNTY_SERVICE_KEY`, then `SUPABASE_SECRET_KEYS`, then `SUPABASE_SERVICE_ROLE_KEY` (and the same for the publishable key).
+
 `COUNTY_HMAC_SECRET` keys every phone hash, voter hash and token. **Do not change it during a voting round**: every voter hash would change and people could vote again.
 
 Anything left unset fails safe: callbacks with no configured token are refused, SMS and email use a mock that sends nothing, the AI uses a labelled mock, `pay-start` answers `not_configured`.

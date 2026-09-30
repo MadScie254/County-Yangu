@@ -377,3 +377,27 @@ describe('KRA PIN check', () => {
     expect(await checkPin('A12345678Z')).toMatchObject({ pin_format_valid: false });
   });
 });
+
+import { publishableKey, serviceKey } from '../../supabase/functions/_shared/env.ts';
+describe('which API key a function uses', () => {
+  const names = ['COUNTY_SERVICE_KEY', 'SUPABASE_SECRET_KEYS', 'SUPABASE_SERVICE_ROLE_KEY', 'COUNTY_PUBLISHABLE_KEY', 'SUPABASE_PUBLISHABLE_KEYS', 'SUPABASE_ANON_KEY'];
+  const saved: Record<string, string | undefined> = {};
+  beforeEach(() => { for (const n of names) { saved[n] = process.env[n]; delete process.env[n]; } });
+  afterEach(() => { for (const n of names) { if (saved[n] === undefined) delete process.env[n]; else process.env[n] = saved[n]; } });
+
+  it('prefers the county key, then the injected new-style keys, then the legacy ones', () => {
+    process.env.SUPABASE_SERVICE_ROLE_KEY = 'legacy';
+    expect(serviceKey()).toBe('legacy');
+    process.env.SUPABASE_SECRET_KEYS = JSON.stringify({ default: 'sb_secret_x' });
+    expect(serviceKey()).toBe('sb_secret_x');
+    process.env.COUNTY_SERVICE_KEY = 'sb_secret_county';
+    expect(serviceKey()).toBe('sb_secret_county');
+  });
+  it('reads the publishable key the same way and ignores malformed JSON', () => {
+    process.env.SUPABASE_ANON_KEY = 'legacy-anon';
+    process.env.SUPABASE_PUBLISHABLE_KEYS = 'not json';
+    expect(publishableKey()).toBe('legacy-anon');
+    process.env.SUPABASE_PUBLISHABLE_KEYS = JSON.stringify({ web: 'sb_publishable_y' });
+    expect(publishableKey()).toBe('sb_publishable_y');
+  });
+});
