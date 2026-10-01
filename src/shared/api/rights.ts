@@ -3,7 +3,7 @@
 // Live first, labelled demo fallback; the rules (deadlines, who may do what) are enforced in migration 0020.
 import { supabase } from './client';
 import { dataSource } from './public';
-import type { Consultation, ConsultationComment, ConsultationTally, ErasureRequest, InfoRequest, Stance } from './types';
+import type { LegalDeadlines, Consultation, ConsultationComment, ConsultationTally, ErasureRequest, InfoRequest, Stance } from './types';
 
 const isDemo = async () => (await dataSource()) === 'demo' || !supabase;
 const HOUR = 3_600_000;
@@ -170,4 +170,16 @@ export async function carryOutErasure(id: string): Promise<void> {
   if (await isDemo()) return;
   const { error } = await supabase!.rpc('carry_out_erasure', { p_id: id });
   if (error) throw error;
+}
+
+// ---- the county's legal deadlines, counted by the database ----
+
+export async function getLegalDeadlines(): Promise<LegalDeadlines> {
+  if (await isDemo()) {
+    return { generated_at: new Date().toISOString(), info: { decided: 2, on_time: 1, waiting: 3, late_now: 1 }, petitions: { due: 2, answered_on_time: 1, answered_late: 0, late_now: 1 },
+      consultations: { closed: 1, reported: 1, report_owed: 0 }, erasure: { done: 0, on_time: 0, late_now: 0 }, promises: { total: 5, delivered: 1, past_due: 1 } };
+  }
+  const { data, error } = await supabase!.rpc('legal_deadlines');
+  if (error) throw error;
+  return data as LegalDeadlines;
 }

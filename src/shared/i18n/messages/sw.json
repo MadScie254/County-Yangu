@@ -1225,7 +1225,9 @@
       "f2": "Tuzo: mkandarasi, thamani, tarehe",
       "f3": "Mnunuzi na mchapishaji, na kitambulisho thabiti (ocid) cha kila manunuzi",
       "limit": "Hadi matoleo 500 kwa ombi. Tumia limit na offset kupitia kurasa.",
-      "count": "Matoleo {count} katika sampuli hii"
+      "count": "Matoleo {count} katika sampuli hii",
+      "open311": "Open311 (ripoti za matatizo)",
+      "open311Intro": "Kiwango kilekile wazi kinachotumiwa na FixMyStreet na miji mingi. Kusoma tu. Ripoti zinaonyesha aina, hali, wadi, tarehe na mahali palipokadiriwa kwa takriban mita 100; maelezo, picha, waliotoa ripoti na aina nyeti hazitoki kwenye hifadhidata."
     },
     "offline": {
       "saved": "Huna mtandao. Unaona kilichohifadhiwa mwisho kwenye simu hii.",
@@ -1557,6 +1559,26 @@
       "eraseConfirm": "Tuma ombi la kufuta",
       "eraseSent": "Ombi limepokelewa. Litafanyika kufikia {date}. Rekodi ambazo sheria inataka kaunti izihifadhi, kama malipo na vibali vilivyotolewa, zinahifadhiwa.",
       "error": "Haikufanya kazi. Tafadhali jaribu tena."
+    },
+    "board": {
+      "title": "Je, kaunti inatimiza muda wake?",
+      "intro": "Sheria inaipa kaunti muda maalum wa kujibu wakazi. Takwimu hizi zinahesabiwa na hifadhidata kutoka kwa rekodi zenyewe, si kuripotiwa na kaunti.",
+      "info": "Maombi ya taarifa",
+      "infoLaw": "Sheria ya Kupata Taarifa: siku 21, saa 48 ikiwa ni dharura",
+      "petitions": "Maombi yaliyofikia kiwango",
+      "petitionsLaw": "Kanuni ya kaunti hii: jibu la umma ndani ya siku 30",
+      "consultations": "Mashauriano yenye ripoti iliyochapishwa",
+      "consultationsLaw": "Katiba kifungu 196: wakazi lazima wasikie kilichofanywa na maoni yao",
+      "erasure": "Maombi ya kufuta data",
+      "erasureLaw": "Sheria ya Ulinzi wa Data: siku 14",
+      "requests": "maombi",
+      "petitionsUnit": "maombi",
+      "consultationsUnit": "mashauriano",
+      "onTime": "{pct}% kwa wakati ({on} kati ya {total} {unit})",
+      "noneYet": "Bado hakuna kilichoamuliwa",
+      "lateNow": "{count} yamechelewa sasa",
+      "noneLate": "Hakuna yaliyochelewa sasa",
+      "how": "Inasasishwa kutoka kwa rekodi kila baada ya dakika chache. Kuchelewa ni kupita muda wa kisheria bila uamuzi."
     }
   }
 }

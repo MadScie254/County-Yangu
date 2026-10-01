@@ -13,6 +13,8 @@ verify_jwt = false
 verify_jwt = false
 [functions.case-feedback]
 verify_jwt = false
+[functions.open311]
+verify_jwt = false
 [functions.alerts-subscribe]
 verify_jwt = false
 [functions.proposal-submit]

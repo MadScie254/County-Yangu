@@ -1225,7 +1225,9 @@
       "f2": "Award: supplier, value, date",
       "f3": "Buyer and publisher, and a stable identifier (ocid) for each procurement",
       "limit": "Up to 500 releases per request. Use limit and offset to page.",
-      "count": "{count} releases in this sample"
+      "count": "{count} releases in this sample",
+      "open311": "Open311 (issue reports)",
+      "open311Intro": "The same open standard FixMyStreet and many cities use. Read only. Reports show category, status, ward, dates and a location rounded to about 100 metres; descriptions, photos, reporters and sensitive categories never leave the database."
     },
     "offline": {
       "saved": "You are offline. Showing what was last saved on this phone.",
@@ -1557,6 +1559,26 @@
       "eraseConfirm": "Send erasure request",
       "eraseSent": "Request received. It will be done by {date}. Records the law requires the county to keep, like payments and permits issued, are kept.",
       "error": "That did not work. Please try again."
+    },
+    "board": {
+      "title": "Does the county keep its deadlines?",
+      "intro": "The law gives the county fixed times to answer residents. These numbers are counted by the database from the records themselves, not reported by the county.",
+      "info": "Information requests",
+      "infoLaw": "Access to Information Act: 21 days, 48 hours if urgent",
+      "petitions": "Petitions that reached the threshold",
+      "petitionsLaw": "This county's rule: a public answer within 30 days",
+      "consultations": "Consultations with a published report",
+      "consultationsLaw": "Constitution art. 196: residents must hear what was done with their views",
+      "erasure": "Data erasure requests",
+      "erasureLaw": "Data Protection Act: 14 days",
+      "requests": "requests",
+      "petitionsUnit": "petitions",
+      "consultationsUnit": "consultations",
+      "onTime": "{pct}% on time ({on} of {total} {unit})",
+      "noneYet": "Nothing decided yet",
+      "lateNow": "{count} late right now",
+      "noneLate": "None late now",
+      "how": "Updated from the records every few minutes. Late means past the legal deadline without a decision."
     }
   }
 }

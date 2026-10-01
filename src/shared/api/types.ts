@@ -319,3 +319,12 @@ export type Stance = 'support' | 'oppose' | 'amend' | 'comment';
 export type ConsultationComment = { id: number; consultation_id: string; author_name: string | null; ward_id: string | null; question: number | null; stance: Stance; body: string; created_at: string };
 export type ConsultationTally = { comments: number; people: number; wards: number; by_stance: Partial<Record<Stance, number>> };
 export type ErasureRequest = { id: string; email: string | null; reason: string | null; created_at: string; due_at: string };
+
+export type LegalDeadlines = {
+  generated_at: string;
+  info: { decided: number; on_time: number; waiting: number; late_now: number };
+  petitions: { due: number; answered_on_time: number; answered_late: number; late_now: number };
+  consultations: { closed: number; reported: number; report_owed: number };
+  erasure: { done: number; on_time: number; late_now: number };
+  promises: { total: number; delivered: number; past_due: number };
+};

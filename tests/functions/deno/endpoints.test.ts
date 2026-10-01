@@ -604,3 +604,28 @@ Deno.test('project check: validates the verdict, scrubs comments, hashes the cal
   state.rpc.svc_project_check = () => 'duplicate';
   assert.equal((await call('case-feedback', { json: { action: 'project_check', slug: 'road-1', verdict: 'as_shown' } })).status, 409);
 });
+
+Deno.test('open311: standard paths, validated filters, read only', async () => {
+  reset();
+  const calls: Record<string, unknown>[] = [];
+  state.rpc.open311_services = () => [{ service_code: 'pothole', service_name: 'Pothole' }];
+  state.rpc.open311_requests = (args: Record<string, unknown>) => { calls.push(args); return args.p_ids ? [{ service_request_id: 'NAI-R123' }] : []; };
+  const s = await call('open311', { method: 'GET', query: '/services.json' });
+  assert.equal(s.status, 200);
+  assert.equal((await json(s))[0].service_code, 'pothole');
+  const d = await call('open311', { method: 'GET', query: '/discovery.json' });
+  assert.ok((await json(d)).endpoints[0].url.endsWith('/functions/v1/open311'));
+  const r = await call('open311', { method: 'GET', query: '/requests.json?status=open&service_code=pothole,drainage&start_date=2026-09-01' });
+  assert.equal(r.status, 200);
+  assert.equal(calls[0].p_status, 'open');
+  assert.equal(calls[0].p_service_code, 'pothole,drainage');
+  assert.equal(calls[0].p_start, '2026-09-01T00:00:00.000Z');
+  const one = await call('open311', { method: 'GET', query: '/requests/NAI-R123.json' });
+  assert.equal(one.status, 200);
+  assert.deepEqual(calls[1].p_ids, ['NAI-R123']);
+  assert.equal((await call('open311', { method: 'GET', query: '/requests.json?status=maybe' })).status, 400);
+  assert.equal((await call('open311', { method: 'GET', query: '/requests.json?start_date=yesterday' })).status, 400);
+  assert.equal((await call('open311', { method: 'GET', query: "/requests.json?service_code=x';drop" })).status, 400);
+  assert.equal((await call('open311', { method: 'POST', query: '/requests.json', json: {} })).status, 405);
+  assert.equal((await call('open311', { method: 'GET', query: '/nothing' })).status, 404);
+});

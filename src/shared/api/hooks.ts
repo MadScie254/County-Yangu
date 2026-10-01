@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { getConsultationComments, getConsultations, getConsultationTally, getErasureQueue, getInfoRequest, getInfoRequests, getMyInfoRequests } from './rights';
+import { getLegalDeadlines, getConsultationComments, getConsultations, getConsultationTally, getErasureQueue, getInfoRequest, getInfoRequests, getMyInfoRequests } from './rights';
 import { getCommitments, getNotices, getOpenCases, getProjectChecks, getMeetings, getAssembly, getBudgetResults, getFixStats, getOcds, getWardScorecard, listFollows, verifyDocument } from './loop';
 import { getProcurementWatch } from './procurement';
 import { dataSource, getActivity, getCategorySla, getCaseStatus, getCountySummary, getProjects, getProposals, getPulse, getTenders, getVoteData, getWardStats } from './public';
@@ -37,6 +37,7 @@ export const useConsultations = () => useQuery({ queryKey: ['consultations'], qu
 export const useConsultationComments = (id: string | null) => useQuery({ queryKey: ['consultation-comments', id], queryFn: () => getConsultationComments(id!), enabled: Boolean(id), staleTime: minute });
 export const useConsultationTally = (slug: string | null) => useQuery({ queryKey: ['consultation-tally', slug], queryFn: () => getConsultationTally(slug!), enabled: Boolean(slug), staleTime: minute });
 export const useErasureQueue = (enabled: boolean) => useQuery({ queryKey: ['erasure-queue'], queryFn: getErasureQueue, enabled, staleTime: minute });
+export const useLegalDeadlines = () => useQuery({ queryKey: ['legal-deadlines'], queryFn: getLegalDeadlines, staleTime: 5 * minute });
 export const useMeetings = () => useQuery({ queryKey: ['meetings'], queryFn: getMeetings, staleTime: 5 * minute });
 export const useOpenCases = (ward: string | null, category: string | null) => useQuery({ queryKey: ['open-cases', ward, category], queryFn: () => getOpenCases(ward!, category), enabled: Boolean(ward), staleTime: minute });
 export const useProjectChecks = (slug: string | null) => useQuery({ queryKey: ['project-checks', slug], queryFn: () => getProjectChecks(slug!), enabled: Boolean(slug), staleTime: minute });

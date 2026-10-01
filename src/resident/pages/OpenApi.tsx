@@ -10,6 +10,7 @@ import { Skeleton } from '@/shared/ui/Card';
 const base = (import.meta.env.VITE_SUPABASE_URL as string | undefined) ?? 'https://YOUR-PROJECT.supabase.co';
 const key = (import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string | undefined) ?? 'YOUR-PUBLISHABLE-KEY';
 const endpoint = `${base}/rest/v1/rpc/ocds_releases`;
+const open311 = `${base}/functions/v1/open311`;
 const example = `curl -X POST '${endpoint}' \\
   -H 'apikey: ${key}' -H 'Content-Type: application/json' \\
   -d '{"p_limit": 100, "p_offset": 0}'`;
@@ -49,6 +50,12 @@ export default function OpenApi() {
         <li>{t('loop.api.f2')}</li>
         <li>{t('loop.api.f3')}</li>
       </ul>
+
+      <h2 className="mt-10 font-display text-xl font-bold">{t('loop.api.open311')}</h2>
+      <p className="mt-2 text-ink-2">{t('loop.api.open311Intro')}</p>
+      <pre className="mt-2 overflow-x-auto rounded-2xl border border-line bg-bg-2 p-4 font-data text-sm">{`GET ${open311}/services.json
+GET ${open311}/requests.json?status=open&start_date=2026-09-01
+GET ${open311}/requests/{service_request_id}.json`}</pre>
 
       <h2 className="mt-8 font-display text-xl font-bold">{t('loop.api.sample')}</h2>
       {sample.isLoading ? <Skeleton className="mt-2 h-48" /> : (

@@ -1,3 +1,4 @@
+import { DeadlinesBoard } from '@/shared/ui/DeadlinesBoard';
 import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, BellRing, Banknote, ClipboardCheck, Eye, FileStack, Flag, FolderKanban, Inbox, Lightbulb, Scale, Settings, Sparkles, Timer, UserRound, Vote, type LucideIcon } from 'lucide-react';
@@ -148,6 +149,12 @@ export default function Overview() {
           </div>
         </>
       )}
+
+      <section className="mt-6">
+        <Panel title="Legal deadlines" action={<span className="text-sm text-muted">Counted from the records. Residents see the same numbers on Open County.</span>}>
+          <DeadlinesBoard links="console" />
+        </Panel>
+      </section>
 
       {!can.working && (
         <Panel title="Oversight"><p className="text-ink-2">See every case that is past its target, how far it has climbed the escalation ladder, and the monthly digests.</p><Link to="/oversight" className="mt-3 inline-flex items-center gap-1 font-semibold underline-offset-4 hover:underline">Open Overdue & digests <ArrowRight className="size-4" aria-hidden /></Link></Panel>

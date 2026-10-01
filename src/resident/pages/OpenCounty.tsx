@@ -1,3 +1,4 @@
+import { DeadlinesBoard } from '@/shared/ui/DeadlinesBoard';
 import { useMemo, useState } from 'react';
 import { AlertOctagon, Download, Eye, Info, Scale, ShieldQuestion } from 'lucide-react';
 import { useI18n, type MessageKey } from '@/shared/i18n';
@@ -111,6 +112,12 @@ export default function OpenCounty() {
         <h1 className="font-display text-[clamp(2.2rem,6vw,3.4rem)] font-extrabold leading-[1.02]">{t('open.title')}</h1>
         <p className="mt-4 text-[1.08rem] text-ink-2">{t('open.intro')}</p>
       </header>
+
+      <section className="mt-8" aria-labelledby="deadlines">
+        <h2 id="deadlines" className="font-display text-2xl font-bold">{t('rights.board.title')}</h2>
+        <p className="mt-1 max-w-3xl text-sm text-ink-2">{t('rights.board.intro')}</p>
+        <div className="mt-4"><DeadlinesBoard /></div>
+      </section>
 
       <dl className="mt-8 grid grid-cols-2 gap-5 rounded-[1.75rem] border border-line bg-surface p-6 shadow-card sm:grid-cols-5">
         {q.isLoading ? (
