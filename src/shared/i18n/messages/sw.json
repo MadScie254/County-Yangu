@@ -26,7 +26,9 @@
     "updated": "Imesasishwa {when}",
     "demoData": "Data ya mfano",
     "demoDataHint": "Unaona takwimu za mfano. Data halisi ya kaunti itaonekana hifadhidata ya kaunti itakapounganishwa.",
-    "channel": "Njia"
+    "channel": "Njia",
+    "crashTitle": "Ukurasa huu umepata tatizo",
+    "crashBody": "Sehemu nyingine za tovuti bado zinafanya kazi. Jaribu tena, au tumia menyu kwenda kwingine."
   },
   "nav": {
     "home": "Nyumbani",

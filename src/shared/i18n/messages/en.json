@@ -26,7 +26,9 @@
     "updated": "Updated {when}",
     "demoData": "Demo data",
     "demoDataHint": "You are seeing sample figures. Live county data appears once the county's database is connected.",
-    "channel": "Channel"
+    "channel": "Channel",
+    "crashTitle": "This page ran into a problem",
+    "crashBody": "The rest of the site still works. Try again, or use the menu to go somewhere else."
   },
   "nav": {
     "home": "Home",

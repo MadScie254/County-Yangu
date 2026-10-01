@@ -1,3 +1,4 @@
+import { ErrorBoundary } from '@/shared/ui/ErrorBoundary';
 import { NoticesStrip } from '../components/NoticesStrip';
 import { InstallPrompt } from '../components/InstallPrompt';
 import { useEffect, useState } from 'react';
@@ -294,7 +295,7 @@ export function ResidentShell() {
       </header>
 
       <main id="main" className="flex-1 pb-24 lg:pb-0" tabIndex={-1}>
-        <Outlet />
+        <ErrorBoundary resetKey={pathname}><Outlet /></ErrorBoundary>
         <InstallPrompt />
       </main>
 

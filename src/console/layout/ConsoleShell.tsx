@@ -1,3 +1,4 @@
+import { ErrorBoundary } from '@/shared/ui/ErrorBoundary';
 import { useEffect, useState } from 'react';
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
 import { BellRing, Banknote, Building, Eye, FolderKanban, Gauge, Inbox, LogOut, Menu, MessageSquareText, Scale, Settings, Sparkles, Vote, X, ClipboardCheck, FileStack, Lightbulb, Timer, UserRound, Globe, CalendarDays, Siren, Handshake, FileQuestion, MessagesSquare } from 'lucide-react';
@@ -123,7 +124,7 @@ export function ConsoleShell() {
         {demo && <div className="border-b border-warn/30 bg-warn-soft px-4 py-1.5 text-center text-xs font-semibold text-warn">Demo data: actions here change sample records on this device only.</div>}
         {can.readOnly && <div className="border-b border-info/30 bg-info-soft px-4 py-1.5 text-center text-xs font-semibold text-info"><Scale className="mr-1.5 inline size-3.5 align-[-2px]" aria-hidden />Read-only access: you can see what is overdue but cannot change anything.</div>}
         <main id="main" tabIndex={-1} className="mx-auto max-w-[88rem] px-4 py-6 sm:px-8 sm:py-8">
-          <Outlet />
+          <ErrorBoundary resetKey={pathname}><Outlet /></ErrorBoundary>
         </main>
       </div>
       <Toaster dismissLabel="Dismiss" />

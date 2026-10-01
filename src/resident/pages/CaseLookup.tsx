@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight, Search, Smartphone } from 'lucide-react';
 import { useI18n } from '@/shared/i18n';
@@ -16,7 +16,9 @@ export default function CaseLookup() {
   const nav = useNavigate();
   const [ref, setRef] = useState('');
   const [bad, setBad] = useState(false);
-  const mine = useQueue((s) => s.items.filter((i) => i.kind === 'report'));
+  // select the stable array and filter outside the store: a selector that returns a new array every time loops forever
+  const items = useQueue((s) => s.items);
+  const mine = useMemo(() => items.filter((i) => i.kind === 'report'), [items]);
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-10 sm:px-6 sm:py-16">
@@ -34,7 +36,7 @@ export default function CaseLookup() {
       >
         <Field className="flex-1" label={t('status.referenceLabel')} error={bad ? t('status.notFound') : undefined}>
           {({ id, describedBy }) => (
-            <TextInput id={id} aria-describedby={describedBy} invalid={bad} value={ref} onChange={(e) => { setRef(e.target.value); setBad(false); }} placeholder={t('status.referencePlaceholder')} autoCapitalize="characters" autoComplete="off" spellCheck={false} className="font-data uppercase tracking-wide" />
+            <TextInput id={id} aria-describedby={describedBy} invalid={bad} value={ref} onChange={(e) => { setRef(e.target.value); setBad(false); }} placeholder={t('status.referencePlaceholder')} autoCapitalize="characters" autoComplete="off" spellCheck={false} className="font-data uppercase tracking-wide placeholder:normal-case placeholder:tracking-normal" />
           )}
         </Field>
         <Button type="submit" size="lg" icon={<Search className="size-4" aria-hidden />}>{t('status.lookup')}</Button>
