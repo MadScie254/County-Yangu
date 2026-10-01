@@ -200,7 +200,7 @@ export default function Dashboard() {
         </div>
       </section>
 
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,1.65fr)_minmax(0,1fr)]">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1.65fr)_minmax(0,1fr)]">
         {/* ---------- Main column ---------- */}
         <div className="space-y-6">
           <Panel id="attention" title={t('me.attention.title')}>

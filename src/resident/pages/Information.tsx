@@ -86,7 +86,7 @@ export default function Information() {
       <p className="mt-3 max-w-3xl text-[1.05rem] text-ink-2">{t('rights.info.intro')}</p>
       {demo && <p className="mt-2 text-xs font-semibold text-muted">{t('common.demoData')}</p>}
 
-      <div className="mt-8 grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]">
+      <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]">
         <section className="rounded-[1.75rem] border border-line bg-surface p-5 shadow-card sm:p-6" aria-labelledby="ask">
           <h2 id="ask" className="flex items-center gap-2 font-display text-xl font-bold"><FileQuestion className="size-5" aria-hidden />{t('rights.info.ask')}</h2>
           <div className="mt-4">

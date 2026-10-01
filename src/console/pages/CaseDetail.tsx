@@ -88,7 +88,7 @@ export default function CaseDetail() {
         <p className="mt-1.5 text-ink-2">{maps.cat.get(c.category_id ?? '') ?? 'Report'} · {wardLabel(c.ward_id)} · via {c.channel} · {relative(c.created_at)}</p>
       </header>
 
-      <div className="grid gap-6 xl:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
+      <div className="grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
         <div className="space-y-6">
           <Panel title="What was reported">
             <p className="whitespace-pre-wrap text-[1.02rem]">{c.description}</p>

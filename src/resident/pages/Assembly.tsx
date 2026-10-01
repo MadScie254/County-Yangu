@@ -35,7 +35,7 @@ export default function Assembly() {
       </section>
 
       {q.isLoading ? <Skeleton className="mt-8 h-96" /> : (
-        <div className="mt-8 grid gap-5 lg:grid-cols-2">
+        <div className="mt-8 grid grid-cols-1 gap-5 lg:grid-cols-2">
           {(q.data ?? []).map((c) => (
             <article key={c.code} className="rounded-[1.75rem] border border-line bg-surface p-5 shadow-card sm:p-6">
               <h2 className="font-display text-xl font-bold leading-snug">{locale === 'sw' && c.name_sw ? c.name_sw : c.name}</h2>

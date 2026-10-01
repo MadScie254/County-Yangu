@@ -45,7 +45,7 @@ export default function Alerts() {
   return (
     <>
       <PageHeader title="Ward alerts" subtitle="Short SMS notices to residents who subscribed to a ward. Every alert needs two people: one to write it, another to approve it." />
-      <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(0,1.3fr)]">
+      <div className="grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(0,1.3fr)]">
         <Panel title="Write an alert">
           <div className="space-y-4">
             <Field label="Who should get it?">{({ id }) => <SelectInput id={id} value={f.ward_id} onChange={(e) => setF({ ...f, ward_id: e.target.value })}><option value="">Everyone in the county</option>{wards.map((w) => <option key={w.id} value={w.id}>{w.name}</option>)}</SelectInput>}</Field>

@@ -69,7 +69,7 @@ export default function Tenders() {
         </div>
         <ul className="mt-4 divide-y divide-line">
           {contractors.data?.map((c) => (
-            <li key={c.id} className="flex items-center justify-between py-2.5"><span className="font-semibold">{c.name}</span><span className="flex items-center gap-3 text-sm text-muted"><span className="font-data">{c.kra_pin ?? 'no PIN'}</span>{c.kra_compliant === true ? <Chip tone="good"><ShieldCheck className="size-3.5" aria-hidden />Tax compliant</Chip> : c.kra_compliant === false ? <Chip tone="bad"><ShieldAlert className="size-3.5" aria-hidden />Not compliant</Chip> : <Chip>Not checked</Chip>}{c.kra_pin && <Button size="sm" variant="ghost" loading={kra.isPending && kra.variables?.id === c.id} onClick={() => kra.mutate({ id: c.id, kra_pin: c.kra_pin! })}>Check</Button>}</span></li>
+            <li key={c.id} className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1.5 py-2.5"><span className="min-w-0 font-semibold">{c.name}</span><span className="flex flex-wrap items-center gap-3 text-sm text-muted"><span className="font-data">{c.kra_pin ?? 'no PIN'}</span>{c.kra_compliant === true ? <Chip tone="good"><ShieldCheck className="size-3.5" aria-hidden />Tax compliant</Chip> : c.kra_compliant === false ? <Chip tone="bad"><ShieldAlert className="size-3.5" aria-hidden />Not compliant</Chip> : <Chip>Not checked</Chip>}{c.kra_pin && <Button size="sm" variant="ghost" loading={kra.isPending && kra.variables?.id === c.id} onClick={() => kra.mutate({ id: c.id, kra_pin: c.kra_pin! })}>Check</Button>}</span></li>
           ))}
         </ul>
         <p className="mt-3 text-xs text-muted">Tax compliance is checked against KRA when a contractor is awarded a tender or applies for a permit.</p>

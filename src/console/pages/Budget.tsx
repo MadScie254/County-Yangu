@@ -38,7 +38,7 @@ export default function Budget() {
   return (
     <>
       <PageHeader title="Budget cycles" subtitle="Open a voting round, put forward the projects each ward can choose between, and publish the result." />
-      <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)]">
+      <div className="grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)]">
         <Panel title="Voting rounds">
           <ul className="space-y-2">
             {cycles.data?.map((c) => (

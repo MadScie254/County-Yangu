@@ -101,7 +101,7 @@ export default function Overview() {
 
           {quick}
 
-          <div className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
+          <div className="mt-6 grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
             <Panel title="Needs attention" pad={false} action={<Link to="/cases" className="inline-flex items-center gap-1 text-sm font-semibold underline-offset-4 hover:underline">All cases <ArrowRight className="size-4" aria-hidden /></Link>}>
               {attention.length === 0 ? (
                 <div className="p-5"><Empty>Nothing is overdue or about to be. Well done.</Empty></div>

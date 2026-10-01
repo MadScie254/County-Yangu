@@ -80,7 +80,7 @@ export default function Projects() {
         {t('projects.count', { count: shown.length })} · {t('common.budget')} <b className="font-data text-ink">{kes(totals.budget, { compact: true })}</b> · {t('common.spent')} <b className="font-data text-ink">{kes(totals.spent, { compact: true })}</b>
       </p>
 
-      <div className="mt-5 grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)]">
+      <div className="mt-5 grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)]">
         <div className={cn(view === 'map' && 'hidden lg:block')}>
           {projects.isLoading ? (
             <div className="space-y-3">{[0, 1, 2, 3].map((i) => <Skeleton key={i} className="h-32" />)}</div>
