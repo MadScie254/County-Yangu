@@ -36,7 +36,7 @@ const norm = (s: string) => s.toLowerCase().replace(/[^a-z]/g, '');
  * The county column takes the official code (1 to 47) or the name. Bad rows are reported, never guessed.
  */
 export function parseFinanceCsv(text: string, counties: [number, string][]): { rows: FinanceRow[]; errors: string[] } {
-  const all = splitCsv(text.replace(/^﻿/, ''));
+  const all = splitCsv(text.replace(/^\uFEFF/, ''));
   if (all.length < 2) return { rows: [], errors: ['The file has no data rows.'] };
   const head = all[0]!.map((h) => h.trim().toLowerCase().replace(/\s+/g, '_'));
   const col = (name: string) => head.indexOf(name === 'county' && !head.includes('county') ? 'county_code' : name);
