@@ -271,7 +271,7 @@ test('ward updates: only people who chose that frequency get a summary', async (
   await svc(`select public.svc_subscribe('+254744000011', 'kileleshwa', 'daily')`);
   assert.equal((await svc(`select public.svc_ward_updates('weekly') n`)).n, 1);
   assert.equal((await svc(`select public.svc_ward_updates('instant') n`)).n, 0);
-  assert.match((await svc(`select body from private.outbox where recipient = '+254744000010'`)).body, /Kileleshwa, Nairobi this week: \d+ problems? fixed, \d+ still open\./);
+  assert.match((await svc(`select body from private.outbox where recipient = '+254744000010'`)).body, /^Kileleshwa this week:\nFixed: \d+\. Late: \d+ of \d+ open\.\nDo: /);
 });
 
 // ---- escalation ---------------------------------------------------------------------------------------------------------

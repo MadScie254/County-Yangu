@@ -35,7 +35,7 @@ test('resolving a case texts the reporter once, with a link to the case', async 
   await as(db, 'authenticated', officer, () => one(`select public.case_transition($1, 'resolved', 'Patched today', true)`, [report.id]));
   const sms = await all(`select body from private.outbox where related ->> 'report_id' = $1`, [report.id]);
   assert.equal(sms.length, 1);
-  assert.match(sms[0].body, /Resolved - Patched today/);
+  assert.match(sms[0].body, /^Fixed! NAI-R\w+ was fixed the same day\. Patched today/);
   assert.match(sms[0].body, new RegExp(ref));
 });
 
