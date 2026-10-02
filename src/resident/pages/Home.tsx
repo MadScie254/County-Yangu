@@ -21,6 +21,7 @@ import { toast } from '@/shared/ui/Toast';
 import { useMediaQuery, usePageTitle } from '@/shared/lib/hooks';
 import { WardSearch } from '../components/WardSearch';
 import { WardCard } from '../components/WardCard';
+import { spendUnknown } from '../lib/projects';
 import { RightNow } from '../components/RightNow';
 import { Audiences, Faq, Features, FinalCta, Glance, MoneyTeaser, Promises, Reach, Roadmap } from '../components/Landing';
 
@@ -208,7 +209,7 @@ export default function Home() {
                   <Meter value={p.spent} max={p.budget} label={`${t('common.spent')}: ${kes(p.spent)}`} tone={p.status === 'stalled' ? 'bad' : 'brand'} className="mt-5" />
                   <div className="mt-2 flex justify-between text-sm">
                     <span className="text-muted">
-                      {t('common.spent')} <b className="font-data text-ink">{kes(p.spent, { compact: true })}</b>
+                      {t('common.spent')} <b className="font-data text-ink">{spendUnknown(p) ? t('projects.spendUnknown') : kes(p.spent, { compact: true })}</b>
                     </span>
                     <span className="text-muted">
                       {t('common.budget')} <b className="font-data text-ink">{kes(p.budget, { compact: true })}</b>

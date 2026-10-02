@@ -354,7 +354,8 @@
     "due": "Inatarajiwa",
     "photos": "Picha za eneo",
     "seenSomething": "Umeona tatizo kwenye mradi huu?",
-    "seenSomethingBody": "Ripoti eneo lililosimama, kazi duni au fedha zilizopotea. Inaenda moja kwa moja kwa dawati la uadilifu la kaunti."
+    "seenSomethingBody": "Ripoti eneo lililosimama, kazi duni au fedha zilizopotea. Inaenda moja kwa moja kwa dawati la uadilifu la kaunti.",
+    "spendUnknown": "Haijachapishwa"
   },
   "otp": {
     "phoneLabel": "Nambari yako ya simu",
@@ -2049,7 +2050,7 @@
     "intro": "Mwaka katika kaunti yako, wadi yako na ulichofanya. Gusa kuendelea, kisha shiriki.",
     "back": "Rudi",
     "next": "Ifuatayo",
-    "reports": "matatizo yameripotiwa kwenye County Yangu hadi sasa",
+    "reports": "matatizo yaliyoripotiwa mwaka huu na kabla",
     "resolved": "{n} yamerekebishwa hadi sasa.",
     "promisesKicker": "Ahadi za gavana",
     "promises": "ahadi zimetimizwa",

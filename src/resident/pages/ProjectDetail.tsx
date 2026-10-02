@@ -12,7 +12,7 @@ import { Chip, projectTone } from '@/shared/ui/Chip';
 import { Meter } from '@/shared/ui/Meter';
 import { Skeleton } from '@/shared/ui/Card';
 import { Button, ButtonLink } from '@/shared/ui/Button';
-import { isOverBudget, milestoneProgress, projectPhotoUrl, spentPct } from '../lib/projects';
+import { isOverBudget, milestoneProgress, projectPhotoUrl, spendUnknown, spentPct } from '../lib/projects';
 
 export default function ProjectDetail() {
   const { slug } = useParams();
@@ -65,7 +65,7 @@ export default function ProjectDetail() {
           </div>
           <div>
             <p className="text-xs font-bold uppercase tracking-[0.12em] text-muted">{t('common.spent')}</p>
-            <p className={cn('mt-1 font-data text-2xl font-medium', over && 'text-bad')}>{kes(p.spent)}</p>
+            <p className={cn('mt-1 font-data text-2xl font-medium', over && 'text-bad')}>{spendUnknown(p) ? t('projects.spendUnknown') : kes(p.spent)}</p>
           </div>
         </div>
         <Meter value={p.spent} max={p.budget} label={`${t('common.spent')}: ${spentPct(p)}%`} tone={over ? 'bad' : p.status === 'completed' ? 'good' : 'brand'} className="mt-5 !h-3.5" />

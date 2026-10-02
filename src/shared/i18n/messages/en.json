@@ -354,7 +354,8 @@
     "due": "Due",
     "photos": "Site photos",
     "seenSomething": "Seen something wrong at this project?",
-    "seenSomethingBody": "Report a stalled site, poor work or missing funds. It goes straight to the county's integrity desk."
+    "seenSomethingBody": "Report a stalled site, poor work or missing funds. It goes straight to the county's integrity desk.",
+    "spendUnknown": "Not published"
   },
   "otp": {
     "phoneLabel": "Your mobile number",
@@ -2049,7 +2050,7 @@
     "intro": "The year in your county, your ward and what you did. Tap through, then share.",
     "back": "Back",
     "next": "Next",
-    "reports": "problems reported on County Yangu so far",
+    "reports": "problems reported this year and before",
     "resolved": "{n} fixed so far.",
     "promisesKicker": "Governor's promises",
     "promises": "promises delivered",

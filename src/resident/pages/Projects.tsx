@@ -14,7 +14,7 @@ import { Chip, projectTone } from '@/shared/ui/Chip';
 import { Meter } from '@/shared/ui/Meter';
 import { Skeleton } from '@/shared/ui/Card';
 import { Segmented, SelectInput, TextInput } from '@/shared/ui/Field';
-import { filterProjects, isOverBudget, type ProjectFilters } from '../lib/projects';
+import { filterProjects, isOverBudget, spendUnknown, type ProjectFilters } from '../lib/projects';
 
 const statuses: (ProjectStatus | 'all')[] = ['all', 'in_progress', 'procurement', 'planned', 'stalled', 'completed'];
 
@@ -105,7 +105,7 @@ export default function Projects() {
                     </div>
                     <Meter value={p.spent} max={p.budget} label={`${t('common.spent')}: ${kes(p.spent)}`} tone={isOverBudget(p) || p.status === 'stalled' ? 'bad' : p.status === 'completed' ? 'good' : 'brand'} className="mt-4" />
                     <div className="mt-2 flex items-center justify-between text-sm">
-                      <span className="text-muted">{t('common.spent')} <b className="font-data text-ink">{kes(p.spent, { compact: true })}</b></span>
+                      <span className="text-muted">{t('common.spent')} <b className="font-data text-ink">{spendUnknown(p) ? t('projects.spendUnknown') : kes(p.spent, { compact: true })}</b></span>
                       {isOverBudget(p) && <span className="inline-flex items-center gap-1 text-xs font-bold text-bad"><TriangleAlert className="size-3.5" aria-hidden />{t('projects.overBudget')}</span>}
                       <span className="text-muted">{t('common.budget')} <b className="font-data text-ink">{kes(p.budget, { compact: true })}</b></span>
                     </div>

@@ -28,3 +28,6 @@ export function milestoneProgress(p: Pick<PublicProject, 'milestones'>) {
 }
 
 export const projectPhotoUrl = (path: string) => `${import.meta.env.VITE_SUPABASE_URL ?? ''}/storage/v1/object/public/project-photos/${path}`;
+
+/** A started or finished project showing zero spent means the county has not published its spending, not that nothing was spent. */
+export const spendUnknown = (p: Pick<PublicProject, 'spent' | 'status'>) => p.spent === 0 && (p.status === 'in_progress' || p.status === 'stalled' || p.status === 'completed');

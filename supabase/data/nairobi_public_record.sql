@@ -32,3 +32,31 @@ insert into public.county_finance (county_code, fiscal_year, osr_target, osr_act
   (47, '2025/26', 21580000000, 15540000000, 86900000000, null, 'Controller of Budget county report FY 2025/26; pending bills as at 30 June 2026', 'https://www.the-star.co.ke/news/2026-09-28-counties-collect-more-but-miss-their-sh10bn-own-revenue-aim')
 on conflict (county_code, fiscal_year) do update set osr_target = excluded.osr_target, osr_actual = excluded.osr_actual,
   pending_bills = excluded.pending_bills, audit_opinion = excluded.audit_opinion, source = excluded.source, source_url = excluded.source_url, updated_at = now();
+
+-- County projects with published costs. "spent" is only filled where a figure was published; zero means not published
+-- (the site says so). Each description names its sources.
+insert into public.projects (slug, ward_id, title, sector, description, status, budget, spent, started_at, expected_at, completed_at, published) values
+  ('dandora-stadium', 'dandora-area-iv', 'Dandora Stadium', 'Sports',
+   'Sub-county stadium completed after a six-year delay and opened in March 2024, built at a cost of more than Sh276 million (figure as reported). Sources: the-star.co.ke 2024-03-08; nairobi.go.ke.',
+   'completed', 276000000, 276000000, null, null, '2024-03-08', true),
+  ('kihumbuini-stadium', 'kangemi', 'Kihumbuini Stadium redevelopment', 'Sports',
+   'A 5,000-seat stadium for Kangemi, Kawangware and Westlands, launched on 20 June 2024 at an estimated Sh277 million with an 18-month build. Reported more than 70 percent complete in August 2026. Spending to date has not been published. Sources: the-star.co.ke 2024-06-20; standardmedia.co.ke 2026-08.',
+   'in_progress', 277000000, 0, '2024-06-20', '2025-12-20', null, true),
+  ('mutuini-market', 'mutuini', 'Mutuini market', 'Markets',
+   'The first of the 20 promised markets. Contract of Sh242 million awarded on 7 February 2024 for completion by 7 August 2024. The Auditor-General found Sh69.5 million paid and the project stalled, with no status report, in October 2024. Source: eastleighvoice.co.ke (Auditor-General report).',
+   'stalled', 242000000, 69500000, '2024-02-07', '2024-08-07', null, true),
+  ('woodley-stadium', 'woodley-kenyatta-golf-course', 'Woodley Stadium upgrade', 'Sports',
+   'The first contractor was paid Sh29.8 million of a Sh135 million contract and left the site about 20 percent done. A new contract of Sh123.9 million was awarded on 2 August 2024. Spending on the new contract has not been published. Source: nation.africa (audit of Nairobi stadia).',
+   'in_progress', 123900000, 0, '2024-08-02', null, null, true)
+on conflict (slug) do update set ward_id = excluded.ward_id, title = excluded.title, sector = excluded.sector, description = excluded.description,
+  status = excluded.status, budget = excluded.budget, spent = excluded.spent, started_at = excluded.started_at, expected_at = excluded.expected_at,
+  completed_at = excluded.completed_at, published = true;
+
+-- Other counties, own revenue 2023/24 from the Controller of Budget as reported in the press (collections rounded as reported;
+-- a target is left empty where none was reported from the Controller of Budget).
+insert into public.county_finance (county_code, fiscal_year, osr_target, osr_actual, source, source_url) values
+  (1, '2023/24', 7377930000, 5580000000, 'Controller of Budget county report FY 2023/24, as reported', 'https://www.standardmedia.co.ke/national/article/2001502726/nairobi-narok-and-mombasa-got-highest-own-source-revenue'),
+  (22, '2023/24', 6995370000, 4570000000, 'Controller of Budget county report FY 2023/24, as reported', 'https://www.standardmedia.co.ke/national/article/2001502726/nairobi-narok-and-mombasa-got-highest-own-source-revenue'),
+  (32, '2023/24', 4100000000, 3300000000, 'Controller of Budget county report FY 2023/24, as reported', 'https://www.standardmedia.co.ke/national/article/2001502726/nairobi-narok-and-mombasa-got-highest-own-source-revenue'),
+  (33, '2023/24', null, 4750000000, 'Controller of Budget county report FY 2023/24, as reported', 'https://www.standardmedia.co.ke/national/article/2001502726/nairobi-narok-and-mombasa-got-highest-own-source-revenue')
+on conflict (county_code, fiscal_year) do update set osr_target = excluded.osr_target, osr_actual = excluded.osr_actual, source = excluded.source, source_url = excluded.source_url, updated_at = now();
