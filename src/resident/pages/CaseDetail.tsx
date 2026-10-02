@@ -14,6 +14,7 @@ import { ButtonLink } from '@/shared/ui/Button';
 import { CaseFeedback } from '../components/CaseFeedback';
 import { MeToo } from '../components/MeToo';
 import { ShareListen } from '@/shared/ui/ShareListen';
+import { BeforeAfter } from '../components/BeforeAfter';
 
 const eventIcon: Record<string, typeof CircleDot> = { created: Megaphone, status: CheckCircle2, public_message: MessageSquare, reminder: Clock, escalated: Flag, feedback: ThumbsUp, reopened: RotateCcw };
 
@@ -91,6 +92,35 @@ export default function CaseDetail() {
 
       {!done && <MeToo reference={c.reference} count={c.supporters ?? 0} />}
       {(c.status === 'resolved' || c.status === 'closed') && !c.feedback_given && <CaseFeedback reference={c.reference} />}
+
+      {(() => {
+        const photos = c.fix_photos ?? [];
+        const after = [...photos].reverse().find((p) => p.kind === 'after');
+        const before = [...photos].reverse().find((p) => p.kind === 'before');
+        return after ? (
+          <section className="mt-8" aria-labelledby="ba">
+            <h2 id="ba" className="font-display text-xl font-bold">{t('status.beforeAfter')}</h2>
+            <BeforeAfter className="mt-3" before={before?.path ?? null} after={after.path} />
+            <p className="mt-2 text-xs text-muted">{t('status.byCounty')}</p>
+          </section>
+        ) : null;
+      })()}
+
+      {(c.group?.length ?? 0) > 0 && (
+        <section className="mt-8" aria-labelledby="group">
+          <h2 id="group" className="font-display text-lg font-bold">{t('status.alsoReported')}</h2>
+          <ul className="mt-3 grid gap-2 sm:grid-cols-2">
+            {c.group!.map((g) => (
+              <li key={g.reference}>
+                <Link to={`/case/${g.reference}`} className="flex items-center justify-between gap-3 rounded-2xl border border-line bg-surface px-4 py-3 text-sm hover:border-line-strong">
+                  <span className="min-w-0"><b className="block truncate">{g.category_id ? t(`categories.${g.category_id}` as MessageKey) : g.reference}</b><span className="font-data text-xs text-muted">{g.reference}</span></span>
+                  <Chip tone={reportTone(g.status)}>{t(`statuses.${g.status}` as MessageKey)}</Chip>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       <section className="mt-10" aria-labelledby="timeline">
         <h2 id="timeline" className="font-display text-xl font-bold">{t('status.timeline')}</h2>

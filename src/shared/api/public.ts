@@ -102,6 +102,9 @@ export async function getCaseStatus(reference: string): Promise<CaseStatus | nul
         { kind: 'created', message: 'Report received', at: created },
         { kind: 'status', message: 'Crew dispatched to the site', at: new Date(Date.now() - 86_400_000).toISOString() },
       ],
+      // filed in the same visit, so it went to the water team as its own case
+      group: [{ reference: `${ref.slice(0, 5)}DRAIN1`, category_id: 'drainage', status: 'triaged' }],
+      fix_photos: [],
     };
   }
   const { data, error } = await supabase.rpc('case_status', { p_reference: ref });

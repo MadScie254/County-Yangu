@@ -9,6 +9,8 @@ import { toE164Kenya } from '@/shared/lib/utils';
 export const reportSchema = z
   .object({
     category_id: z.enum(categoryIds, { error: 'needCategory' }),
+    /** Up to four more problems at the same place; each becomes its own linked case for the right team. */
+    extra_category_ids: z.array(z.enum(categoryIds)).max(4),
     ward_id: z.string().min(1, 'needWard'),
     description: z.string().trim().min(12, 'tooShort').max(2000),
     lat: z.number().min(-5).max(5).nullable(),
@@ -25,6 +27,8 @@ export type ReportForm = z.infer<typeof reportSchema>;
 export type ReportPayload = {
   client_key: string;
   category_id: string;
+  /** Up to four more issues at the same place; each becomes its own linked case. */
+  extra_category_ids?: string[];
   ward_id: string;
   description: string;
   lat: number | null;

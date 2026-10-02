@@ -37,6 +37,11 @@ const ConsultationDetail = lazy(() => import('./pages/ConsultationDetail'));
 const Meetings = lazy(() => import('./pages/Meetings'));
 const OpenApi = lazy(() => import('./pages/OpenApi'));
 const OpenCounty = lazy(() => import('./pages/OpenCounty'));
+const Fixed = lazy(() => import('./pages/Fixed'));
+const SpeakUp = lazy(() => import('./pages/SpeakUp'));
+const Champions = lazy(() => import('./pages/Champions'));
+const Counties = lazy(() => import('./pages/Counties'));
+const Polls = lazy(() => import('./pages/Polls'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 function PageFallback() {
@@ -78,6 +83,11 @@ export function App() {
           <Route path="information/:reference" element={<InformationDetail />} />
           <Route path="have-your-say" element={<HaveYourSay />} />
           <Route path="have-your-say/:slug" element={<ConsultationDetail />} />
+          <Route path="fixed" element={<Fixed />} />
+          <Route path="speak-up" element={<SpeakUp />} />
+          <Route path="champions" element={<Champions />} />
+          <Route path="counties" element={<Counties />} />
+          <Route path="polls" element={<Polls />} />
           <Route path="me" element={<RequireAuth><Dashboard /></RequireAuth>} />
           <Route path="how-it-works" element={<HowItWorks />} />
           <Route path="services" element={<Services />} />

@@ -3,7 +3,8 @@
 //   2. validate, scrub personal details from the text
 //   3. work out the ward (a dropped pin wins over the picker once boundaries are loaded)
 //   4. identify each photo by its bytes, strip metadata, store it privately
-//   5. create the case through svc_create_report (idempotent on client_key; routing and SLA timers are stamped by the database)
+//   5. create the case through svc_create_report, or svc_create_report_group for several issues at once (idempotent on
+//      client_key; routing and SLA timers are stamped by the database)
 import { handler, HttpError, clientIp } from '../_shared/http.ts';
 import { bytesToHex, countySecret, mac } from '../_shared/crypto.ts';
 import { rpc, serviceClient } from '../_shared/db.ts';
@@ -71,13 +72,18 @@ Deno.serve(handler('report-intake', async (req) => {
       stored.push(path);
     }
 
-    const out = await rpc<{ reference: string; ward_id: string; status: string; duplicate: boolean }>('svc_create_report', {
-      p_id: reportId, p_client_key: input.client_key, p_ward: ward_id, p_category: input.category_id, p_description: input.description,
+    type Created = { reference: string; ward_id: string; status: string; duplicate: boolean; reports?: { reference: string; category_id: string }[] };
+    const common = {
+      p_id: reportId, p_client_key: input.client_key, p_ward: ward_id, p_description: input.description,
       p_lat: lat, p_lng: lng, p_language: input.locale, p_channel: 'web', p_callback_phone: input.callback_phone, p_photo_paths: stored,
-    });
+    };
+    // Several issues at one place become linked cases, each routed to its own team with its own deadline.
+    const out = input.extra_category_ids.length
+      ? await rpc<Created>('svc_create_report_group', { ...common, p_categories: [input.category_id, ...input.extra_category_ids] })
+      : await rpc<Created>('svc_create_report', { ...common, p_category: input.category_id });
     // a retry of a report that already exists: the photos we just stored belong to nobody
     if (out.duplicate && stored.length) await bucket.remove(stored);
-    return { reference: out.reference, ward_id: out.ward_id, status: out.status };
+    return { reference: out.reference, ward_id: out.ward_id, status: out.status, reports: out.reports ?? [{ reference: out.reference, category_id: input.category_id }] };
   } catch (e) {
     if (stored.length) await bucket.remove(stored).catch(() => {});
     throw e;

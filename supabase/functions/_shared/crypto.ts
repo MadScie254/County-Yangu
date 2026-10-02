@@ -66,7 +66,7 @@ export function countySecret(): string {
   return s;
 }
 
-export type Label = 'phone' | 'voter' | 'otp-code' | 'ip' | 'token' | 'supporter';
+export type Label = 'phone' | 'voter' | 'otp-code' | 'ip' | 'token' | 'supporter' | 'disclosure';
 
 /** Keyed hash of `value` for one purpose. */
 export async function mac(secret: string, label: Label, value: string): Promise<Uint8Array> {

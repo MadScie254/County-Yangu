@@ -65,7 +65,9 @@ export const useQueue = create<QueueState>()(
                 const photos = (await Promise.all(Array.from({ length: item.photoCount }, (_, i) => idbGet<Blob>(`photo:${item.id}:${i}`)))).filter((b): b is Blob => Boolean(b));
                 const result = await sendReport(item.payload, photos);
                 await Promise.all(Array.from({ length: item.photoCount }, (_, i) => idbDel(`photo:${item.id}:${i}`)));
-                useMyReports.getState().add({ reference: result.reference, ward_id: result.ward_id, category_id: item.payload.category_id, at: item.createdAt });
+                for (const r of result.reports ?? [{ reference: result.reference, category_id: item.payload.category_id }]) {
+                  useMyReports.getState().add({ reference: r.reference, ward_id: result.ward_id, category_id: r.category_id, at: item.createdAt });
+                }
                 patch(item.id, { status: 'sent', result, error: undefined });
               } else {
                 await castVote({ ...item.payload, client_key: item.id });

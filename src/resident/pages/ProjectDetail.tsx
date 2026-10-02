@@ -1,6 +1,7 @@
 import { FollowButton } from '@/shared/ui/FollowButton';
 import { ShareListen } from '@/shared/ui/ShareListen';
 import { ProjectCheck } from '../components/ProjectCheck';
+import { ChampionChecks } from '../components/ChampionChecks';
 import { Link, useParams } from 'react-router-dom';
 import { ArrowLeft, Check, Circle, Megaphone, Share2, TriangleAlert, Hammer } from 'lucide-react';
 import { useI18n } from '@/shared/i18n';
@@ -110,6 +111,7 @@ export default function ProjectDetail() {
         </section>
       )}
 
+      <ChampionChecks slug={p.slug} projectId={p.id} wardId={p.ward_id} />
       <ProjectCheck slug={p.slug} />
 
       <div className="mt-10 flex flex-col gap-3 rounded-[1.75rem] bg-brand-soft p-6 sm:flex-row sm:items-center sm:justify-between">

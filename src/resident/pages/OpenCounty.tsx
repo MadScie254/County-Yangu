@@ -1,4 +1,5 @@
 import { DeadlinesBoard } from '@/shared/ui/DeadlinesBoard';
+import { ConcernsPanel } from '../components/Concerns';
 import { useMemo, useState } from 'react';
 import { AlertOctagon, Download, Eye, Info, Scale, ShieldQuestion } from 'lucide-react';
 import { useI18n, type MessageKey } from '@/shared/i18n';
@@ -261,6 +262,8 @@ export default function OpenCounty() {
           </div>
         </section>
       )}
+
+      <ConcernsPanel />
 
       {/* ---------- Method + data ---------- */}
       <div className="mt-10 grid gap-6 lg:grid-cols-2">

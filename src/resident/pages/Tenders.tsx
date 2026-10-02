@@ -8,6 +8,7 @@ import { Chip, tenderTone } from '@/shared/ui/Chip';
 import { Segmented } from '@/shared/ui/Field';
 import { Skeleton, Stat } from '@/shared/ui/Card';
 import { flaggedContractors, openTenders } from '../lib/tenders';
+import { RaiseConcern } from '../components/Concerns';
 
 type Filter = 'all' | TenderStatus;
 
@@ -75,6 +76,7 @@ export default function Tenders() {
               <div><dd className="font-semibold text-muted">{t('tenders.applicants', { count: x.applicants_count })}</dd></div>
               {x.awarded_to && <div><dt className="inline text-muted">{t('tenders.awardedTo')}: </dt><dd className="inline font-semibold">{x.awarded_to}</dd></div>}
             </dl>
+            <div className="mt-3 border-t border-line pt-2"><RaiseConcern tenderId={x.id} label={`${x.reference}: ${x.title}`} /></div>
           </li>
         ))}
       </ul>

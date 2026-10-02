@@ -4,7 +4,7 @@ import { OpenCasesPanel } from '../components/report/OpenCasesPanel';
 import { VoiceInput } from '../components/report/VoiceInput';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ArrowLeft, ArrowRight, Check, Copy, Share2, ShieldCheck, TriangleAlert, WifiOff, Landmark } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, Copy, Share2, ShieldCheck, TriangleAlert, WifiOff, Landmark, Zap } from 'lucide-react';
 import { useI18n, type MessageKey } from '@/shared/i18n';
 import { county, wardById, wardsBySubCounty } from '@/shared/config/county';
 import { categoryIds, categoryMeta, type CategoryId } from '@/shared/data/categories';
@@ -12,6 +12,7 @@ import { reportSchema, type ReportForm } from '@/shared/lib/schemas';
 import { toE164Kenya, cn } from '@/shared/lib/utils';
 import { usePageTitle } from '@/shared/lib/hooks';
 import { useQueue } from '@/shared/state/queue';
+import { useCategorySla } from '@/shared/api/hooks';
 import { usePrefs } from '@/shared/state/prefs';
 import { useWardGeometry } from '@/shared/map/useGeometry';
 import { nearestSubCounty, wardAtPoint, type LngLat } from '@/shared/map/geo';
@@ -49,10 +50,25 @@ export default function Report() {
   const form = useForm<ReportForm>({
     resolver: zodResolver(reportSchema),
     mode: 'onTouched',
-    defaultValues: { category_id: (categoryIds as readonly string[]).includes(params.get('category') ?? '') ? (params.get('category') as CategoryId) : undefined, ward_id: wardById.has(initialWard) ? initialWard : '', description: '', lat: null, lng: null, callback_consent: false, callback_phone: '' },
+    defaultValues: { category_id: (categoryIds as readonly string[]).includes(params.get('category') ?? '') ? (params.get('category') as CategoryId) : undefined, extra_category_ids: [], ward_id: wardById.has(initialWard) ? initialWard : '', description: '', lat: null, lng: null, callback_consent: false, callback_phone: '' },
   });
   const { register, control, watch, setValue, trigger, handleSubmit, formState: { errors } } = form;
   const category = watch('category_id') as CategoryId | undefined;
+  const extras = (watch('extra_category_ids') ?? []) as CategoryId[];
+  const selected = [category, ...extras].filter(Boolean) as CategoryId[];
+  const sla = useCategorySla();
+  const sameDay = useMemo(() => new Set((sla.data ?? []).filter((c) => c.resolve_unit === 'hours' && c.resolve_value <= 24).map((c) => c.id)), [sla.data]);
+  // Tapping a tile adds or removes it. The first one chosen is the main issue; up to five in all.
+  const toggle = (id: CategoryId) => {
+    if (selected.includes(id)) {
+      const rest = selected.filter((x) => x !== id);
+      setValue('category_id', (rest[0] ?? undefined) as CategoryId, { shouldValidate: Boolean(rest[0]) });
+      setValue('extra_category_ids', rest.slice(1));
+    } else if (selected.length < 5) {
+      if (!category) setValue('category_id', id, { shouldValidate: true });
+      else setValue('extra_category_ids', [...extras, id]);
+    }
+  };
   const ward = watch('ward_id');
   const consent = watch('callback_consent');
   const description = watch('description');
@@ -98,6 +114,7 @@ export default function Report() {
       const it = await enqueue(
         {
           category_id: v.category_id,
+          extra_category_ids: v.extra_category_ids.filter((c) => c !== v.category_id),
           ward_id: v.ward_id,
           description: v.description.trim(),
           lat: v.lat,
@@ -116,10 +133,11 @@ export default function Report() {
     }
   });
 
-  if (submittedId && item) return <Confirmation status={item.status} reference={item.result && 'reference' in item.result ? item.result.reference : undefined} wardId={form.getValues('ward_id')} error={item.error} onAgain={() => { setSubmittedId(null); setStep(0); form.reset({ ward_id: form.getValues('ward_id'), description: '', callback_consent: false, callback_phone: '', lat: null, lng: null, category_id: undefined as unknown as CategoryId }); setPhotos([]); setPoint(null); }} />;
+  if (submittedId && item) return <Confirmation status={item.status} reference={item.result && 'reference' in item.result ? item.result.reference : undefined} others={item.result && 'reports' in item.result ? (item.result.reports ?? []).slice(1) : []} wardId={form.getValues('ward_id')} error={item.error} onAgain={() => { setSubmittedId(null); setStep(0); form.reset({ ward_id: form.getValues('ward_id'), description: '', callback_consent: false, callback_phone: '', lat: null, lng: null, category_id: undefined as unknown as CategoryId, extra_category_ids: [] }); setPhotos([]); setPoint(null); }} />;
 
   const remaining = 2000 - (description?.length ?? 0);
-  const meta = category ? categoryMeta[category] : null;
+  const metas = selected.map((c) => categoryMeta[c]);
+  const meta = { sensitive: metas.some((m) => m.sensitive), urgent: metas.some((m) => m.urgent) };
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6 sm:py-12">
@@ -145,32 +163,40 @@ export default function Report() {
         <section hidden={step !== 0} aria-labelledby="s1">
           <h2 id="s1" className="font-display text-2xl font-bold">{t('report.category')}</h2>
           <p className="mt-1 text-sm text-muted">{t('report.categoryHelp')}</p>
+          <p className="mt-2 rounded-xl bg-bg-2/70 px-3 py-2 text-sm">{t('report.multiHint')} <b className="font-data">{selected.length}/5</b></p>
           <Controller
             control={control}
             name="category_id"
-            render={({ field }) => (
-              <div role="radiogroup" aria-label={t('report.category')} className="mt-4 grid grid-cols-2 gap-2.5 sm:grid-cols-3">
+            render={() => (
+              <div role="group" aria-label={t('report.category')} className="mt-4 grid grid-cols-2 gap-2.5 sm:grid-cols-3">
                 {categoryIds.map((id) => {
-                  const on = field.value === id;
+                  const pos = selected.indexOf(id);
+                  const on = pos >= 0;
+                  const full = !on && selected.length >= 5;
                   return (
                     <button
                       key={id}
                       type="button"
-                      role="radio"
-                      aria-checked={on}
-                      onClick={() => field.onChange(id)}
-                      className={cn('flex min-h-[4.5rem] items-center gap-3 rounded-2xl border p-3 text-left transition active:scale-[0.98]', on ? 'border-ink bg-brand-soft shadow-card ring-2 ring-ink' : 'border-line bg-surface hover:border-line-strong')}
+                      aria-pressed={on}
+                      disabled={full}
+                      onClick={() => toggle(id)}
+                      className={cn('relative flex min-h-[4.5rem] items-center gap-3 rounded-2xl border p-3 text-left transition active:scale-[0.98] disabled:opacity-40', on ? 'border-ink bg-brand-soft shadow-card ring-2 ring-ink' : 'border-line bg-surface hover:border-line-strong')}
                     >
                       <span className={cn('grid size-10 shrink-0 place-items-center rounded-xl', on ? 'bg-brand text-brand-ink' : 'bg-bg-2 text-ink-2')}>
-                        <CategoryIcon id={id} className="size-5" />
+                        {on ? <span className="font-data text-base font-bold">{pos + 1}</span> : <CategoryIcon id={id} className="size-5" />}
                       </span>
-                      <span className="text-[0.9rem] font-semibold leading-snug">{t(`categories.${id}`)}</span>
+                      <span className="min-w-0">
+                        <span className="block text-[0.9rem] font-semibold leading-snug">{t(`categories.${id}`)}</span>
+                        {pos === 0 && selected.length > 1 && <span className="mt-0.5 block text-[0.7rem] font-bold uppercase tracking-[0.08em] text-ink-2">{t('report.mainIssue')}</span>}
+                        {sameDay.has(id) && <span className="mt-0.5 inline-flex items-center gap-1 text-[0.7rem] font-semibold text-good"><Zap className="size-3" aria-hidden />{t('report.sameDay')}</span>}
+                      </span>
                     </button>
                   );
                 })}
               </div>
             )}
           />
+          {selected.length > 1 && <p className="mt-3 text-sm text-ink-2">{t('report.multiNote', { count: selected.length })}</p>}
           {errors.category_id && <p role="alert" className="mt-2 text-sm font-medium text-bad">{t('report.needCategory')}</p>}
           {meta?.sensitive && (
             <p className="mt-4 flex gap-2.5 rounded-2xl bg-info-soft p-3.5 text-sm text-info">
@@ -269,7 +295,7 @@ export default function Report() {
   );
 }
 
-function Confirmation({ status, reference, wardId, error, onAgain }: { status: string; reference?: string; wardId: string; error?: string; onAgain: () => void }) {
+function Confirmation({ status, reference, others, wardId, error, onAgain }: { status: string; reference?: string; others: { reference: string; category_id: string }[]; wardId: string; error?: string; onAgain: () => void }) {
   const { t } = useI18n();
   const sent = status === 'sent' && reference;
   const [copied, setCopied] = useState(false);
@@ -300,6 +326,16 @@ function Confirmation({ status, reference, wardId, error, onAgain }: { status: s
             </Button>
             <Button variant="secondary" size="sm" icon={<Share2 className="size-4" aria-hidden />} onClick={share}>{t('common.share')}</Button>
           </div>
+          {others.length > 0 && (
+            <div className="mt-5 border-t border-line pt-4 text-left">
+              <p className="text-sm font-semibold">{t('report.alsoFiled', { count: others.length })}</p>
+              <ul className="mt-2 space-y-1.5">
+                {others.map((o) => (
+                  <li key={o.reference}><Link to={`/case/${o.reference}`} className="flex items-center justify-between gap-3 rounded-xl bg-bg-2/70 px-3 py-2 text-sm hover:bg-bg-2"><span>{t(`categories.${o.category_id}` as MessageKey)}</span><span className="font-data">{o.reference}</span></Link></li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       )}
 

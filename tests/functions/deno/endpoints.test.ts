@@ -151,7 +151,7 @@ Deno.test('report-intake: scrubs personal details, strips photo metadata, stores
   state.rpc.svc_create_report = () => ({ reference: 'NAI-RABCDEF1234', ward_id: 'kileleshwa', status: 'received', duplicate: false });
   const r = await call('report-intake', { form: reportForm({}, [jpegWithGps()]) });
   assert.equal(r.status, 200);
-  assert.deepEqual(await json(r), { reference: 'NAI-RABCDEF1234', ward_id: 'kileleshwa', status: 'received' });
+  assert.deepEqual(await json(r), { reference: 'NAI-RABCDEF1234', ward_id: 'kileleshwa', status: 'received', reports: [{ reference: 'NAI-RABCDEF1234', category_id: 'pothole' }] });
 
   const args = called('svc_create_report')[0]!.args;
   assert.ok(!args.p_description.includes('0712'), 'phone number scrubbed');
@@ -628,4 +628,39 @@ Deno.test('open311: standard paths, validated filters, read only', async () => {
   assert.equal((await call('open311', { method: 'GET', query: "/requests.json?service_code=x';drop" })).status, 400);
   assert.equal((await call('open311', { method: 'POST', query: '/requests.json', json: {} })).status, 405);
   assert.equal((await call('open311', { method: 'GET', query: '/nothing' })).status, 404);
+});
+
+Deno.test('report-intake: several issues become one linked group through the database; bad extras are refused', async () => {
+  reset(); okRateLimit();
+  state.rpc.svc_create_report_group = () => ({ reference: 'NAI-R1', ward_id: 'kileleshwa', status: 'received', duplicate: false, reports: [{ reference: 'NAI-R1', category_id: 'pothole' }, { reference: 'NAI-R2', category_id: 'drainage' }] });
+  const r = await call('report-intake', { form: reportForm({ extra_category_ids: ['drainage', 'pothole', 'drainage'] }) });
+  assert.equal(r.status, 200);
+  assert.equal((await json(r)).reports.length, 2);
+  assert.deepEqual(called('svc_create_report_group')[0]!.args.p_categories, ['pothole', 'drainage']);
+  assert.equal(called('svc_create_report').length, 0);
+  assert.equal((await call('report-intake', { form: reportForm({ extra_category_ids: ['nope'] }) })).status, 422);
+  assert.equal((await call('report-intake', { form: reportForm({ extra_category_ids: ['drainage', 'streetlight', 'garbage', 'sewer', 'dumping'] }) })).status, 422);
+  assert.equal((await call('report-intake', { form: reportForm({ extra_category_ids: 'drainage' }) })).status, 422);
+});
+
+Deno.test('disclosure: a key is issued once, only its hash reaches the database, and the key opens the thread', async () => {
+  reset(); okRateLimit();
+  const hashes: string[] = [];
+  state.rpc.svc_disclosure_create = (a: Record<string, unknown>) => { hashes.push(String(a.p_key_hash)); return 'NAI-WABC1234567'; };
+  const created = await call('disclosure', { json: { action: 'create', topic: 'procurement', ward_id: 'kileleshwa', body: 'The tender was decided before the bids were opened.' } });
+  assert.equal(created.status, 200);
+  const { reference, key } = await json(created);
+  assert.equal(reference, 'NAI-WABC1234567');
+  assert.match(key, /^[A-HJKMNP-Z2-9]{4}(-[A-HJKMNP-Z2-9]{4}){3}$/);
+  assert.ok(!hashes[0]!.includes(key) && hashes[0]!.startsWith('\\x'), 'only a keyed hash is stored');
+  const args = called('svc_disclosure_create')[0]!.args;
+  assert.equal(args.p_topic, 'procurement');
+  state.rpc.svc_disclosure_thread = (a: Record<string, unknown>) => (a.p_key_hash === hashes[0] ? { reference, messages: [] } : null);
+  assert.equal((await call('disclosure', { json: { action: 'read', key: key.toLowerCase() } })).status, 200);
+  assert.equal((await call('disclosure', { json: { action: 'read', key: 'AAAA-BBBB-CCCC-DDDD' } })).status, 404);
+  assert.equal((await call('disclosure', { json: { action: 'read', key: 'not a key' } })).status, 422);
+  state.rpc.svc_disclosure_reply = () => 'closed';
+  assert.equal((await call('disclosure', { json: { action: 'reply', key, body: 'More detail here.' } })).status, 409);
+  assert.equal((await call('disclosure', { json: { action: 'create', topic: 'gossip', body: 'Twenty characters at least of text here.' } })).status, 422);
+  assert.equal((await call('disclosure', { json: { action: 'create', topic: 'theft', ward_id: 'atlantis', body: 'Twenty characters at least of text here.' } })).status, 422);
 });

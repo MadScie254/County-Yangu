@@ -209,7 +209,13 @@
     "errorRetry": "Your report is safe on this phone. We will keep trying.",
     "tooShort": "Please add a little more detail (at least 12 characters).",
     "needCategory": "Choose a category.",
-    "needWard": "Choose the ward."
+    "needWard": "Choose the ward.",
+    "multiHint": "Pick everything wrong at this spot, up to five. Each one goes to the right team as its own case. The first you pick is the main one.",
+    "mainIssue": "Main issue",
+    "sameDay": "Same-day fix target",
+    "multiNote": "{count} issues: you will get {count} case references, one for each team, linked together.",
+    "alsoFiled_one": "Also filed as a separate case for its team:",
+    "alsoFiled_other": "Also filed as {count} separate cases, one for each team:"
   },
   "status": {
     "title": "Check a report",
@@ -230,7 +236,12 @@
     "lastUpdate": "Last update",
     "noUpdates": "No updates yet. You will see them here as the county responds.",
     "sensitive": "Sent to the integrity desk",
-    "onThisPhone": "On this phone"
+    "onThisPhone": "On this phone",
+    "alsoReported": "Reported in the same visit",
+    "beforeAfter": "Before and after",
+    "before": "Before",
+    "after": "After",
+    "byCounty": "Photos taken by county staff at the site"
   },
   "statuses": {
     "received": "Received",
@@ -1582,5 +1593,207 @@
       "noneLate": "None late now",
       "how": "Updated from the records every few minutes. Late means past the legal deadline without a decision."
     }
+  },
+  "fixed": {
+    "title": "Fixed, with proof",
+    "intro": "Problems residents reported, with the photo county staff took after fixing them. A case cannot be closed as fixed without one.",
+    "none": "No fixed cases with photos yet.",
+    "when": "Reported {reported}, fixed {fixed}"
+  },
+  "speak": {
+    "eyebrow": "Protected",
+    "title": "Report corruption safely",
+    "intro": "Tell the county integrity desk about bribes, rigged tenders, ghost workers or theft. You stay anonymous: you get a secret key instead of an account, and only you can use it to read replies and add more.",
+    "safety": "How you are protected",
+    "safe": {
+      "a": "We do not ask for your name, phone or email, and we do not keep your internet address with your report.",
+      "b": "Your key is never stored. Only a scrambled fingerprint of it is, so even county staff cannot find out who you are.",
+      "c": "Use a personal phone, not a work computer, and leave out details only you could know if you fear being identified."
+    },
+    "new": "Tell us what happened",
+    "topic": "What is it about?",
+    "ward": "Which ward",
+    "what": "What happened",
+    "whatHint": "Who, what, when and where. Names of officials are fine. Do not include your own name or number.",
+    "send": "Send securely",
+    "topics": {
+      "bribery": "Bribery or extortion",
+      "procurement": "Rigged tender or contract",
+      "payroll": "Ghost workers or payroll fraud",
+      "theft": "Theft of county money or property",
+      "abuse_of_office": "Abuse of office",
+      "other": "Something else"
+    },
+    "sent": "Received. Your reference is {reference}.",
+    "yourKey": "Your secret key",
+    "keyWarning": "Write this key down now. It is shown only once and cannot be recovered. Without it you cannot read replies.",
+    "keySaved": "I have written my key down somewhere safe",
+    "done": "Done",
+    "check": "Check for replies",
+    "checkIntro": "Enter your secret key to read what the integrity desk said and to add more information.",
+    "open": "Open",
+    "noKey": "No report matches that key. Check it and try again.",
+    "error": "That did not work. Please try again.",
+    "reply": "Add information or answer a question",
+    "sendReply": "Send",
+    "replied": "Sent to the integrity desk.",
+    "closed": "This report is closed.",
+    "you": "You",
+    "desk": "Integrity desk",
+    "referredTo": "Referred to {to}",
+    "status": {
+      "received": "Received",
+      "reviewing": "Being reviewed",
+      "referred": "Referred",
+      "closed": "Closed"
+    }
+  },
+  "champions": {
+    "title": "Ward champions",
+    "intro": "Residents who volunteer to keep an eye on county projects in their own ward. Their checks are named and carry a badge, and a doubt reaches county staff straight away.",
+    "what": "What a champion does",
+    "duty": {
+      "a": "Visits county projects in their ward and says whether they look as published.",
+      "b": "Posts short, factual checks with their public name. No insults, no rumours.",
+      "c": "Helps neighbours report problems and follow their cases.",
+      "d": "Is approved by the ward administrator and can be paused if the rules are broken."
+    },
+    "apply": "Become a champion",
+    "signIn": "Sign in to apply",
+    "signInWhy": "Champions sign in so their checks can carry their name and badge.",
+    "ward": "Your ward",
+    "name": "Name to show publicly",
+    "nameHint": "For example: Wanjiru K.",
+    "why": "Why you want to help",
+    "send": "Apply",
+    "applied": "Application sent. The ward administrator will review it.",
+    "error": "That did not work. You may have applied already.",
+    "yourStatus": "Your application:",
+    "status": {
+      "applied": "Waiting for approval",
+      "active": "Active champion",
+      "paused": "Paused",
+      "declined": "Not approved"
+    },
+    "list": "Champions by ward",
+    "none": "No champions yet. Be the first in your ward.",
+    "checksTitle": "Ward champion checks",
+    "checksIntro": "Named checks by verified residents of this ward.",
+    "learn": "What is a ward champion?",
+    "post": "Post my check",
+    "checkSent": "Your check is published.",
+    "checkError": "That did not work. One check per project each week."
+  },
+  "flag": {
+    "label": "Report",
+    "why": "Why?",
+    "thanks": "Thank you. An administrator will look at it.",
+    "error": "That did not work.",
+    "done": "Reported",
+    "signIn": "Sign in to report content.",
+    "reasons": {
+      "abuse": "Abusive",
+      "personal_details": "Personal details",
+      "false": "False",
+      "spam": "Spam",
+      "other": "Other"
+    }
+  },
+  "concerns": {
+    "raise": "Raise a concern",
+    "raiseTitle": "Raise a procurement concern",
+    "raiseIntro": "Something wrong with this tender? The county must answer in public within 14 days. If it does not, or dismisses it, you can escalate to the procurement regulator, the anti-corruption commission or the Auditor-General.",
+    "signIn": "Sign in to raise a concern",
+    "kind": "What looks wrong",
+    "body": "Explain what you saw",
+    "bodyHint": "Facts only: dates, amounts, names of companies. Your name is never shown.",
+    "send": "Send concern",
+    "sent": "Concern {reference} sent. The county must answer within 14 days.",
+    "error": "That did not work. Please try again.",
+    "kinds": {
+      "specs_tailored": "Specifications fit one bidder",
+      "short_deadline": "Deadline too short",
+      "single_bid": "Only one bid",
+      "price_inflated": "Price too high",
+      "conflict_of_interest": "Conflict of interest",
+      "not_delivered": "Paid but not delivered",
+      "other": "Something else"
+    },
+    "title": "Procurement concerns raised by residents",
+    "intro": "Residents flag tenders that look wrong. The county answers each one in public within 14 days.",
+    "score": "{total} concerns raised, {fixed} led to a fix.",
+    "none": "No concerns raised yet. Use \"Raise a concern\" on any tender.",
+    "late": "Answer late",
+    "answer": "County answer",
+    "due": "Answer due {date}",
+    "answeredOn": "Answered {date}",
+    "youRaised": "If you raised it, escalate to:",
+    "escalated": "Marked as escalated.",
+    "escalateError": "Only the person who raised a concern can escalate it.",
+    "escalatedTo": "Escalated to {to}",
+    "status": {
+      "submitted": "Waiting for answer",
+      "answered": "Answered",
+      "fixed": "Fixed",
+      "dismissed": "Dismissed",
+      "escalated": "Escalated"
+    }
+  },
+  "counties": {
+    "title": "How the 47 counties spend",
+    "intro": "Development spending, own revenue and audit results for every county, entered from the Controller of Budget's budget implementation reviews and the Auditor-General's county reports. Each row links to its source.",
+    "demo": "These are invented demo figures, not real county results. Real figures appear once they are entered from the official reports.",
+    "none": "No county figures have been entered yet.",
+    "year": "Financial year",
+    "sort": "Sort by",
+    "sorts": {
+      "dev": "Development money spent",
+      "osr": "Own revenue collected",
+      "bills": "Fewest pending bills",
+      "name": "County name"
+    },
+    "average": "Average across counties: {dev}% of development budget spent, {osr}% of revenue target collected.",
+    "county": "County",
+    "dev": "Development spent",
+    "osr": "Revenue collected",
+    "bills": "Pending bills",
+    "audit": "Audit opinion",
+    "source": "Source",
+    "opinion": {
+      "unqualified": "Clean",
+      "qualified": "Qualified",
+      "adverse": "Adverse",
+      "disclaimer": "Disclaimer"
+    },
+    "devHelp": "Share of the development budget (roads, water, clinics) actually spent in the year. Low means projects did not happen.",
+    "osrHelp": "Share of the county's own revenue target (rates, permits, parking) actually collected.",
+    "auditHelp": "The Auditor-General's verdict. Clean is best; adverse or disclaimer means the accounts could not be trusted.",
+    "counted": "{n} counties shown."
+  },
+  "polls": {
+    "title": "Quick polls",
+    "intro": "Short questions from the county. One answer per person, with results shown for every ward so leaders can see what each area wants.",
+    "none": "There are no polls right now.",
+    "phase": {
+      "open": "Open",
+      "upcoming": "Coming soon",
+      "closed": "Closed"
+    },
+    "opens": "Opens {date}",
+    "closes": "Closes {date}",
+    "closed": "Closed {date}",
+    "choose": "Choose one answer",
+    "yours": "Your answer",
+    "ward": "Your ward (for ward results)",
+    "wardSkip": "Prefer not to say",
+    "send": "Send my answer",
+    "thanks": "Thank you, your answer is counted.",
+    "already": "You have already answered this poll.",
+    "error": "Your answer could not be sent. Try again.",
+    "signInWhy": "Sign in to answer. It keeps one answer per person.",
+    "signIn": "Sign in to answer",
+    "total_one": "{count} answer so far.",
+    "total_other": "{count} answers so far.",
+    "byWard": "Results by ward"
   }
 }

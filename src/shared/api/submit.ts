@@ -40,14 +40,15 @@ async function post<T>(fn: string, body: BodyInit, json = true): Promise<T> {
   throw new SubmitError(detail.error ?? `http-${res.status}`, permanent, detail.code);
 }
 
-export type ReportResult = { reference: string; ward_id: string; status: string };
+export type ReportResult = { reference: string; ward_id: string; status: string; reports?: { reference: string; category_id: string }[] };
 
 export async function sendReport(payload: ReportPayload, photos: Blob[]): Promise<ReportResult> {
   if (!backendConfigured) {
     // Demo mode: pretend the county answered, so the whole flow can be explored offline.
     await sleep(700);
-    const rand = Array.from(crypto.getRandomValues(new Uint8Array(5)), (b) => b.toString(16).padStart(2, '0')).join('').toUpperCase();
-    return { reference: `${county.slug.slice(0, 3).toUpperCase()}-R${rand}`, ward_id: payload.ward_id, status: 'received' };
+    const ref = () => `${county.slug.slice(0, 3).toUpperCase()}-R${Array.from(crypto.getRandomValues(new Uint8Array(5)), (b) => b.toString(16).padStart(2, '0')).join('').toUpperCase()}`;
+    const reports = [payload.category_id, ...(payload.extra_category_ids ?? [])].map((category_id) => ({ reference: ref(), category_id }));
+    return { reference: reports[0]!.reference, ward_id: payload.ward_id, status: 'received', reports };
   }
   const form = new FormData();
   form.set('payload', JSON.stringify(payload));
@@ -90,3 +91,23 @@ export const submitProposal = (body: { token: string; ward_id: string | null; ki
 
 export const supportProposal = (body: { token: string; proposal_id: string }) =>
   backendConfigured ? post<SimpleResult>('proposal-support', JSON.stringify(body)) : sleep(400).then(() => ({ ok: true as const }));
+
+// ---- whistleblower inbox (the secret key never leaves this device except to the function) ----
+
+export const createDisclosure = (body: { topic: string; ward_id?: string | null; body: string }) =>
+  backendConfigured
+    ? post<{ reference: string; key: string }>('disclosure', JSON.stringify({ action: 'create', ...body }))
+    : sleep(600).then(() => ({ reference: `${county.slug.slice(0, 3).toUpperCase()}-WDEMO00001`, key: 'DEMO-KEY2-ABCD-7XYZ' }));
+
+export const readDisclosure = (key: string) =>
+  backendConfigured
+    ? post<{ thread: import('./types').DisclosureThread }>('disclosure', JSON.stringify({ action: 'read', key }))
+    : sleep(400).then(() => {
+        if (key.trim().toUpperCase() !== 'DEMO-KEY2-ABCD-7XYZ') throw new SubmitError('not_found', true, 'not_found');
+        const at = (d: number) => new Date(Date.now() - d * 86_400_000).toISOString();
+        return { thread: { reference: `${county.slug.slice(0, 3).toUpperCase()}-WDEMO00001`, topic: 'procurement' as const, status: 'reviewing' as const, referred_to: null, created_at: at(4),
+          messages: [{ from_reporter: true, body: 'The roads tender was decided before the bids were opened. (Demo)', at: at(4) }, { from_reporter: false, body: 'Thank you. Do you know who sat on the evaluation committee? (Demo)', at: at(2) }] } };
+      });
+
+export const replyDisclosure = (key: string, body: string) =>
+  backendConfigured ? post<{ ok: true }>('disclosure', JSON.stringify({ action: 'reply', key, body })) : sleep(400).then(() => ({ ok: true as const }));

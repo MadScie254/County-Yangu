@@ -7,6 +7,8 @@ import { isUuid } from './validate.ts';
 export type ReportInput = {
   client_key: string;
   category_id: string;
+  /** Up to four more issues seen at the same place; each becomes its own linked case. */
+  extra_category_ids: string[];
   ward_id: string;
   description: string;
   redactions: number;
@@ -27,6 +29,12 @@ export function parseReportPayload(raw: unknown, known: { categories: ReadonlySe
 
   if (!isUuid(o.client_key)) throw bad('client_key');
   if (typeof o.category_id !== 'string' || !known.categories.has(o.category_id)) throw bad('category_id');
+  let extra_category_ids: string[] = [];
+  if (o.extra_category_ids !== undefined && o.extra_category_ids !== null) {
+    if (!Array.isArray(o.extra_category_ids) || o.extra_category_ids.length > 4) throw bad('extra_category_ids');
+    for (const c of o.extra_category_ids) if (typeof c !== 'string' || !known.categories.has(c)) throw bad('extra_category_ids');
+    extra_category_ids = [...new Set(o.extra_category_ids as string[])].filter((c) => c !== o.category_id);
+  }
   if (typeof o.ward_id !== 'string' || !known.wards.has(o.ward_id)) throw bad('ward_id');
   if (typeof o.description !== 'string') throw bad('description');
 
@@ -51,5 +59,5 @@ export function parseReportPayload(raw: unknown, known: { categories: ReadonlySe
     if (!callback_phone) throw bad('callback_phone');
   }
 
-  return { client_key: o.client_key.toLowerCase(), category_id: o.category_id, ward_id: o.ward_id, description: text, redactions, lat, lng, locale: o.locale === 'sw' ? 'sw' : 'en', callback_phone };
+  return { client_key: o.client_key.toLowerCase(), category_id: o.category_id, extra_category_ids, ward_id: o.ward_id, description: text, redactions, lat, lng, locale: o.locale === 'sw' ? 'sw' : 'en', callback_phone };
 }

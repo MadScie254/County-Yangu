@@ -20,6 +20,7 @@ Everything that reaches outside the database, or that a resident or a phone netw
 | `vote` | resident app | verified-phone token | One vote per person per round, shared with USSD |
 | `case-feedback` | resident app | case reference, rate limits (address, reference) | "Was it fixed?": a yes is counted, a no reopens the case |
 | `open311` | anyone (apps, reporters, researchers) | read only, cached; no personal data leaves the database | Open311 GeoReport v2: `services.json`, `requests.json`, `requests/{id}.json` |
+| `disclosure` | whistleblowers | secret key (only its keyed hash is stored); rate limits by hashed address | Protected two-way inbox to the integrity desk: create, read thread, reply |
 | `alerts-subscribe` | resident app | verified-phone token | Subscribe a phone to a ward; confirm by SMS |
 | `proposal-submit` / `proposal-support` | resident app | verified-phone token | Post or back an idea/petition (text scrubbed: ideas are public at once) |
 | `ussd-gateway` | Africa's Talking | secret token in the URL (+ optional IP list) | The USSD menu: report, check, budget vote, alerts; English and Kiswahili |

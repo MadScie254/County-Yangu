@@ -131,6 +131,10 @@ export type CaseStatus = {
   supporters?: number;
   feedback_given?: boolean;
   events: { kind: string; message: string | null; at: string }[];
+  /** Other issues filed in the same visit (linked cases). */
+  group?: { reference: string; category_id: string | null; status: ReportStatus }[];
+  /** Staff-taken before / after photos, public on purpose. */
+  fix_photos?: { kind: 'before' | 'after'; path: string; caption: string | null; at: string }[];
 };
 
 export type ActivityItem = { id: string; kind: 'report' | 'resolved' | 'milestone' | 'vote' | 'tender'; ward: string; text: string; at: string };
@@ -327,4 +331,28 @@ export type LegalDeadlines = {
   consultations: { closed: number; reported: number; report_owed: number };
   erasure: { done: number; on_time: number; late_now: number };
   promises: { total: number; delivered: number; past_due: number };
+  concerns?: { answered: number; on_time: number; fixed: number; late_now: number };
 };
+
+export type FixedItem = { reference: string; category_id: string; category: string; category_sw: string | null; ward: string; ward_id: string; reported_at: string; resolved_at: string; before: string | null; after: string };
+
+export type DisclosureTopic = 'bribery' | 'procurement' | 'payroll' | 'theft' | 'abuse_of_office' | 'other';
+export type DisclosureThread = { reference: string; topic: DisclosureTopic; status: 'received' | 'reviewing' | 'referred' | 'closed'; referred_to: string | null; created_at: string; messages: { from_reporter: boolean; body: string; at: string }[] };
+
+export type Champion = { ward_id: string; display_name: string; status: 'applied' | 'active' | 'paused' | 'declined'; approved_at: string | null; created_at: string; user_id?: string; motivation?: string | null };
+export type ChampionCheck = { verdict: 'as_shown' | 'not_as_shown'; comment: string | null; at: string; champion: string };
+
+export type ConcernKind = 'specs_tailored' | 'short_deadline' | 'single_bid' | 'price_inflated' | 'conflict_of_interest' | 'not_delivered' | 'other';
+export type TenderConcern = { id: string; reference: string; tender_id: string; kind: ConcernKind; body: string; status: 'submitted' | 'answered' | 'fixed' | 'dismissed' | 'escalated'; response: string | null; escalated_to: string | null; due_at: string; answered_at: string | null; created_at: string };
+
+export type CountyFinance = { county_code: number; fiscal_year: string; dev_budget: number | null; dev_spent: number | null; rec_budget: number | null; rec_spent: number | null; osr_target: number | null; osr_actual: number | null; pending_bills: number | null; audit_opinion: 'unqualified' | 'qualified' | 'adverse' | 'disclaimer' | null; source: string; source_url: string | null; updated_at: string };
+
+export type StatementResult = { id: number; body: string; created_at: string; agree: number; disagree: number; pass: number };
+export type StatementResults = { statements: StatementResult[]; participants: number; votes: [number, number, -1 | 0 | 1][] };
+
+export type PollOption = { id: string; label: string; label_sw?: string };
+export type Poll = { id: string; slug: string; question: string; question_sw: string | null; options: PollOption[]; ward_id: string | null; opens_at: string; closes_at: string };
+export type PollResults = { total: number; by_option: Record<string, number>; by_ward: { ward_id: string; option_id: string; n: number }[] };
+
+export type FlagKind = 'consultation_comment' | 'statement' | 'champion_check' | 'concern';
+export type FlagReason = 'abuse' | 'personal_details' | 'false' | 'spam' | 'other';

@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { getChampionChecks, getChampionQueue, getChampions, getConcerns, getCountyFinance, getDisclosureInbox, getFixedGallery, getModerationQueue, getMyChampion, getMyPollVotes, getMyStatementVotes, getPollResults, getPolls, getStatementResults } from './civic2';
 import { getLegalDeadlines, getConsultationComments, getConsultations, getConsultationTally, getErasureQueue, getInfoRequest, getInfoRequests, getMyInfoRequests } from './rights';
 import { getCommitments, getNotices, getOpenCases, getProjectChecks, getMeetings, getAssembly, getBudgetResults, getFixStats, getOcds, getWardScorecard, listFollows, verifyDocument } from './loop';
 import { getProcurementWatch } from './procurement';
@@ -38,6 +39,20 @@ export const useConsultationComments = (id: string | null) => useQuery({ queryKe
 export const useConsultationTally = (slug: string | null) => useQuery({ queryKey: ['consultation-tally', slug], queryFn: () => getConsultationTally(slug!), enabled: Boolean(slug), staleTime: minute });
 export const useErasureQueue = (enabled: boolean) => useQuery({ queryKey: ['erasure-queue'], queryFn: getErasureQueue, enabled, staleTime: minute });
 export const useLegalDeadlines = () => useQuery({ queryKey: ['legal-deadlines'], queryFn: getLegalDeadlines, staleTime: 5 * minute });
+export const useFixedGallery = (limit = 24) => useQuery({ queryKey: ['fixed', limit], queryFn: () => getFixedGallery(limit), staleTime: 5 * minute });
+export const useChampions = () => useQuery({ queryKey: ['champions'], queryFn: getChampions, staleTime: 5 * minute });
+export const useMyChampion = (userId: string | undefined) => useQuery({ queryKey: ['my-champion', userId], queryFn: () => getMyChampion(userId), enabled: Boolean(userId), staleTime: minute });
+export const useChampionQueue = () => useQuery({ queryKey: ['champion-queue'], queryFn: getChampionQueue, staleTime: minute });
+export const useChampionChecks = (slug: string | null) => useQuery({ queryKey: ['champion-checks', slug], queryFn: () => getChampionChecks(slug!), enabled: Boolean(slug), staleTime: minute });
+export const useConcerns = () => useQuery({ queryKey: ['concerns'], queryFn: getConcerns, staleTime: minute });
+export const useCountyFinance = () => useQuery({ queryKey: ['county-finance'], queryFn: getCountyFinance, staleTime: 10 * minute });
+export const useStatementResults = (slug: string | null) => useQuery({ queryKey: ['statements', slug], queryFn: () => getStatementResults(slug!), enabled: Boolean(slug), staleTime: 30_000 });
+export const useMyStatementVotes = (enabled: boolean) => useQuery({ queryKey: ['my-statement-votes'], queryFn: getMyStatementVotes, enabled, staleTime: minute });
+export const usePolls = () => useQuery({ queryKey: ['polls'], queryFn: getPolls, staleTime: minute });
+export const usePollResults = (slug: string | null) => useQuery({ queryKey: ['poll-results', slug], queryFn: () => getPollResults(slug!), enabled: Boolean(slug), staleTime: 30_000 });
+export const useMyPollVotes = (enabled: boolean) => useQuery({ queryKey: ['my-poll-votes'], queryFn: getMyPollVotes, enabled, staleTime: minute });
+export const useModerationQueue = () => useQuery({ queryKey: ['moderation'], queryFn: getModerationQueue, staleTime: 30_000 });
+export const useDisclosureInbox = () => useQuery({ queryKey: ['disclosures'], queryFn: getDisclosureInbox, staleTime: 30_000 });
 export const useMeetings = () => useQuery({ queryKey: ['meetings'], queryFn: getMeetings, staleTime: 5 * minute });
 export const useOpenCases = (ward: string | null, category: string | null) => useQuery({ queryKey: ['open-cases', ward, category], queryFn: () => getOpenCases(ward!, category), enabled: Boolean(ward), staleTime: minute });
 export const useProjectChecks = (slug: string | null) => useQuery({ queryKey: ['project-checks', slug], queryFn: () => getProjectChecks(slug!), enabled: Boolean(slug), staleTime: minute });

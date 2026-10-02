@@ -209,7 +209,13 @@
     "errorRetry": "Ripoti yako iko salama kwenye simu hii. Tutaendelea kujaribu.",
     "tooShort": "Tafadhali ongeza maelezo kidogo zaidi (angalau herufi 12).",
     "needCategory": "Chagua aina.",
-    "needWard": "Chagua wadi."
+    "needWard": "Chagua wadi.",
+    "multiHint": "Chagua kila kitu kilichoharibika mahali hapa, hadi vitano. Kila kimoja kinaenda kwa timu husika kama kesi yake. Unachochagua kwanza ndicho kikuu.",
+    "mainIssue": "Tatizo kuu",
+    "sameDay": "Lengo la kurekebisha siku hiyo hiyo",
+    "multiNote": "Matatizo {count}: utapata nambari {count} za kesi, moja kwa kila timu, zimeunganishwa.",
+    "alsoFiled_one": "Pia imewasilishwa kama kesi tofauti kwa timu yake:",
+    "alsoFiled_other": "Pia imewasilishwa kama kesi {count} tofauti, moja kwa kila timu:"
   },
   "status": {
     "title": "Angalia ripoti",
@@ -230,7 +236,12 @@
     "lastUpdate": "Sasisho la mwisho",
     "noUpdates": "Bado hakuna masasisho. Utayaona hapa kaunti inapojibu.",
     "sensitive": "Imetumwa kwa dawati la uadilifu",
-    "onThisPhone": "Kwenye simu hii"
+    "onThisPhone": "Kwenye simu hii",
+    "alsoReported": "Yaliripotiwa katika ziara hiyo hiyo",
+    "beforeAfter": "Kabla na baada",
+    "before": "Kabla",
+    "after": "Baada",
+    "byCounty": "Picha zilizopigwa na wafanyakazi wa kaunti mahali hapo"
   },
   "statuses": {
     "received": "Imepokelewa",
@@ -1582,5 +1593,207 @@
       "noneLate": "Hakuna yaliyochelewa sasa",
       "how": "Inasasishwa kutoka kwa rekodi kila baada ya dakika chache. Kuchelewa ni kupita muda wa kisheria bila uamuzi."
     }
+  },
+  "fixed": {
+    "title": "Imerekebishwa, kuna ushahidi",
+    "intro": "Matatizo yaliyoripotiwa na wakazi, pamoja na picha iliyopigwa na wafanyakazi wa kaunti baada ya kuyarekebisha. Kesi haiwezi kufungwa kama imerekebishwa bila picha hiyo.",
+    "none": "Bado hakuna kesi zilizorekebishwa zenye picha.",
+    "when": "Iliripotiwa {reported}, ikarekebishwa {fixed}"
+  },
+  "speak": {
+    "eyebrow": "Imelindwa",
+    "title": "Ripoti ufisadi kwa usalama",
+    "intro": "Mweleze afisa wa uadilifu wa kaunti kuhusu hongo, zabuni zilizopangwa, wafanyakazi hewa au wizi. Hutajulikana: unapata ufunguo wa siri badala ya akaunti, na wewe tu ndiye unaweza kuutumia kusoma majibu na kuongeza zaidi.",
+    "safety": "Jinsi unavyolindwa",
+    "safe": {
+      "a": "Hatuulizi jina lako, simu wala barua pepe, na hatuhifadhi anwani yako ya mtandao pamoja na ripoti yako.",
+      "b": "Ufunguo wako hauhifadhiwi kamwe. Ni alama yake iliyochanganywa tu, kwa hivyo hata wafanyakazi wa kaunti hawawezi kujua wewe ni nani.",
+      "c": "Tumia simu yako binafsi, si kompyuta ya kazini, na acha maelezo ambayo wewe tu ungejua ikiwa unaogopa kutambulika."
+    },
+    "new": "Tueleze kilichotokea",
+    "topic": "Inahusu nini?",
+    "ward": "Wadi gani",
+    "what": "Kilichotokea",
+    "whatHint": "Nani, nini, lini na wapi. Majina ya maafisa yanaruhusiwa. Usiweke jina lako wala nambari yako.",
+    "send": "Tuma kwa usalama",
+    "topics": {
+      "bribery": "Hongo au unyang'anyi",
+      "procurement": "Zabuni au mkataba uliopangwa",
+      "payroll": "Wafanyakazi hewa au ulaghai wa mishahara",
+      "theft": "Wizi wa pesa au mali ya kaunti",
+      "abuse_of_office": "Matumizi mabaya ya ofisi",
+      "other": "Kitu kingine"
+    },
+    "sent": "Imepokelewa. Nambari yako ni {reference}.",
+    "yourKey": "Ufunguo wako wa siri",
+    "keyWarning": "Andika ufunguo huu sasa. Unaonyeshwa mara moja tu na hauwezi kurejeshwa. Bila huo huwezi kusoma majibu.",
+    "keySaved": "Nimeandika ufunguo wangu mahali salama",
+    "done": "Nimemaliza",
+    "check": "Angalia majibu",
+    "checkIntro": "Weka ufunguo wako wa siri usome alichosema afisa wa uadilifu na uongeze taarifa zaidi.",
+    "open": "Fungua",
+    "noKey": "Hakuna ripoti inayolingana na ufunguo huo. Ukague ujaribu tena.",
+    "error": "Haikufanya kazi. Tafadhali jaribu tena.",
+    "reply": "Ongeza taarifa au jibu swali",
+    "sendReply": "Tuma",
+    "replied": "Imetumwa kwa afisa wa uadilifu.",
+    "closed": "Ripoti hii imefungwa.",
+    "you": "Wewe",
+    "desk": "Afisa wa uadilifu",
+    "referredTo": "Imepelekwa kwa {to}",
+    "status": {
+      "received": "Imepokelewa",
+      "reviewing": "Inakaguliwa",
+      "referred": "Imepelekwa",
+      "closed": "Imefungwa"
+    }
+  },
+  "champions": {
+    "title": "Mabingwa wa wadi",
+    "intro": "Wakazi wanaojitolea kufuatilia miradi ya kaunti katika wadi yao. Ukaguzi wao una majina na alama, na shaka yoyote inawafikia wafanyakazi wa kaunti mara moja.",
+    "what": "Bingwa hufanya nini",
+    "duty": {
+      "a": "Hutembelea miradi ya kaunti katika wadi yake na kusema kama inaonekana kama ilivyochapishwa.",
+      "b": "Huchapisha ukaguzi mfupi wa ukweli kwa jina lake la umma. Hakuna matusi wala uvumi.",
+      "c": "Husaidia majirani kuripoti matatizo na kufuatilia kesi zao.",
+      "d": "Huidhinishwa na msimamizi wa wadi na anaweza kusimamishwa akivunja kanuni."
+    },
+    "apply": "Kuwa bingwa",
+    "signIn": "Ingia ili kuomba",
+    "signInWhy": "Mabingwa huingia ili ukaguzi wao uwe na jina na alama yao.",
+    "ward": "Wadi yako",
+    "name": "Jina la kuonyesha hadharani",
+    "nameHint": "Kwa mfano: Wanjiru K.",
+    "why": "Kwa nini unataka kusaidia",
+    "send": "Omba",
+    "applied": "Ombi limetumwa. Msimamizi wa wadi atalikagua.",
+    "error": "Haikufanya kazi. Huenda tayari umeomba.",
+    "yourStatus": "Ombi lako:",
+    "status": {
+      "applied": "Linasubiri idhini",
+      "active": "Bingwa hai",
+      "paused": "Amesimamishwa",
+      "declined": "Halikuidhinishwa"
+    },
+    "list": "Mabingwa kwa wadi",
+    "none": "Bado hakuna mabingwa. Kuwa wa kwanza katika wadi yako.",
+    "checksTitle": "Ukaguzi wa mabingwa wa wadi",
+    "checksIntro": "Ukaguzi wenye majina wa wakazi waliothibitishwa wa wadi hii.",
+    "learn": "Bingwa wa wadi ni nani?",
+    "post": "Chapisha ukaguzi wangu",
+    "checkSent": "Ukaguzi wako umechapishwa.",
+    "checkError": "Haikufanya kazi. Ukaguzi mmoja kwa mradi kila wiki."
+  },
+  "flag": {
+    "label": "Ripoti",
+    "why": "Kwa nini?",
+    "thanks": "Asante. Msimamizi ataiangalia.",
+    "error": "Haikufanya kazi.",
+    "done": "Imeripotiwa",
+    "signIn": "Ingia ili kuripoti maudhui.",
+    "reasons": {
+      "abuse": "Matusi",
+      "personal_details": "Taarifa binafsi",
+      "false": "Si kweli",
+      "spam": "Taka",
+      "other": "Nyingine"
+    }
+  },
+  "concerns": {
+    "raise": "Toa wasiwasi",
+    "raiseTitle": "Toa wasiwasi kuhusu ununuzi",
+    "raiseIntro": "Kuna tatizo na zabuni hii? Kaunti lazima ijibu hadharani ndani ya siku 14. Isipojibu, au ikiukataa, unaweza kupeleka kwa mdhibiti wa ununuzi, tume ya kupambana na ufisadi au Mkaguzi Mkuu.",
+    "signIn": "Ingia ili kutoa wasiwasi",
+    "kind": "Kinachoonekana kibaya",
+    "body": "Eleza ulichoona",
+    "bodyHint": "Ukweli tu: tarehe, kiasi, majina ya kampuni. Jina lako halionyeshwi kamwe.",
+    "send": "Tuma wasiwasi",
+    "sent": "Wasiwasi {reference} umetumwa. Kaunti lazima ijibu ndani ya siku 14.",
+    "error": "Haikufanya kazi. Tafadhali jaribu tena.",
+    "kinds": {
+      "specs_tailored": "Masharti yanamfaa mzabuni mmoja",
+      "short_deadline": "Muda mfupi mno",
+      "single_bid": "Zabuni moja tu",
+      "price_inflated": "Bei ya juu mno",
+      "conflict_of_interest": "Mgongano wa maslahi",
+      "not_delivered": "Imelipwa lakini haikuwasilishwa",
+      "other": "Kitu kingine"
+    },
+    "title": "Wasiwasi wa ununuzi ulioletwa na wakazi",
+    "intro": "Wakazi huonyesha zabuni zinazoonekana kuwa na kasoro. Kaunti hujibu kila moja hadharani ndani ya siku 14.",
+    "score": "Wasiwasi {total} umeletwa, {fixed} ulisababisha marekebisho.",
+    "none": "Bado hakuna wasiwasi. Tumia \"Toa wasiwasi\" kwenye zabuni yoyote.",
+    "late": "Jibu limechelewa",
+    "answer": "Jibu la kaunti",
+    "due": "Jibu kufikia {date}",
+    "answeredOn": "Lilijibiwa {date}",
+    "youRaised": "Kama ndiwe uliyeuleta, peleka kwa:",
+    "escalated": "Umewekwa kama umepelekwa juu.",
+    "escalateError": "Ni aliyeleta wasiwasi tu anayeweza kuupeleka juu.",
+    "escalatedTo": "Umepelekwa kwa {to}",
+    "status": {
+      "submitted": "Linasubiri jibu",
+      "answered": "Limejibiwa",
+      "fixed": "Limerekebishwa",
+      "dismissed": "Limekataliwa",
+      "escalated": "Limepelekwa juu"
+    }
+  },
+  "counties": {
+    "title": "Jinsi kaunti 47 zinavyotumia",
+    "intro": "Matumizi ya maendeleo, mapato ya ndani na matokeo ya ukaguzi kwa kila kaunti, kutoka ripoti za Msimamizi wa Bajeti na ripoti za Mkaguzi Mkuu kuhusu kaunti. Kila safu ina kiungo cha chanzo chake.",
+    "demo": "Hizi ni takwimu za mfano zilizobuniwa, si matokeo halisi ya kaunti. Takwimu halisi zitaonekana zikiwekwa kutoka ripoti rasmi.",
+    "none": "Bado hakuna takwimu za kaunti zilizowekwa.",
+    "year": "Mwaka wa fedha",
+    "sort": "Panga kwa",
+    "sorts": {
+      "dev": "Pesa za maendeleo zilizotumika",
+      "osr": "Mapato ya ndani yaliyokusanywa",
+      "bills": "Madeni machache zaidi",
+      "name": "Jina la kaunti"
+    },
+    "average": "Wastani wa kaunti: {dev}% ya bajeti ya maendeleo imetumika, {osr}% ya lengo la mapato imekusanywa.",
+    "county": "Kaunti",
+    "dev": "Maendeleo yaliyotumika",
+    "osr": "Mapato yaliyokusanywa",
+    "bills": "Madeni yanayosubiri",
+    "audit": "Maoni ya ukaguzi",
+    "source": "Chanzo",
+    "opinion": {
+      "unqualified": "Safi",
+      "qualified": "Yenye kasoro",
+      "adverse": "Mbaya",
+      "disclaimer": "Haiwezi kuthibitishwa"
+    },
+    "devHelp": "Sehemu ya bajeti ya maendeleo (barabara, maji, zahanati) iliyotumika kweli mwakani. Chini ina maana miradi haikufanyika.",
+    "osrHelp": "Sehemu ya lengo la mapato ya ndani ya kaunti (ada za ardhi, vibali, maegesho) iliyokusanywa kweli.",
+    "auditHelp": "Uamuzi wa Mkaguzi Mkuu. Safi ni bora zaidi; mbaya au haiwezi kuthibitishwa ina maana hesabu hazikuaminika.",
+    "counted": "Kaunti {n} zimeonyeshwa."
+  },
+  "polls": {
+    "title": "Kura za haraka",
+    "intro": "Maswali mafupi kutoka kaunti. Jibu moja kwa kila mtu, na matokeo kwa kila wadi ili viongozi waone kila eneo linataka nini.",
+    "none": "Hakuna kura kwa sasa.",
+    "phase": {
+      "open": "Wazi",
+      "upcoming": "Inakuja",
+      "closed": "Imefungwa"
+    },
+    "opens": "Inafunguliwa {date}",
+    "closes": "Inafungwa {date}",
+    "closed": "Ilifungwa {date}",
+    "choose": "Chagua jibu moja",
+    "yours": "Jibu lako",
+    "ward": "Wadi yako (kwa matokeo ya wadi)",
+    "wardSkip": "Sipendi kusema",
+    "send": "Tuma jibu langu",
+    "thanks": "Asante, jibu lako limehesabiwa.",
+    "already": "Tayari umejibu kura hii.",
+    "error": "Jibu lako halikutumwa. Jaribu tena.",
+    "signInWhy": "Ingia ili kujibu. Hii inahakikisha jibu moja kwa kila mtu.",
+    "signIn": "Ingia ili kujibu",
+    "total_one": "Jibu {count} hadi sasa.",
+    "total_other": "Majibu {count} hadi sasa.",
+    "byWard": "Matokeo kwa wadi"
   }
 }
