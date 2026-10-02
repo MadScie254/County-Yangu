@@ -13,6 +13,7 @@ import { Skeleton } from '@/shared/ui/Card';
 import { Ring } from '@/shared/ui/Meter';
 import { cn } from '@/shared/lib/utils';
 import { countyTrust, sectorMoney, trustLeague, weekLabel } from '../lib/pulse';
+import { LiveFeed } from '../components/LiveFeed';
 
 const channelOrder = ['web', 'ussd', 'sms', 'ivr', 'voice'] as const;
 const channelColor = { web: 'var(--series-1)', ussd: 'var(--series-2)', sms: 'var(--series-3)', ivr: 'var(--series-4)', voice: 'var(--series-5)' };
@@ -75,7 +76,9 @@ export default function Pulse() {
         </div>
       </header>
 
-      <section aria-label={t('pulse.title')} className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-5">
+      <LiveFeed className="mt-8" limit={12} />
+
+      <section aria-label={t('pulse.title')} className="mt-8 grid grid-cols-1 gap-3 min-[400px]:grid-cols-2 md:grid-cols-3 xl:grid-cols-5">
         {loading ? [0, 1, 2, 3, 4].map((i) => <Skeleton key={i} className="h-28" />) : (
           <>
             <Tile label={t('pulse.filed')} value={compact(filed90 || summary.data?.reports_filed || 0)} trend={filedTrend} />

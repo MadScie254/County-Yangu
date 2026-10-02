@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { CheckCircle2, CircleDot, Clock, Flag, Landmark, Megaphone, MessageSquare, RotateCcw, ThumbsUp, TriangleAlert, ArrowRight } from 'lucide-react';
+import { CheckCircle2, CircleDot, Clock, Flag, Landmark, Megaphone, MessageSquare, RotateCcw, ThumbsUp, TriangleAlert, ArrowRight, PartyPopper } from 'lucide-react';
 import { useI18n, type MessageKey } from '@/shared/i18n';
 import { useCaseStatus } from '@/shared/api/hooks';
 import { referenceRegex } from '@/shared/lib/schemas';
@@ -15,6 +15,8 @@ import { CaseFeedback } from '../components/CaseFeedback';
 import { MeToo } from '../components/MeToo';
 import { ShareListen } from '@/shared/ui/ShareListen';
 import { BeforeAfter } from '../components/BeforeAfter';
+import { ShareCardButton } from '@/shared/ui/ShareCardButton';
+import { fixPhotoUrl } from '@/shared/api/civic2';
 
 const eventIcon: Record<string, typeof CircleDot> = { created: Megaphone, status: CheckCircle2, public_message: MessageSquare, reminder: Clock, escalated: Flag, feedback: ThumbsUp, reopened: RotateCcw };
 
@@ -83,6 +85,27 @@ export default function CaseDetail() {
         </dl>
         {sensitive && <p className="mt-4 flex items-center gap-2 rounded-xl bg-info-soft px-3 py-2 text-sm font-medium text-info"><Landmark className="size-4" aria-hidden /> {t('status.sensitive')}</p>}
       </div>
+
+      {(c.status === 'resolved' || c.status === 'closed') && (() => {
+        const days = Math.max(0, Math.floor((new Date(c.updated_at).getTime() - created) / 86_400_000));
+        const photos = c.fix_photos ?? [];
+        const after = [...photos].reverse().find((p) => p.kind === 'after');
+        const before = [...photos].reverse().find((p) => p.kind === 'before');
+        const took = days === 0 ? t('fixed.sameDay') : t('fixed.inDays', { count: days });
+        return (
+          <section className="mt-5 flex flex-wrap items-center gap-4 rounded-[1.75rem] bg-good-soft p-5" aria-labelledby="fixed-now">
+            <PartyPopper className="size-9 shrink-0 text-good" aria-hidden />
+            <div className="min-w-0 flex-1">
+              <h2 id="fixed-now" className="font-display text-2xl font-extrabold text-good">{t('fixed.headline')}</h2>
+              <p className="text-sm font-semibold">{took}</p>
+            </div>
+            <ShareCardButton variant="primary" path={`/case/${c.reference}`}
+              text={t('fixed.shareText', { category: categoryName, ward: c.ward, took: took.toLowerCase() })}
+              imageUrls={after ? (before ? [fixPhotoUrl(before.path), fixPhotoUrl(after.path)] : [fixPhotoUrl(after.path)]) : undefined}
+              card={{ kicker: c.ward, title: `${categoryName}: ${t('fixed.headline').toLowerCase()}`, stat: days === 0 ? t('fixed.sameDayShort') : t('fixed.daysShort', { count: days }), statLabel: t('fixed.statLabel'), tone: 'good', lines: [c.reference] }} />
+          </section>
+        );
+      })()}
 
       <ShareListen
         className="mt-5 flex flex-wrap gap-2"

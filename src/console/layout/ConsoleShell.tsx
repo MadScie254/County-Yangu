@@ -1,7 +1,7 @@
 import { ErrorBoundary } from '@/shared/ui/ErrorBoundary';
 import { useEffect, useState } from 'react';
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
-import { BellRing, Banknote, Building, Eye, FolderKanban, Gauge, Inbox, LogOut, Menu, MessageSquareText, Scale, Settings, Sparkles, Vote, X, ClipboardCheck, FileStack, Lightbulb, Timer, UserRound, Globe, CalendarDays, Siren, Handshake, FileQuestion, MessagesSquare, Lock, BadgeCheck, MessageSquareWarning, Landmark, BarChart3, Flag } from 'lucide-react';
+import { BellRing, Banknote, Building, Eye, FolderKanban, Gauge, Inbox, LogOut, Menu, MessageSquareText, Scale, Settings, Sparkles, Vote, X, ClipboardCheck, FileStack, Lightbulb, Timer, UserRound, Globe, CalendarDays, Siren, Handshake, FileQuestion, MessagesSquare, Lock, BadgeCheck, MessageSquareWarning, Landmark, BarChart3, Flag, MessageCircleQuestion } from 'lucide-react';
 import { useAuth } from '@/shared/state/auth';
 import { county } from '@/shared/config/county';
 import { LogoMark } from '@/shared/ui/Logo';
@@ -37,6 +37,7 @@ const groups: Group[] = [
   ] },
   { title: 'Money', items: [{ to: '/revenue', label: 'Revenue', icon: Banknote, show: (c) => c.finance }] },
   { title: 'Oversight', items: [
+    { to: '/questions', label: "Residents' questions", icon: MessageCircleQuestion, show: (c) => c.has('assembly_member', 'super_admin', 'admin') },
     { to: '/oversight', label: 'Overdue & digests', icon: Eye, show: (c) => c.oversight },
     { to: '/procurement', label: 'Procurement watch', icon: Scale, show: (c) => c.oversight },
     { to: '/concerns', label: 'Procurement concerns', icon: MessageSquareWarning, show: (c) => c.has('super_admin', 'admin', 'chief_officer') },

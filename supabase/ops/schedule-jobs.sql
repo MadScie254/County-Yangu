@@ -36,3 +36,4 @@ select cron.schedule('round-scheduler',      '45 5 * * *',  $$ select public.svc
 
 -- To see what ran:   select * from cron.job_run_details order by start_time desc limit 20;
 -- To stop one:       select cron.unschedule('ward-updates-daily');
+select cron.schedule('promise-deadlines',    '50 5 * * *',  $$ select public.svc_promise_deadlines() $$);                                -- daily 08:50 Nairobi: tell followers a promise is past due

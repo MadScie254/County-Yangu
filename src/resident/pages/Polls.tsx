@@ -16,6 +16,7 @@ import { Chip } from '@/shared/ui/Chip';
 import { SelectInput } from '@/shared/ui/Field';
 import { Skeleton } from '@/shared/ui/Card';
 import { toast } from '@/shared/ui/Toast';
+import { ShareCardButton } from '@/shared/ui/ShareCardButton';
 
 type Phase = 'open' | 'upcoming' | 'closed';
 const phaseOf = (p: Poll, now: number): Phase => (Date.parse(p.opens_at) > now ? 'upcoming' : Date.parse(p.closes_at) <= now ? 'closed' : 'open');
@@ -148,7 +149,15 @@ function PollCard({ poll, phase, chosen, onVoted }: { poll: Poll; phase: Phase; 
 
       {showResults && (
         <div className="mt-4 text-xs text-muted">
-          <p>{t('polls.total', { count: total })}</p>
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <p>{t('polls.total', { count: total })}</p>
+            {total > 0 && (() => {
+              const lead = [...poll.options].sort((a, b) => (byOption[b.id] ?? 0) - (byOption[a.id] ?? 0))[0]!;
+              const pct = Math.round((100 * (byOption[lead.id] ?? 0)) / total);
+              return <ShareCardButton path={`/polls#${poll.slug}`} text={sw && poll.question_sw ? poll.question_sw : poll.question}
+                card={{ kicker: t('polls.title'), title: sw && poll.question_sw ? poll.question_sw : poll.question, stat: `${pct}%`, statLabel: label(lead), tone: 'info', lines: [t('polls.total', { count: total })] }} />;
+            })()}
+          </div>
           {byWard.length > 0 && (
             <details className="mt-2">
               <summary className="cursor-pointer font-semibold text-ink">{t('polls.byWard')}</summary>

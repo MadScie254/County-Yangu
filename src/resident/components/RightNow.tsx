@@ -7,6 +7,7 @@ import { consultationOpen } from '@/shared/api/rights';
 import { Button } from '@/shared/ui/Button';
 import { TextInput } from '@/shared/ui/Field';
 import { BeforeAfter } from './BeforeAfter';
+import { LiveFeed } from './LiveFeed';
 
 /** What is happening in the county today, so the home page answers "what can I do right now" without a menu. */
 export function RightNow() {
@@ -57,6 +58,8 @@ export function RightNow() {
           </ul>
         ) : <p className="rounded-[1.5rem] border border-dashed border-line-strong p-6 text-sm text-muted">{t('home.now.quiet')}</p>}
       </div>
+
+      <LiveFeed className="mt-6" limit={6} />
 
       {fixed.length > 0 && (
         <div className="mt-10">

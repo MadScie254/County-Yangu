@@ -3,6 +3,7 @@ import { getChampionChecks, getChampionQueue, getChampions, getConcerns, getCoun
 import { getLegalDeadlines, getConsultationComments, getConsultations, getConsultationTally, getErasureQueue, getInfoRequest, getInfoRequests, getMyInfoRequests } from './rights';
 import { getCommitments, getNotices, getOpenCases, getProjectChecks, getMeetings, getAssembly, getBudgetResults, getFixStats, getOcds, getWardScorecard, listFollows, verifyDocument } from './loop';
 import { getProcurementWatch } from './procurement';
+import { getEvents, getLiveActivity, getMcaScoreboard, getMyQuestionVotes, getMyRsvps, getQuestions, getWardLeague } from './engage';
 import { dataSource, getActivity, getCategorySla, getCaseStatus, getCountySummary, getProjects, getProposals, getPulse, getTenders, getVoteData, getWardStats } from './public';
 
 const minute = 60_000;
@@ -56,3 +57,12 @@ export const useDisclosureInbox = () => useQuery({ queryKey: ['disclosures'], qu
 export const useMeetings = () => useQuery({ queryKey: ['meetings'], queryFn: getMeetings, staleTime: 5 * minute });
 export const useOpenCases = (ward: string | null, category: string | null) => useQuery({ queryKey: ['open-cases', ward, category], queryFn: () => getOpenCases(ward!, category), enabled: Boolean(ward), staleTime: minute });
 export const useProjectChecks = (slug: string | null) => useQuery({ queryKey: ['project-checks', slug], queryFn: () => getProjectChecks(slug!), enabled: Boolean(slug), staleTime: minute });
+
+// migration 0023
+export const useWardLeague = (days = 30) => useQuery({ queryKey: ['league', days], queryFn: () => getWardLeague(days), staleTime: 5 * minute });
+export const useLiveActivity = (limit = 30) => useQuery({ queryKey: ['live', limit], queryFn: () => getLiveActivity(limit), staleTime: 20_000, refetchInterval: 30_000 });
+export const useEvents = () => useQuery({ queryKey: ['events'], queryFn: getEvents, staleTime: minute });
+export const useMyRsvps = (enabled: boolean) => useQuery({ queryKey: ['my-rsvps'], queryFn: getMyRsvps, enabled, staleTime: minute });
+export const useQuestions = (wardId: string | null) => useQuery({ queryKey: ['questions', wardId], queryFn: () => getQuestions(wardId), staleTime: minute });
+export const useMyQuestionVotes = (enabled: boolean) => useQuery({ queryKey: ['my-question-votes'], queryFn: getMyQuestionVotes, enabled, staleTime: minute });
+export const useMcaScoreboard = () => useQuery({ queryKey: ['mca-scoreboard'], queryFn: getMcaScoreboard, staleTime: 5 * minute });

@@ -32,6 +32,7 @@ const Concerns = lazy(() => import('./pages/Concerns'));
 const CountyFinance = lazy(() => import('./pages/CountyFinance'));
 const Polls = lazy(() => import('./pages/Polls'));
 const Moderation = lazy(() => import('./pages/Moderation'));
+const Questions = lazy(() => import('./pages/Questions'));
 
 function Fallback() {
   return <div className="space-y-4"><Skeleton className="h-10 w-1/3" /><Skeleton className="h-56" /></div>;
@@ -84,6 +85,7 @@ function Console() {
             <Route path="concerns" element={<Allow when={(c) => c.has('super_admin', 'admin', 'chief_officer')}><Concerns /></Allow>} />
             <Route path="county-finance" element={<Allow when={(c) => c.admin}><CountyFinance /></Allow>} />
             <Route path="polls" element={<Allow when={(c) => c.publish}><Polls /></Allow>} />
+            <Route path="questions" element={<Allow when={(c) => c.has('assembly_member', 'super_admin', 'admin')}><Questions /></Allow>} />
             <Route path="moderation" element={<Allow when={(c) => c.admin}><Moderation /></Allow>} />
             <Route path="admin" element={<Allow when={(c) => c.admin}><Admin /></Allow>} />
             <Route path="*" element={<Navigate to="/" replace />} />

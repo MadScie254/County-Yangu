@@ -42,6 +42,11 @@ const SpeakUp = lazy(() => import('./pages/SpeakUp'));
 const Champions = lazy(() => import('./pages/Champions'));
 const Counties = lazy(() => import('./pages/Counties'));
 const Polls = lazy(() => import('./pages/Polls'));
+const League = lazy(() => import('./pages/League'));
+const Events = lazy(() => import('./pages/Events'));
+const Ask = lazy(() => import('./pages/Ask'));
+const Guess = lazy(() => import('./pages/Guess'));
+const Wrapped = lazy(() => import('./pages/Wrapped'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 function PageFallback() {
@@ -88,6 +93,11 @@ export function App() {
           <Route path="champions" element={<Champions />} />
           <Route path="counties" element={<Counties />} />
           <Route path="polls" element={<Polls />} />
+          <Route path="league" element={<League />} />
+          <Route path="events" element={<Events />} />
+          <Route path="ask" element={<Ask />} />
+          <Route path="guess" element={<Guess />} />
+          <Route path="wrapped" element={<Wrapped />} />
           <Route path="me" element={<RequireAuth><Dashboard /></RequireAuth>} />
           <Route path="how-it-works" element={<HowItWorks />} />
           <Route path="services" element={<Services />} />

@@ -3,7 +3,7 @@ import { NoticesStrip } from '../components/NoticesStrip';
 import { InstallPrompt } from '../components/InstallPrompt';
 import { useEffect, useState } from 'react';
 import { NavLink, Link, Outlet, useLocation } from 'react-router-dom';
-import { Activity, BadgeCheck, BellRing, Briefcase, CalendarDays, ChevronDown, CircleHelp, Database, FileText, Home, Landmark, Lightbulb, Megaphone, FolderKanban, Vote, Menu, Settings2, Smartphone, WifiOff, Building2, UserRound, Scale, SearchCheck, Trophy, Columns2, Siren, Handshake, FileQuestion, MessagesSquare, Wrench, Lock, BarChart3, UsersRound, Map as MapIcon, type LucideIcon } from 'lucide-react';
+import { Activity, BadgeCheck, BellRing, Briefcase, CalendarDays, ChevronDown, CircleHelp, Database, FileText, Home, Landmark, Lightbulb, Megaphone, FolderKanban, Vote, Menu, Settings2, Smartphone, WifiOff, Building2, UserRound, Scale, SearchCheck, Trophy, Columns2, Siren, Handshake, FileQuestion, MessagesSquare, Wrench, Lock, BarChart3, UsersRound, Map as MapIcon, MessageCircleQuestion, Leaf, Coins, Medal, Sparkles, type LucideIcon } from 'lucide-react';
 import { useI18n, locales, type MessageKey } from '@/shared/i18n';
 import { county } from '@/shared/config/county';
 import { Wordmark } from '@/shared/ui/Logo';
@@ -36,10 +36,14 @@ export const navGroups: NavGroup[] = [
     { to: '/have-your-say', key: 'nav.haveYourSay', icon: MessagesSquare },
     { to: '/ideas', key: 'nav.proposals', icon: Lightbulb },
     { to: '/meetings', key: 'nav.meetings', icon: CalendarDays },
+    { to: '/ask', key: 'nav.ask', icon: MessageCircleQuestion },
+    { to: '/events', key: 'nav.events', icon: Leaf },
     { to: '/champions', key: 'nav.champions', icon: UsersRound },
+    { to: '/guess', key: 'nav.guess', icon: Coins },
   ] },
   { key: 'nav.groups.money', items: [
     { to: '/open', key: 'nav.open', icon: Scale },
+    { to: '/league', key: 'nav.league', icon: Medal },
     { to: '/projects', key: 'nav.track', icon: FolderKanban },
     { to: '/tenders', key: 'nav.tenders', icon: FileText },
     { to: '/promises', key: 'nav.promises', icon: Handshake },
@@ -48,6 +52,7 @@ export const navGroups: NavGroup[] = [
     { to: '/counties', key: 'nav.counties', icon: MapIcon },
     { to: '/assembly', key: 'nav.assembly', icon: Landmark },
     { to: '/pulse', key: 'nav.pulse', icon: Activity },
+    { to: '/wrapped', key: 'nav.wrapped', icon: Sparkles },
   ] },
   { key: 'nav.groups.services', items: [
     { to: '/services', key: 'nav.services', icon: Briefcase },

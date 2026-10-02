@@ -354,5 +354,5 @@ export type PollOption = { id: string; label: string; label_sw?: string };
 export type Poll = { id: string; slug: string; question: string; question_sw: string | null; options: PollOption[]; ward_id: string | null; opens_at: string; closes_at: string };
 export type PollResults = { total: number; by_option: Record<string, number>; by_ward: { ward_id: string; option_id: string; n: number }[] };
 
-export type FlagKind = 'consultation_comment' | 'statement' | 'champion_check' | 'concern';
+export type FlagKind = 'consultation_comment' | 'statement' | 'champion_check' | 'concern' | 'mca_question';
 export type FlagReason = 'abuse' | 'personal_details' | 'false' | 'spam' | 'other';

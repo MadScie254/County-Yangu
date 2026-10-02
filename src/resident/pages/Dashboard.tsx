@@ -1,4 +1,5 @@
 import { MyDataPanel } from '../components/MyDataPanel';
+import { ImpactPanel } from '../components/ImpactPanel';
 import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useMutation, useQueries, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -180,6 +181,8 @@ export default function Dashboard() {
       </section>
 
       {/* ---------- Quick actions ---------- */}
+      <ImpactPanel />
+
       <section aria-labelledby="quick">
         <h2 id="quick" className="mb-3 font-display text-xl font-bold">{t('me.quick.title')}</h2>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">

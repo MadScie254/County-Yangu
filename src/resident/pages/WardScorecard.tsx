@@ -8,6 +8,7 @@ import { Button, ButtonLink } from '@/shared/ui/Button';
 import { FollowButton } from '@/shared/ui/FollowButton';
 import { Skeleton } from '@/shared/ui/Card';
 import { toast } from '@/shared/ui/Toast';
+import { ShareCardButton } from '@/shared/ui/ShareCardButton';
 
 export default function WardScorecard() {
   const { id = '' } = useParams();
@@ -58,6 +59,9 @@ export default function WardScorecard() {
         <a className="inline-flex h-9 items-center gap-2 rounded-full border border-line-strong bg-surface px-4 text-sm font-semibold hover:bg-bg-2" href={`https://wa.me/?text=${encodeURIComponent(text)}`} target="_blank" rel="noreferrer"><MessageCircle className="size-4" aria-hidden />{t('loop.scorecard.whatsapp')}</a>
         <a className="inline-flex h-9 items-center gap-2 rounded-full border border-line-strong bg-surface px-4 text-sm font-semibold hover:bg-bg-2" href={`mailto:?subject=${encodeURIComponent(t('loop.scorecard.emailSubject', { ward: s.ward }))}&body=${encodeURIComponent(t('loop.scorecard.emailBody', { ward: s.ward, url }))}`}><Mail className="size-4" aria-hidden />{t('loop.scorecard.email')}</a>
         <Button variant="secondary" size="sm" icon={<Printer className="size-4" aria-hidden />} onClick={() => window.print()}>{t('loop.scorecard.print')}</Button>
+        <ShareCardButton path={`/ward/${s.ward_id}`} text={t('scoreShare.text', { ward: s.ward })}
+          card={{ kicker: t('loop.scorecard.title'), title: s.ward, stat: number(s.cases.resolved_90d), statLabel: t('scoreShare.fixed'),
+            tone: s.cases.overdue > 0 ? 'warn' : 'good', lines: [t('scoreShare.line', { open: s.cases.open, overdue: s.cases.overdue })] }} />
         <FollowButton kind="ward_tenders" id={s.ward_id} label={s.ward} />
         <Link to={`/compare?a=${s.ward_id}`} className="inline-flex h-9 items-center rounded-full px-3 text-sm font-semibold text-brand hover:underline">{t('loop.compare.with')}</Link>
       </div>

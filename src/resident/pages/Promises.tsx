@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ExternalLink, History } from 'lucide-react';
+import { ExternalLink, History, Hourglass, Star } from 'lucide-react';
 import { useI18n, type MessageKey } from '@/shared/i18n';
 import { wards } from '@/shared/config/county';
 import { useCommitments, useIsDemo, useProjects } from '@/shared/api/hooks';
@@ -12,6 +12,7 @@ import { Chip, type Tone } from '@/shared/ui/Chip';
 import { SelectInput } from '@/shared/ui/Field';
 import { Skeleton } from '@/shared/ui/Card';
 import { FollowButton } from '@/shared/ui/FollowButton';
+import { ShareCardButton } from '@/shared/ui/ShareCardButton';
 
 const order: CommitmentStatus[] = ['delivered', 'in_progress', 'not_started', 'delayed', 'dropped'];
 export const promiseTone: Record<CommitmentStatus, Tone> = { delivered: 'good', in_progress: 'info', not_started: 'neutral', delayed: 'warn', dropped: 'bad' };
@@ -19,17 +20,20 @@ const barColor: Record<CommitmentStatus, string> = { delivered: 'bg-good', in_pr
 const wardName = new Map(wards.map((w) => [w.id, w.name]));
 const DAY = 86_400_000;
 
-function PromiseCard({ c, today, projectSlug }: { c: Commitment; today: string; projectSlug: string | null }) {
+function PromiseCard({ c, today, projectSlug, anchor = true }: { c: Commitment; today: string; projectSlug: string | null; anchor?: boolean }) {
   const { t, locale, date, number } = useI18n();
   const [open, setOpen] = useState(false);
   const title = locale === 'sw' && c.title_sw ? c.title_sw : c.title;
   const late = isOverdue(c, today);
   const lateDays = late && c.due_on ? Math.round((Date.parse(today) - Date.parse(c.due_on)) / DAY) : 0;
+  const left = !late && c.due_on && c.status !== 'delivered' && c.status !== 'dropped' ? Math.max(0, Math.round((Date.parse(c.due_on) - Date.parse(today)) / DAY)) : null;
+  const statusText = t(`loop.promises.status.${c.status}` as MessageKey);
   return (
-    <li id={c.slug} className="scroll-mt-24 rounded-[1.5rem] border border-line bg-surface p-5 shadow-card target:ring-2 target:ring-brand">
+    <li id={anchor ? c.slug : undefined} className="scroll-mt-24 rounded-[1.5rem] border border-line bg-surface p-5 shadow-card target:ring-2 target:ring-brand">
       <div className="flex flex-wrap items-center gap-2">
         <Chip tone={promiseTone[c.status]}>{t(`loop.promises.status.${c.status}` as MessageKey)}</Chip>
         {late && <Chip tone="bad">{t('loop.promises.overdueBy', { days: number(lateDays) })}</Chip>}
+        {left !== null && <Chip tone={left <= 30 ? 'warn' : 'info'}><Hourglass className="size-3" aria-hidden />{t('countdown.left', { count: left })}</Chip>}
         {c.sector && <Chip>{c.sector}</Chip>}
         {c.ward_id && <Chip>{wardName.get(c.ward_id) ?? c.ward_id}</Chip>}
       </div>
@@ -42,6 +46,9 @@ function PromiseCard({ c, today, projectSlug }: { c: Commitment; today: string; 
       {c.evidence && <p className="mt-3 rounded-xl bg-bg-2/70 p-3 text-sm"><b>{t('loop.promises.evidence')}.</b> {c.evidence}</p>}
       <div className="mt-4 flex flex-wrap items-center gap-2">
         <FollowButton kind="commitment" id={c.slug} label={c.title.slice(0, 160)} />
+        <ShareCardButton path={`/promises#${c.slug}`} text={`${title}: ${statusText}.`}
+          card={{ kicker: t('loop.promises.title'), title, stat: late ? t('countdown.lateShort', { count: lateDays }) : left !== null ? t('countdown.leftShort', { count: left }) : statusText,
+            statLabel: late || left !== null ? statusText : undefined, tone: c.status === 'delivered' ? 'good' : late || c.status === 'delayed' ? 'bad' : 'info', lines: [c.source] }} />
         {c.source_url && <a href={c.source_url} target="_blank" rel="noreferrer" className="inline-flex h-9 items-center gap-1.5 rounded-full px-3 text-sm font-semibold text-brand hover:underline"><ExternalLink className="size-4" aria-hidden />{t('loop.promises.readSource')}</a>}
         {projectSlug && <Link to={`/projects/${projectSlug}`} className="inline-flex h-9 items-center rounded-full px-3 text-sm font-semibold text-brand hover:underline">{t('loop.promises.project')}</Link>}
         {c.updates.length > 1 && (
@@ -79,6 +86,13 @@ export default function Promises() {
   const overdue = all.filter((c) => isOverdue(c, today)).length;
   const sectors = useMemo(() => [...new Set(all.map((c) => c.sector).filter(Boolean) as string[])].sort(), [all]);
   const list = all.filter((c) => (!sector || c.sector === sector) && (!status || (status === 'overdue' ? isOverdue(c, today) : c.status === status)));
+  // Promise of the week: the same for everyone all week, rotating through promises that are not yet delivered.
+  const week = useMemo(() => {
+    const open = all.filter((c) => c.status !== 'delivered' && c.status !== 'dropped').sort((a, b) => a.slug.localeCompare(b.slug));
+    if (!open.length) return null;
+    const n = Math.floor(Date.parse(today) / (7 * DAY));
+    return open[n % open.length]!;
+  }, [all, today]);
   const slugOf = useMemo(() => new Map((projects.data ?? []).map((p) => [p.id, p.slug])), [projects.data]);
 
   // Arriving from a notification (/promises#slug): scroll to that promise once the list is on screen.
@@ -114,6 +128,14 @@ export default function Promises() {
             {tile('delayed', t('loop.promises.status.delayed'), counts.delayed, 'text-warn')}
             {tile('overdue', t('loop.promises.overdue'), overdue, overdue ? 'text-bad' : undefined)}
           </div>
+
+          {week && (
+            <section className="mt-8 rounded-[1.75rem] bg-brand-soft p-5 sm:p-6" aria-labelledby="potw">
+              <h2 id="potw" className="inline-flex items-center gap-2 font-display text-xl font-bold"><Star className="size-5" aria-hidden />{t('countdown.week')}</h2>
+              <p className="mt-1 text-sm text-ink-2">{t('countdown.weekHint')}</p>
+              <ul className="mt-3"><PromiseCard anchor={false} c={week} today={today} projectSlug={week.project_id ? slugOf.get(week.project_id) ?? null : null} /></ul>
+            </section>
+          )}
 
           {sectors.length > 1 && (
             <label className="mt-6 block max-w-xs text-sm font-semibold">
