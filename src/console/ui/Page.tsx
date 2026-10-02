@@ -46,7 +46,7 @@ export const td = 'px-4 py-3 align-top';
 
 export function Table({ head, children, className }: { head: string[]; children: ReactNode; className?: string }) {
   return (
-    <div className={cn('overflow-x-auto', className)}>
+    <div className={cn('relative overflow-x-auto', className)}>
       <table className="w-full min-w-[40rem] text-sm">
         <thead className="border-b border-line bg-bg-2/60"><tr>{head.map((h) => <th key={h} scope="col" className={th}>{h}</th>)}</tr></thead>
         <tbody className="divide-y divide-line">{children}</tbody>

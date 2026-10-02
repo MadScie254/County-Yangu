@@ -52,7 +52,7 @@ export default function Counties() {
             <label className="text-sm font-semibold">{t('counties.sort')}<SelectInput className="mt-1.5" value={sort} onChange={(e) => setSort(e.target.value as Sort)}>{(['dev', 'osr', 'bills', 'name'] as Sort[]).map((s) => <option key={s} value={s}>{t(`counties.sorts.${s}` as MessageKey)}</option>)}</SelectInput></label>
             <p className="text-sm text-muted">{t('counties.average', { dev: avg('dev') ?? '-', osr: avg('osr') ?? '-' })}</p>
           </div>
-          <div className="mt-4 overflow-x-auto rounded-2xl border border-line bg-surface">
+          <div className="relative mt-4 overflow-x-auto rounded-2xl border border-line bg-surface">
             <table className="w-full min-w-[46rem] text-sm">
               <thead><tr className="border-b border-line bg-bg-2/60 text-left text-xs uppercase tracking-[0.06em] text-muted">
                 <th scope="col" className="px-3 py-2.5">#</th><th scope="col" className="px-3 py-2.5">{t('counties.county')}</th>

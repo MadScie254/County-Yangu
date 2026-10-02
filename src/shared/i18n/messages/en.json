@@ -63,16 +63,24 @@
     "checkReport": "Track a report",
     "explore": "Explore",
     "groups": {
-      "money": "Money and accountability",
+      "money": "Follow the money",
       "take": "Take part",
       "check": "Check and track",
-      "help": "Help"
+      "help": "Help",
+      "report": "Report",
+      "services": "Services"
     },
     "compare": "Compare wards",
     "notices": "Service notices",
     "promises": "Promise tracker",
     "information": "Ask for information",
-    "haveYourSay": "Have your say"
+    "haveYourSay": "Have your say",
+    "reportProblem": "Report a problem",
+    "fixed": "Fixed, with photos",
+    "speakUp": "Speak up safely",
+    "polls": "Quick polls",
+    "champions": "Ward champions",
+    "counties": "All 47 counties"
   },
   "a11y": {
     "settings": "Display settings",
@@ -135,7 +143,20 @@
       "fix": "It gets fixed, or climbs",
       "see": "You see the result"
     },
-    "recent": "Happening now"
+    "recent": "Happening now",
+    "now": {
+      "title": "Right now in the county",
+      "track": "Track a report",
+      "trackHint": "Type the reference you got by SMS or on screen.",
+      "go": "Track",
+      "notices_one": "{count} service notice",
+      "notices_other": "{count} service notices",
+      "poll": "Quick poll, open now",
+      "consultation": "Have your say until {date}",
+      "meeting": "Public meeting, {date}",
+      "quiet": "Nothing urgent right now. No service cuts, open polls or meetings this week.",
+      "fixed": "Recently fixed, with photos"
+    }
   },
   "map": {
     "attribution": "© OpenStreetMap contributors",

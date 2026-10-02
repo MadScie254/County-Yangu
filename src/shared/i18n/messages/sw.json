@@ -63,16 +63,24 @@
     "checkReport": "Fuatilia ripoti",
     "explore": "Gundua",
     "groups": {
-      "money": "Fedha na uwajibikaji",
+      "money": "Fuata pesa",
       "take": "Shiriki",
       "check": "Hakiki na fuatilia",
-      "help": "Msaada"
+      "help": "Msaada",
+      "report": "Ripoti",
+      "services": "Huduma"
     },
     "compare": "Linganisha wadi",
     "notices": "Taarifa za huduma",
     "promises": "Ahadi za kaunti",
     "information": "Omba taarifa",
-    "haveYourSay": "Toa maoni yako"
+    "haveYourSay": "Toa maoni yako",
+    "reportProblem": "Ripoti tatizo",
+    "fixed": "Yaliyorekebishwa, na picha",
+    "speakUp": "Sema kwa usalama",
+    "polls": "Kura za haraka",
+    "champions": "Mabingwa wa wadi",
+    "counties": "Kaunti zote 47"
   },
   "a11y": {
     "settings": "Mipangilio ya kuonyesha",
@@ -135,7 +143,20 @@
       "fix": "Inatatuliwa, au inapanda ngazi",
       "see": "Unaona matokeo"
     },
-    "recent": "Yanayotokea sasa"
+    "recent": "Yanayotokea sasa",
+    "now": {
+      "title": "Sasa hivi kaunti",
+      "track": "Fuatilia ripoti",
+      "trackHint": "Andika namba ya kumbukumbu uliyopata kwa SMS au kwenye skrini.",
+      "go": "Fuatilia",
+      "notices_one": "Tangazo {count} la huduma",
+      "notices_other": "Matangazo {count} ya huduma",
+      "poll": "Kura ya haraka, iko wazi",
+      "consultation": "Toa maoni hadi {date}",
+      "meeting": "Mkutano wa umma, {date}",
+      "quiet": "Hakuna jambo la dharura sasa hivi. Hakuna kukatika kwa huduma, kura wazi wala mikutano wiki hii.",
+      "fixed": "Yaliyorekebishwa hivi karibuni, na picha"
+    }
   },
   "map": {
     "attribution": "© Wachangiaji wa OpenStreetMap",

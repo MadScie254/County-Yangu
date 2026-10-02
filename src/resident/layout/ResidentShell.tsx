@@ -3,7 +3,7 @@ import { NoticesStrip } from '../components/NoticesStrip';
 import { InstallPrompt } from '../components/InstallPrompt';
 import { useEffect, useState } from 'react';
 import { NavLink, Link, Outlet, useLocation } from 'react-router-dom';
-import { Activity, BadgeCheck, BellRing, Briefcase, CalendarDays, ChevronDown, CircleHelp, Database, FileText, Home, Landmark, Lightbulb, Megaphone, FolderKanban, Vote, Menu, Settings2, Smartphone, WifiOff, Building2, ShieldCheck, UserRound, Scale, SearchCheck, Trophy, Columns2, Siren, Handshake, FileQuestion, MessagesSquare, type LucideIcon } from 'lucide-react';
+import { Activity, BadgeCheck, BellRing, Briefcase, CalendarDays, ChevronDown, CircleHelp, Database, FileText, Home, Landmark, Lightbulb, Megaphone, FolderKanban, Vote, Menu, Settings2, Smartphone, WifiOff, Building2, UserRound, Scale, SearchCheck, Trophy, Columns2, Siren, Handshake, FileQuestion, MessagesSquare, Wrench, Lock, BarChart3, UsersRound, Map as MapIcon, type LucideIcon } from 'lucide-react';
 import { useI18n, locales, type MessageKey } from '@/shared/i18n';
 import { county } from '@/shared/config/county';
 import { Wordmark } from '@/shared/ui/Logo';
@@ -16,49 +16,53 @@ import { useAuth } from '@/shared/state/auth';
 import { cn } from '@/shared/lib/utils';
 import { DisplaySettings } from './DisplaySettings';
 
-const primaryNav: { to: string; key: MessageKey; end?: boolean }[] = [
-  { to: '/report', key: 'nav.report' },
-  { to: '/projects', key: 'nav.track' },
-  { to: '/vote', key: 'nav.vote' },
-  { to: '/open', key: 'nav.open' },
-  { to: '/services', key: 'nav.services' },
-];
-
-type NavGroup = { key: MessageKey; items: { to: string; key: MessageKey; icon: LucideIcon }[] };
-/** Every public page, grouped the same way in the Explore menu, the phone menu and the footer. */
-const navGroups: NavGroup[] = [
-  { key: 'nav.groups.money', items: [
-    { to: '/open', key: 'nav.open', icon: Scale },
-    { to: '/tenders', key: 'nav.tenders', icon: FileText },
-    { to: '/vote/results', key: 'nav.results', icon: Trophy },
-    { to: '/assembly', key: 'nav.assembly', icon: Landmark },
-    { to: '/pulse', key: 'nav.pulse', icon: Activity },
-    { to: '/compare', key: 'nav.compare', icon: Columns2 },
-    { to: '/promises', key: 'nav.promises', icon: Handshake },
-    { to: '/information', key: 'nav.information', icon: FileQuestion },
-    { to: '/open/api', key: 'nav.data', icon: Database },
+type NavItem = { to: string; key: MessageKey; icon: LucideIcon };
+type NavGroup = { key: MessageKey; items: NavItem[] };
+/**
+ * Every public page in four groups. The same groups drive the top bar dropdowns and the phone menu;
+ * the footer stays short on purpose. Add new pages here.
+ */
+export const navGroups: NavGroup[] = [
+  { key: 'nav.groups.report', items: [
+    { to: '/report', key: 'nav.reportProblem', icon: Megaphone },
+    { to: '/case', key: 'nav.checkReport', icon: SearchCheck },
+    { to: '/fixed', key: 'nav.fixed', icon: Wrench },
+    { to: '/notices', key: 'nav.notices', icon: Siren },
+    { to: '/speak-up', key: 'nav.speakUp', icon: Lock },
   ] },
   { key: 'nav.groups.take', items: [
-    { to: '/report', key: 'nav.report', icon: Megaphone },
     { to: '/vote', key: 'nav.vote', icon: Vote },
+    { to: '/polls', key: 'nav.polls', icon: BarChart3 },
     { to: '/have-your-say', key: 'nav.haveYourSay', icon: MessagesSquare },
-    { to: '/meetings', key: 'nav.meetings', icon: CalendarDays },
     { to: '/ideas', key: 'nav.proposals', icon: Lightbulb },
-    { to: '/alerts', key: 'nav.alerts', icon: BellRing },
+    { to: '/meetings', key: 'nav.meetings', icon: CalendarDays },
+    { to: '/champions', key: 'nav.champions', icon: UsersRound },
   ] },
-  { key: 'nav.groups.check', items: [
-    { to: '/notices', key: 'nav.notices', icon: Siren },
-    { to: '/case', key: 'nav.checkReport', icon: SearchCheck },
-    { to: '/verify', key: 'nav.verify', icon: BadgeCheck },
+  { key: 'nav.groups.money', items: [
+    { to: '/open', key: 'nav.open', icon: Scale },
     { to: '/projects', key: 'nav.track', icon: FolderKanban },
-    { to: '/services', key: 'nav.services', icon: Briefcase },
+    { to: '/tenders', key: 'nav.tenders', icon: FileText },
+    { to: '/promises', key: 'nav.promises', icon: Handshake },
+    { to: '/vote/results', key: 'nav.results', icon: Trophy },
+    { to: '/compare', key: 'nav.compare', icon: Columns2 },
+    { to: '/counties', key: 'nav.counties', icon: MapIcon },
+    { to: '/assembly', key: 'nav.assembly', icon: Landmark },
+    { to: '/pulse', key: 'nav.pulse', icon: Activity },
   ] },
-  { key: 'nav.groups.help', items: [
+  { key: 'nav.groups.services', items: [
+    { to: '/services', key: 'nav.services', icon: Briefcase },
+    { to: '/verify', key: 'nav.verify', icon: BadgeCheck },
+    { to: '/information', key: 'nav.information', icon: FileQuestion },
+    { to: '/alerts', key: 'nav.alerts', icon: BellRing },
+    { to: '/open/api', key: 'nav.data', icon: Database },
     { to: '/how-it-works', key: 'nav.how', icon: CircleHelp },
   ] },
 ];
 
-function ExploreMenu() {
+const inGroup = (g: NavGroup, pathname: string) => g.items.some((n) => (n.to === '/vote' ? pathname === '/vote' : pathname === n.to || pathname.startsWith(`${n.to}/`)));
+
+/** One top bar dropdown. Closes on Escape, on a click outside and when the page changes. */
+function NavMenu({ group }: { group: NavGroup }) {
   const { t } = useI18n();
   const [open, setOpen] = useState(false);
   const { pathname } = useLocation();
@@ -70,33 +74,25 @@ function ExploreMenu() {
     window.addEventListener('keydown', esc);
     return () => window.removeEventListener('keydown', esc);
   }, [open]);
+  const here = inGroup(group, pathname);
   return (
     <div className="relative">
       <button type="button" aria-expanded={open} aria-haspopup="true" onClick={() => setOpen((v) => !v)}
-        className={cn('inline-flex items-center gap-1 rounded-full px-3.5 py-2 text-[0.92rem] font-semibold transition', open ? 'bg-bg-2 text-ink' : 'text-ink-2 hover:bg-bg-2 hover:text-ink')}>
-        {t('nav.explore')} <ChevronDown className={cn('size-4 transition', open && 'rotate-180')} aria-hidden />
+        className={cn('inline-flex items-center gap-1 rounded-full px-3 py-2 text-[0.92rem] font-semibold transition', open || here ? 'bg-bg-2 text-ink' : 'text-ink-2 hover:bg-bg-2 hover:text-ink')}>
+        {t(group.key)} <ChevronDown className={cn('size-4 transition', open && 'rotate-180')} aria-hidden />
       </button>
       {open && (
         <>
-          <button type="button" aria-label={t('common.close')} className="fixed inset-0 z-40 cursor-default" onClick={() => setOpen(false)} />
-          <div className="absolute left-1/2 top-full z-50 mt-2 w-[min(58rem,calc(100vw-2rem))] -translate-x-1/2 rounded-[1.5rem] border border-line bg-surface p-5 shadow-pop">
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-              {navGroups.map((g) => (
-                <div key={g.key}>
-                  <p className="px-2 text-xs font-bold uppercase tracking-[0.12em] text-muted">{t(g.key)}</p>
-                  <ul className="mt-2 space-y-0.5">
-                    {g.items.map((n) => (
-                      <li key={n.to + n.key}>
-                        <NavLink to={n.to} end className={({ isActive }) => cn('flex items-center gap-2.5 rounded-xl px-2 py-2 text-sm font-semibold', isActive ? 'bg-bg-2' : 'hover:bg-bg-2')}>
-                          <n.icon className="size-4 shrink-0 text-ink-2" aria-hidden /> {t(n.key)}
-                        </NavLink>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-          </div>
+          <button type="button" aria-label={t('common.close')} tabIndex={-1} className="fixed inset-0 z-40 cursor-default" onClick={() => setOpen(false)} />
+          <ul className="absolute left-0 top-full z-50 mt-2 w-64 space-y-0.5 rounded-[1.25rem] border border-line bg-surface p-2 shadow-pop">
+            {group.items.map((n) => (
+              <li key={n.to}>
+                <NavLink to={n.to} end className={({ isActive }) => cn('flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-semibold', isActive ? 'bg-bg-2' : 'hover:bg-bg-2')}>
+                  <n.icon className="size-4 shrink-0 text-ink-2" aria-hidden /> {t(n.key)}
+                </NavLink>
+              </li>
+            ))}
+          </ul>
         </>
       )}
     </div>
@@ -212,13 +208,9 @@ export function ResidentShell() {
             <Wordmark sub={county.name} className="[&_.sub]:hidden sm:[&_.sub]:block" />
           </Link>
 
-          <nav aria-label={t('nav.main')} className="hidden items-center gap-1 lg:flex">
-            {primaryNav.map((n) => (
-              <NavLink key={n.to} to={n.to} className={({ isActive }) => cn('rounded-full px-3.5 py-2 text-[0.92rem] font-semibold transition', isActive ? 'bg-ink text-bg' : 'text-ink-2 hover:bg-bg-2 hover:text-ink')}>
-                {t(n.key)}
-              </NavLink>
-            ))}
-            <ExploreMenu />
+          <nav aria-label={t('nav.main')} className="hidden items-center gap-0.5 lg:flex">
+            {navGroups.map((g) => <NavMenu key={g.key} group={g} />)}
+            <Link to="/report" className={cn(buttonClass('primary', 'sm'), 'ml-2')}><Megaphone className="size-4" aria-hidden />{t('nav.report')}</Link>
           </nav>
 
           <div className="flex items-center gap-1.5">
@@ -252,20 +244,22 @@ export function ResidentShell() {
 
         {more && (
           <nav aria-label={t('nav.more')} className="border-t border-line bg-surface lg:hidden">
-            <div className="mx-auto max-w-7xl space-y-4 p-3">
+            <div className="mx-auto max-h-[calc(100dvh-4rem)] max-w-7xl space-y-2 overflow-y-auto p-3">
               {navGroups.map((g) => (
-                <div key={g.key}>
-                  <p className="px-3 text-xs font-bold uppercase tracking-[0.12em] text-muted">{t(g.key)}</p>
-                  <ul className="mt-1 grid grid-cols-2 gap-1 sm:grid-cols-3">
+                <details key={g.key} open={inGroup(g, pathname)} className="group rounded-2xl border border-line">
+                  <summary className="flex h-12 cursor-pointer list-none items-center justify-between px-4 font-bold [&::-webkit-details-marker]:hidden">
+                    {t(g.key)} <ChevronDown className="size-4 transition group-open:rotate-180" aria-hidden />
+                  </summary>
+                  <ul className="grid grid-cols-1 gap-1 px-2 pb-2 sm:grid-cols-2">
                     {g.items.map((n) => (
-                      <li key={n.to + n.key}>
-                        <NavLink to={n.to} end className={({ isActive }) => cn('flex h-12 items-center gap-2 rounded-xl px-3 font-semibold', isActive ? 'bg-bg-2' : 'hover:bg-bg-2')}>
+                      <li key={n.to}>
+                        <NavLink to={n.to} end className={({ isActive }) => cn('flex h-11 items-center gap-2 rounded-xl px-3 font-semibold', isActive ? 'bg-bg-2' : 'hover:bg-bg-2')}>
                           <n.icon className="size-4 shrink-0 text-ink-2" aria-hidden /> {t(n.key)}
                         </NavLink>
                       </li>
                     ))}
                   </ul>
-                </div>
+                </details>
               ))}
               <ul className="grid grid-cols-2 gap-1 border-t border-line pt-3 sm:grid-cols-3">
                 <li>
@@ -300,44 +294,21 @@ export function ResidentShell() {
       </main>
 
       <footer className={cn('border-t border-line bg-bg-2', isHome ? '' : 'mt-8')}>
-        <div className="mx-auto grid max-w-7xl gap-8 px-4 py-10 sm:px-6 md:grid-cols-[1.1fr_2fr_0.8fr]">
-          <div>
+        <div className="mx-auto flex max-w-7xl flex-wrap items-start justify-between gap-6 px-4 py-8 sm:px-6">
+          <div className="max-w-md">
             <Wordmark sub={county.name} />
-            <p className="mt-4 max-w-sm text-sm text-ink-2">{t('footer.about', { county: county.name })}</p>
-            <p className="mt-4 inline-flex items-center gap-2 rounded-full bg-surface px-3.5 py-2 text-sm font-semibold shadow-card">
+            <p className="mt-3 text-sm text-ink-2">{t('footer.about', { county: county.name })}</p>
+            <p className="mt-3 inline-flex items-center gap-2 rounded-full bg-surface px-3.5 py-2 text-sm font-semibold shadow-card">
               <Smartphone className="size-4 text-brand-strong" aria-hidden /> {t('footer.dial', { code: county.ussdCode })}
             </p>
           </div>
-          <div className="grid grid-cols-2 gap-6 text-sm font-medium sm:grid-cols-3">
-            {navGroups.slice(0, 3).map((g) => (
-              <div key={g.key}>
-                <p className="text-xs font-bold uppercase tracking-[0.12em] text-muted">{t(g.key)}</p>
-                <ul className="mt-2 space-y-2">
-                  {g.items.map((n) => (
-                    <li key={n.to + n.key}><Link to={n.to} className="text-ink-2 hover:text-ink hover:underline">{t(n.key)}</Link></li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-          <ul className="space-y-2 text-sm font-medium">
-            <li>
-              <Link to="/how-it-works" className="inline-flex items-center gap-2 text-ink-2 hover:text-ink hover:underline"><CircleHelp className="size-4" aria-hidden /> {t('nav.how')}</Link>
-            </li>
-            <li>
-              <a href="/#roadmap" className="inline-flex items-center gap-2 text-ink-2 hover:text-ink hover:underline"><Scale className="size-4" aria-hidden /> {t('nav.roadmap')}</a>
-            </li>
-            <li>
-              <Link to="/how-it-works#privacy" className="inline-flex items-center gap-2 text-ink-2 hover:text-ink hover:underline">
-                <ShieldCheck className="size-4" aria-hidden /> {t('footer.privacy')}
-              </Link>
-            </li>
-            <li>
-              {/* The staff door lives at its own path (and can be moved to its own hostname). */}
-              <a href="/console/" className="inline-flex items-center gap-2 text-ink-2 hover:text-ink hover:underline">
-                <Building2 className="size-4" aria-hidden /> {t('footer.staff')}
-              </a>
-            </li>
+          <ul className="flex flex-wrap gap-x-5 gap-y-2 text-sm font-medium">
+            <li><Link to="/how-it-works" className="text-ink-2 hover:text-ink hover:underline">{t('nav.how')}</Link></li>
+            <li><Link to="/how-it-works#privacy" className="text-ink-2 hover:text-ink hover:underline">{t('footer.privacy')}</Link></li>
+            <li><Link to="/open/api" className="text-ink-2 hover:text-ink hover:underline">{t('nav.data')}</Link></li>
+            <li><Link to="/speak-up" className="text-ink-2 hover:text-ink hover:underline">{t('nav.speakUp')}</Link></li>
+            {/* The staff door lives at its own path (and can be moved to its own hostname). */}
+            <li><a href="/console/" className="inline-flex items-center gap-1.5 text-ink-2 hover:text-ink hover:underline"><Building2 className="size-4" aria-hidden /> {t('footer.staff')}</a></li>
           </ul>
         </div>
         <div className="border-t border-line py-4 text-center text-xs text-muted">{t('footer.rights')} · © {new Date().getFullYear()} {county.name} County</div>

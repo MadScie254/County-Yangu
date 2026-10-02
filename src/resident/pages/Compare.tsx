@@ -67,7 +67,7 @@ export default function Compare() {
       </div>
 
       {loading ? <Skeleton className="mt-8 h-80" /> : sa && sb ? (
-        <div className="mt-8 overflow-x-auto rounded-2xl border border-line bg-surface">
+        <div className="relative mt-8 overflow-x-auto rounded-2xl border border-line bg-surface">
           <table className="w-full min-w-[28rem] text-sm">
             <thead>
               <tr className="border-b border-line bg-bg-2/60 text-left">

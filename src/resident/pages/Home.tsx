@@ -21,6 +21,7 @@ import { toast } from '@/shared/ui/Toast';
 import { useMediaQuery, usePageTitle } from '@/shared/lib/hooks';
 import { WardSearch } from '../components/WardSearch';
 import { WardCard } from '../components/WardCard';
+import { RightNow } from '../components/RightNow';
 import { Audiences, Faq, Features, FinalCta, Glance, MoneyTeaser, Promises, Reach, Roadmap } from '../components/Landing';
 
 function Kpis({ className }: { className?: string }) {
@@ -156,6 +157,7 @@ export default function Home() {
         </div>
       </section>
 
+      <RightNow />
       <Glance />
       <Features />
       <Audiences />
