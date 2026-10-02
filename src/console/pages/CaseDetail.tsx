@@ -17,6 +17,7 @@ import { nameMaps, useCategories, useDepartments, useDirectory } from '../api/ho
 import { ackState, isOpen, levelLabel, priorityTone, sla, statusLabel, statusTone } from '../lib/cases';
 import { useCan } from '../lib/perm';
 import { Panel } from '../ui/Page';
+import { FixPhotos } from '../ui/FixPhotos';
 import type { CaseStatus } from '../api/types';
 
 const nextActions: { status: Exclude<CaseStatus, 'received'>; label: string; variant: 'primary' | 'secondary' | 'danger' }[] = [
@@ -96,6 +97,8 @@ export default function CaseDetail() {
             {q.data!.photos.length > 0 && <ul className="mt-4 grid grid-cols-3 gap-2">{q.data!.photos.map((u) => <li key={u}><a href={u} target="_blank" rel="noreferrer"><img src={u} alt="Photo attached to the report" loading="lazy" className="aspect-square w-full rounded-xl object-cover" /></a></li>)}</ul>}
             {c.lat != null && c.lng != null && <a className="mt-4 inline-block text-sm font-semibold underline underline-offset-4" target="_blank" rel="noreferrer" href={`https://www.openstreetmap.org/?mlat=${c.lat}&mlon=${c.lng}#map=17/${c.lat}/${c.lng}`}>Open the location on the map</a>}
           </Panel>
+
+          <FixPhotos reportId={c.id} canUpload={can.working && open} needsAfter={open && !['missing_funds', 'other'].includes(c.category_id ?? '')} />
 
           <Panel title="Timeline">
             <ol className="space-y-5 border-l-2 border-line pl-5">

@@ -26,6 +26,12 @@ const Revenue = lazy(() => import('./pages/Revenue'));
 const Assistant = lazy(() => import('./pages/Assistant'));
 const Procurement = lazy(() => import('./pages/Procurement'));
 const AcceptInvite = lazy(() => import('./pages/AcceptInvite'));
+const Disclosures = lazy(() => import('./pages/Disclosures'));
+const Champions = lazy(() => import('./pages/Champions'));
+const Concerns = lazy(() => import('./pages/Concerns'));
+const CountyFinance = lazy(() => import('./pages/CountyFinance'));
+const Polls = lazy(() => import('./pages/Polls'));
+const Moderation = lazy(() => import('./pages/Moderation'));
 
 function Fallback() {
   return <div className="space-y-4"><Skeleton className="h-10 w-1/3" /><Skeleton className="h-56" /></div>;
@@ -73,6 +79,12 @@ function Console() {
             <Route path="ideas" element={<Allow when={(c) => c.working}><Ideas /></Allow>} />
             <Route path="revenue" element={<Allow when={(c) => c.finance}><Revenue /></Allow>} />
             <Route path="assistant" element={<Allow when={(c) => c.working}><Assistant /></Allow>} />
+            <Route path="disclosures" element={<Allow when={(c) => c.has('super_admin', 'admin', 'auditor')}><Disclosures /></Allow>} />
+            <Route path="champions" element={<Allow when={(c) => c.publish}><Champions /></Allow>} />
+            <Route path="concerns" element={<Allow when={(c) => c.has('super_admin', 'admin', 'chief_officer')}><Concerns /></Allow>} />
+            <Route path="county-finance" element={<Allow when={(c) => c.admin}><CountyFinance /></Allow>} />
+            <Route path="polls" element={<Allow when={(c) => c.publish}><Polls /></Allow>} />
+            <Route path="moderation" element={<Allow when={(c) => c.admin}><Moderation /></Allow>} />
             <Route path="admin" element={<Allow when={(c) => c.admin}><Admin /></Allow>} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Route>

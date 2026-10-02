@@ -310,3 +310,9 @@ export async function uploadFixPhoto(reportId: string, kind: 'before' | 'after',
   const { error } = await supabase!.from('fix_photos').insert({ report_id: reportId, kind, path, caption });
   if (error) throw error;
 }
+
+export type FixPhoto = { id: string; kind: 'before' | 'after'; path: string; caption: string | null; created_at: string };
+export async function getFixPhotos(reportId: string): Promise<FixPhoto[]> {
+  if (await isDemo()) return [];
+  return must(await supabase!.from('fix_photos').select('id, kind, path, caption, created_at').eq('report_id', reportId).order('created_at')) as FixPhoto[];
+}
