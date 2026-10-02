@@ -1,10 +1,11 @@
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Bell, FileText, Search, ShieldCheck } from 'lucide-react';
+import { ArrowRight, Bell, ExternalLink, FileText, Search, ShieldCheck, Smartphone } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { useI18n, type MessageKey } from '@/shared/i18n';
 import { listServices } from '@/shared/api/services';
 import type { ServiceCategory } from '@/shared/api/services-types';
+import { county } from '@/shared/config/county';
 import { useAuth } from '@/shared/state/auth';
 import { usePageTitle } from '@/shared/lib/hooks';
 import { cn } from '@/shared/lib/utils';
@@ -37,6 +38,14 @@ export default function Services() {
           {status === 'in' && <Link to="/services/notifications" aria-label={t('services.notifications')} className="tap grid size-11 place-items-center rounded-full border border-line-strong bg-surface hover:bg-bg-2"><Bell className="size-4" aria-hidden /></Link>}
         </nav>
       </header>
+
+      {county.code === 47 && (
+        <aside className="mt-6 flex flex-wrap items-center gap-3 rounded-2xl border border-line bg-bg-2/60 p-4 text-sm">
+          <Smartphone className="size-5 shrink-0 text-brand" aria-hidden />
+          <p className="min-w-0 flex-1">{t('services.pay.text')}</p>
+          <a href="https://nairobiservices.go.ke" target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 font-semibold underline underline-offset-4">{t('services.pay.link')}<ExternalLink className="size-3.5" aria-hidden /></a>
+        </aside>
+      )}
 
       <div className="relative mt-8">
         <Search aria-hidden className="pointer-events-none absolute left-4 top-1/2 size-[1.1rem] -translate-y-1/2 text-muted" />

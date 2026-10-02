@@ -651,7 +651,9 @@
       "failed": "Malipo hayakukamilika",
       "failedBody": "Hujatozwa. Jaribu tena.",
       "retry": "Jaribu tena",
-      "timeout": "Hatukupata jibu kutoka M-Pesa. Ikiwa ulitozwa, wasiliana na kaunti ukiwa na risiti yako."
+      "timeout": "Hatukupata jibu kutoka M-Pesa. Ikiwa ulitozwa, wasiliana na kaunti ukiwa na risiti yako.",
+      "text": "Kulipa ada ya kaunti (maegesho, ada za ardhi, vibali), piga *647# kwa NairobiPay au tumia tovuti rasmi. Hatupokei malipo hapa.",
+      "link": "Tovuti ya NairobiPay"
     },
     "app": {
       "title": "Maombi yangu",
@@ -1795,5 +1797,39 @@
     "total_one": "Jibu {count} hadi sasa.",
     "total_other": "Majibu {count} hadi sasa.",
     "byWard": "Matokeo kwa wadi"
+  },
+  "statements": {
+    "title": "Kubali au kataa",
+    "intro": "Kauli fupi zilizoandikwa na wakazi. Piga kura kwa kila moja: nakubali, nakataa au ruka. Inaonyesha watu wanakubaliana wapi na wapi maoni yamegawanyika.",
+    "people_one": "Mtu {count} amepiga kura",
+    "people_other": "Watu {count} wamepiga kura",
+    "left_one": "Kauli {count} imebaki kwako",
+    "left_other": "Kauli {count} zimebaki kwako",
+    "agree": "Nakubali",
+    "disagree": "Nakataa",
+    "pass": "Ruka au sina uhakika",
+    "allDone": "Umepiga kura kwa kila kauli. Rudi baadaye kwa mpya.",
+    "error": "Kura yako haikuhifadhiwa. Jaribu tena.",
+    "signInWhy": "Ingia ili kupiga kura kwa kauli na kuongeza zako. Kura moja kwa kila mtu.",
+    "signIn": "Ingia ili kushiriki",
+    "add": "Ongeza kauli ambayo wengine wanaweza kuipigia kura",
+    "addHint": "Wazo moja wazi, hadi herufi 160",
+    "addSend": "Ongeza",
+    "added": "Imeongezwa. Wengine sasa wanaweza kuipigia kura.",
+    "limit": "Unaweza kuongeza hadi kauli 3 kwa ushirikishwaji mmoja.",
+    "addError": "Kauli yako haikuongezwa. Jaribu tena.",
+    "consensus": "Wengi wanakubaliana",
+    "divided": "Maoni yamegawanyika",
+    "notYet": "Bado hakuna kura za kutosha.",
+    "counts": "{agree} wanakubali, {disagree} wanakataa, {pass} wameruka",
+    "groups": "Makundi mawili yanaona tofauti",
+    "groupsHelp": "Watu wanaopiga kura kwa namna moja wanaunda makundi mawili (watu {a} na {b}). Hizi ndizo kauli wanazotofautiana zaidi.",
+    "groupA": "Kundi A",
+    "groupB": "Kundi B",
+    "mostlyAgree": "wengi wanakubali",
+    "mostlyDisagree": "wengi wanakataa",
+    "split": "wamegawanyika",
+    "every_one": "Ona kauli",
+    "every_other": "Ona kauli zote {count}"
   }
 }

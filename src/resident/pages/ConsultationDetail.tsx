@@ -16,6 +16,8 @@ import { Field, SelectInput, TextArea, TextInput } from '@/shared/ui/Field';
 import { Skeleton } from '@/shared/ui/Card';
 import { ShareListen } from '@/shared/ui/ShareListen';
 import { toast } from '@/shared/ui/Toast';
+import { FlagButton } from '../components/FlagButton';
+import { Statements } from '../components/Statements';
 
 const stances: Stance[] = ['support', 'oppose', 'amend', 'comment'];
 const stanceTone: Record<Stance, Tone> = { support: 'good', oppose: 'bad', amend: 'warn', comment: 'neutral' };
@@ -97,6 +99,8 @@ export default function ConsultationDetail() {
         </section>
       )}
 
+      <Statements slug={slug} consultationId={c.id} open={open} />
+
       {open && (
         <section className="mt-8 rounded-[1.75rem] border border-line bg-surface p-5 shadow-card sm:p-6" aria-labelledby="say">
           <h2 id="say" className="font-display text-xl font-bold">{t('rights.say.form.title')}</h2>
@@ -148,6 +152,7 @@ export default function ConsultationDetail() {
                   <span className="text-muted">{x.author_name || t('rights.say.anon')}{x.ward_id ? `, ${wardName.get(x.ward_id) ?? x.ward_id}` : ''} · {relative(x.created_at)}</span>
                 </div>
                 <p className="mt-2 whitespace-pre-line text-sm">{x.body}</p>
+                <div className="mt-2 text-right"><FlagButton kind="consultation_comment" id={x.id} /></div>
               </li>
             ))}
           </ul>

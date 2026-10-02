@@ -651,7 +651,9 @@
       "failed": "Payment did not go through",
       "failedBody": "You have not been charged. Try again.",
       "retry": "Try again",
-      "timeout": "We did not hear back from M-Pesa. If you were charged, contact the county with your receipt."
+      "timeout": "We did not hear back from M-Pesa. If you were charged, contact the county with your receipt.",
+      "text": "To pay a county bill (parking, rates, permits), dial *647# for NairobiPay or use the official portal. We never take payments here.",
+      "link": "NairobiPay portal"
     },
     "app": {
       "title": "My applications",
@@ -1795,5 +1797,39 @@
     "total_one": "{count} answer so far.",
     "total_other": "{count} answers so far.",
     "byWard": "Results by ward"
+  },
+  "statements": {
+    "title": "Agree or disagree",
+    "intro": "Short statements written by residents. Vote on each one: agree, disagree or pass. It shows where people already agree and where opinion is split.",
+    "people_one": "{count} person has voted",
+    "people_other": "{count} people have voted",
+    "left_one": "{count} statement left for you",
+    "left_other": "{count} statements left for you",
+    "agree": "Agree",
+    "disagree": "Disagree",
+    "pass": "Pass or not sure",
+    "allDone": "You have voted on every statement. Come back later for new ones.",
+    "error": "Your vote was not saved. Try again.",
+    "signInWhy": "Sign in to vote on statements and add your own. One vote per person.",
+    "signIn": "Sign in to take part",
+    "add": "Add a statement others can vote on",
+    "addHint": "One clear idea, up to 160 letters",
+    "addSend": "Add",
+    "added": "Added. Others can now vote on it.",
+    "limit": "You can add up to 3 statements to one consultation.",
+    "addError": "Your statement was not added. Try again.",
+    "consensus": "Where most people agree",
+    "divided": "Where opinion is split",
+    "notYet": "Not enough votes yet.",
+    "counts": "{agree} agree, {disagree} disagree, {pass} pass",
+    "groups": "Two groups see it differently",
+    "groupsHelp": "People who vote alike form two groups ({a} and {b} people). These are the statements they disagree on most.",
+    "groupA": "Group A",
+    "groupB": "Group B",
+    "mostlyAgree": "mostly agree",
+    "mostlyDisagree": "mostly disagree",
+    "split": "split",
+    "every_one": "See the statement",
+    "every_other": "See all {count} statements"
   }
 }
