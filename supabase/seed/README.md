@@ -13,3 +13,11 @@ Replace it if the county GIS office supplies an official polygon.
 
 Load into a database: `node scripts/load-boundaries.mjs push nairobi` (after `build`), or from SQL with pg_net by
 fetching this file from the repository and updating `public.wards`.
+
+## Public record data (`supabase/data`)
+
+`supabase/data/nairobi_public_record.sql` loads Nairobi's real, sourced data: the governor's promises with their current
+status (promise tracker) and county finance figures from the Controller of Budget and the Auditor-General. Every row
+names its source and links to it; fields with no reliable published figure are left empty rather than estimated.
+Load it only into the Nairobi project. It is safe to run again (rows are updated by slug, or by county and year).
+Refresh statuses through the console (Promise tracker) so each change is kept in the public history.
