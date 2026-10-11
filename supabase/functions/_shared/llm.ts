@@ -61,9 +61,27 @@ export async function complete(req: LlmRequest, fetchImpl: Fetch = fetch): Promi
     signal: AbortSignal.timeout(30_000),
   });
   if (!res.ok) throw new Error(`cloudflare-${res.status}`);
-  const d = (await res.json()) as { success?: boolean; result?: { response?: string; usage?: { prompt_tokens?: number; completion_tokens?: number } } };
-  if (d.success === false || typeof d.result?.response !== 'string') throw new Error('cloudflare-bad-response');
-  return { text: d.result.response, tokensIn: d.result.usage?.prompt_tokens ?? 0, tokensOut: d.result.usage?.completion_tokens ?? 0, model };
+  const d = (await res.json()) as {
+    success?: boolean;
+    result?: { response?: unknown; choices?: { message?: { content?: unknown } }[]; usage?: { prompt_tokens?: number; completion_tokens?: number } };
+  };
+  const text = d.success === false ? null : cloudflareText(d.result);
+  if (text === null) throw new Error('cloudflare-bad-response');
+  return { text, tokensIn: d.result?.usage?.prompt_tokens ?? 0, tokensOut: d.result?.usage?.completion_tokens ?? 0, model };
+}
+
+/**
+ * The text of a Workers AI reply. When the model answers in JSON, Workers AI
+ * hands `response` back already parsed, as an object; the text itself is then
+ * in the OpenAI-style `choices`, or is the object written back out.
+ */
+function cloudflareText(result: { response?: unknown; choices?: { message?: { content?: unknown } }[] } | undefined): string | null {
+  const content = result?.choices?.[0]?.message?.content;
+  if (typeof content === 'string' && content.trim()) return content;
+  const response = result?.response;
+  if (typeof response === 'string') return response;
+  if (response && typeof response === 'object') return JSON.stringify(response);
+  return null;
 }
 
 /** Pull the first JSON object out of a model reply, which may wrap it in prose or a code fence. */
