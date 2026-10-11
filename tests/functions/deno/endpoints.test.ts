@@ -352,6 +352,38 @@ Deno.test('ai-gateway: the model can only pick a listed question; it runs as the
   }
 });
 
+Deno.test('ai-gateway: a JSON plan that Workers AI hands back already parsed still routes', async () => {
+  // Live Workers AI returns result.response as an object when the reply is JSON,
+  // with the text itself in OpenAI-style choices. Five data questions failed with
+  // cloudflare-bad-response on 1 and 2 October before this was handled.
+  reset(); okRateLimit(); staff();
+  Deno.env.set('AI_PROVIDER', 'cloudflare'); Deno.env.set('CLOUDFLARE_AI_TOKEN', 'cf'); Deno.env.set('CLOUDFLARE_ACCOUNT_ID', 'acct');
+  try {
+    state.rpc.svc_staff_check = () => true;
+    state.rpc.svc_ai_department = () => 'dept-roads';
+    state.rpc.svc_ai_check = () => ({ allowed: true });
+    state.rpc.svc_ai_log = () => null;
+    state.rpc.ai_cases_by_ward = () => [{ ward: 'Embakasi', cases: 14 }];
+    const plan = { tool: 'cases_by_ward', args: { limit: 1 } };
+    for (const planReply of [
+      { response: plan },
+      { response: plan, choices: [{ message: { content: JSON.stringify(plan) } }] },
+    ]) {
+      let n = 0;
+      const model = () => Response.json({ success: true, result: n++ === 0
+        ? { ...planReply, usage: { prompt_tokens: 400, completion_tokens: 12 } }
+        : { response: 'Embakasi has 14 open cases.', usage: { prompt_tokens: 200, completion_tokens: 10 } } });
+      const r = await withFetch(model, () => call('ai-gateway', { json: { task: 'data_question', input: { question: 'Which ward has the most cases?' } }, headers: asOfficer }));
+      assert.equal(r.status, 200);
+      const out = await json(r);
+      assert.deepEqual(out.rows, [['Embakasi', 14]]);
+      assert.match(out.answer, /Embakasi/);
+    }
+  } finally {
+    for (const k of ['AI_PROVIDER', 'CLOUDFLARE_AI_TOKEN', 'CLOUDFLARE_ACCOUNT_ID']) Deno.env.delete(k);
+  }
+});
+
 Deno.test('ai-gateway: a reply draft treats the resident’s words as data and scrubs them', async () => {
   reset(); okRateLimit(); staff();
   Deno.env.set('AI_PROVIDER', 'anthropic'); Deno.env.set('ANTHROPIC_API_KEY', 'ak');
