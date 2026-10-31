@@ -341,7 +341,9 @@ test('staff MFA switch: when required, staff powers vanish without an aal2 sessi
 
 test('pulse summary is a public aggregate: 12 weeks, category and channel totals, no identities', async () => {
   const r = await insertReport({ category: 'garbage', channel: 'ussd' });
-  await db.query(`update public.reports set acknowledged_at = created_at + interval '3 hours', resolved_at = created_at + interval '2 days', status = 'resolved' where id = $1`, [r.id]);
+  // filed three days ago and fixed yesterday, so the fix is in the past whatever day the suite runs on
+  await db.query(`update public.reports set created_at = now() - interval '3 days', acknowledged_at = now() - interval '3 days' + interval '3 hours',
+                    resolved_at = now() - interval '1 day', status = 'resolved' where id = $1`, [r.id]);
   const out = await as(db, 'anon', null, () => one(`select public.pulse_summary() as s`));
   const s = out.s;
   assert.equal(s.weekly.length, 12);
