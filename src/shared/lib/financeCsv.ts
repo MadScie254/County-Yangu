@@ -1,9 +1,9 @@
 import type { CountyFinance } from '@/shared/api/types';
 
 export type FinanceRow = Omit<CountyFinance, 'updated_at'>;
-export const FINANCE_COLUMNS = ['county', 'fiscal_year', 'dev_budget', 'dev_spent', 'rec_budget', 'rec_spent', 'osr_target', 'osr_actual', 'pending_bills', 'audit_opinion', 'source', 'source_url'] as const;
+export const FINANCE_COLUMNS = ['county', 'fiscal_year', 'dev_budget', 'dev_spent', 'rec_budget', 'rec_spent', 'osr_target', 'osr_actual', 'pending_bills', 'stalled_count', 'stalled_value', 'stalled_paid', 'audit_opinion', 'source', 'source_url'] as const;
 const OPINIONS = ['unqualified', 'qualified', 'adverse', 'disclaimer'] as const;
-const NUMERIC = ['dev_budget', 'dev_spent', 'rec_budget', 'rec_spent', 'osr_target', 'osr_actual', 'pending_bills'] as const;
+const NUMERIC = ['dev_budget', 'dev_spent', 'rec_budget', 'rec_spent', 'osr_target', 'osr_actual', 'pending_bills', 'stalled_count', 'stalled_value', 'stalled_paid'] as const;
 
 /** Split CSV text into rows, honouring double-quoted fields (which may hold commas, quotes and line breaks). */
 export function splitCsv(text: string): string[][] {
@@ -64,6 +64,7 @@ export function parseFinanceCsv(text: string, counties: [number, string][]): { r
       if (raw === '') { out[k] = null; continue; }
       const n = Number(raw);
       if (!Number.isFinite(n) || n < 0) return void errors.push(`Row ${line}: ${k} is not a number.`);
+      if (k === 'stalled_count' && !Number.isInteger(n)) return void errors.push(`Row ${line}: stalled_count must be a whole number.`);
       out[k] = n;
     }
     rows.push(out);

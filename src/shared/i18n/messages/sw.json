@@ -1779,7 +1779,7 @@
   },
   "counties": {
     "title": "Jinsi kaunti 47 zinavyotumia",
-    "intro": "Matumizi ya maendeleo, mapato ya ndani na matokeo ya ukaguzi kwa kila kaunti, kutoka ripoti za Msimamizi wa Bajeti na ripoti za Mkaguzi Mkuu kuhusu kaunti. Kila safu ina kiungo cha chanzo chake.",
+    "intro": "Matumizi ya maendeleo, mapato ya ndani, madeni yanayosubiri kulipwa, miradi iliyokwama na matokeo ya ukaguzi kwa kila kaunti, kutoka ripoti za Msimamizi wa Bajeti na ripoti za Mkaguzi Mkuu kuhusu kaunti. Kila safu ina kiungo cha chanzo chake.",
     "demo": "Hizi ni takwimu za mfano zilizobuniwa, si matokeo halisi ya kaunti. Takwimu halisi zitaonekana zikiwekwa kutoka ripoti rasmi.",
     "none": "Bado hakuna takwimu za kaunti zilizowekwa.",
     "year": "Mwaka wa fedha",
@@ -1788,6 +1788,7 @@
       "dev": "Pesa za maendeleo zilizotumika",
       "osr": "Mapato ya ndani yaliyokusanywa",
       "bills": "Madeni machache zaidi",
+      "stalled": "Iliyokwama zaidi (kwa thamani)",
       "name": "Jina la kaunti"
     },
     "average": "Wastani wa kaunti: {dev}% ya bajeti ya maendeleo imetumika, {osr}% ya lengo la mapato imekusanywa.",
@@ -1806,7 +1807,11 @@
     "devHelp": "Sehemu ya bajeti ya maendeleo (barabara, maji, zahanati) iliyotumika kweli mwakani. Chini ina maana miradi haikufanyika.",
     "osrHelp": "Sehemu ya lengo la mapato ya ndani ya kaunti (ada za ardhi, vibali, maegesho) iliyokusanywa kweli.",
     "auditHelp": "Uamuzi wa Mkaguzi Mkuu. Safi ni bora zaidi; mbaya au haiwezi kuthibitishwa ina maana hesabu hazikuaminika.",
-    "counted": "Kaunti {n} zimeonyeshwa."
+    "counted": "Kaunti {n} zimeonyeshwa.",
+    "stalled": "Miradi iliyokwama",
+    "stalledCell": "{n}, yenye thamani ya {value}",
+    "stalledPaid": "{paid} tayari zimelipwa",
+    "stalledHelp": "Miradi ambayo kaunti yenyewe iliripoti kuwa imekwama mwishoni mwa mwaka, pamoja na thamani yake. Kistari kina maana kaunti haikuripoti takwimu, si kwamba haina."
   },
   "polls": {
     "title": "Kura za haraka",

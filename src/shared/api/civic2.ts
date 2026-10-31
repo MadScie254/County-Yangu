@@ -130,6 +130,13 @@ export const KENYA_COUNTIES: [number, string][] = [
 ];
 export const countyName = new Map(KENYA_COUNTIES);
 
+/** Demo stalled projects: about half the counties report some, the rest report nothing (null, not zero). */
+function stalledDemo(rnd: () => number): Pick<CountyFinance, 'stalled_count' | 'stalled_value' | 'stalled_paid'> {
+  if (rnd() < 0.5) return { stalled_count: null, stalled_value: null, stalled_paid: null };
+  const n = 1 + Math.floor(rnd() * 25), value = Math.round(n * (10 + rnd() * 60) * 1e6);
+  return { stalled_count: n, stalled_value: value, stalled_paid: Math.round(value * rnd() * 0.6) };
+}
+
 export async function getCountyFinance(): Promise<CountyFinance[]> {
   if (await isDemo()) {
     // Invented figures for the demo only: the page labels them as such.
@@ -140,7 +147,8 @@ export async function getCountyFinance(): Promise<CountyFinance[]> {
       const dev = Math.round((1.5 + rnd() * 6) * 1e9);
       const osrT = Math.round((0.3 + rnd() * 3) * 1e9);
       return { county_code: code, fiscal_year: '2024/25', dev_budget: dev, dev_spent: Math.round(dev * (0.25 + rnd() * 0.65)), rec_budget: Math.round(dev * 2.2), rec_spent: Math.round(dev * 2.2 * (0.8 + rnd() * 0.18)),
-        osr_target: osrT, osr_actual: Math.round(osrT * (0.45 + rnd() * 0.6)), pending_bills: Math.round(rnd() * 4e9), audit_opinion: ops[Math.floor(rnd() * ops.length)]!, source: 'Demo figures', source_url: null, updated_at: iso(-30 * DAY) };
+        osr_target: osrT, osr_actual: Math.round(osrT * (0.45 + rnd() * 0.6)), pending_bills: Math.round(rnd() * 4e9), audit_opinion: ops[Math.floor(rnd() * ops.length)]!, source: 'Demo figures', source_url: null, updated_at: iso(-30 * DAY),
+        ...stalledDemo(rnd) };
     });
   }
   return must(await supabase!.from('county_finance').select('*').order('fiscal_year', { ascending: false }).limit(1000)) as CountyFinance[];

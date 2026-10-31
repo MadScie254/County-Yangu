@@ -118,6 +118,11 @@ test('county finance: admins enter figures with a source, everyone reads them', 
   await assert.rejects(asU(resident, `insert into public.county_finance (county_code, fiscal_year, source) values (1, '2024/25', 'Made up')`), /row-level security/);
   await assert.rejects(asU(admin, `insert into public.county_finance (county_code, fiscal_year, source) values (48, '2024/25', 'No such county')`), /check/);
   assert.equal((await anon(`select count(*)::int n from public.county_finance`)).n, 1);
+  // stalled projects (migration 0024): null means not reported; a paid amount above the value is kept as reported
+  await asU(admin, `update public.county_finance set stalled_count = 1, stalled_value = 1880000, stalled_paid = 3720000 where county_code = 47`);
+  assert.deepEqual(await anon(`select stalled_count, stalled_value::bigint v, stalled_paid::bigint p from public.county_finance where county_code = 47`), { stalled_count: 1, v: 1880000, p: 3720000 });
+  await assert.rejects(asU(admin, `update public.county_finance set stalled_count = -1 where county_code = 47`), /check/);
+  await assert.rejects(asU(resident, `update public.county_finance set stalled_count = 0 where county_code = 47 returning 1`).then((r) => { if (!r) throw new Error('row-level security: no row'); }), /row-level security/);
 });
 
 test('statements: residents add short statements while open, vote once each (changeable), results include a pseudonymous matrix', async () => {

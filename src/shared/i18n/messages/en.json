@@ -1779,7 +1779,7 @@
   },
   "counties": {
     "title": "How the 47 counties spend",
-    "intro": "Development spending, own revenue and audit results for every county, entered from the Controller of Budget's budget implementation reviews and the Auditor-General's county reports. Each row links to its source.",
+    "intro": "Development spending, own revenue, pending bills, stalled projects and audit results for every county, entered from the Controller of Budget's budget implementation reviews and the Auditor-General's county reports. Each row links to its source.",
     "demo": "These are invented demo figures, not real county results. Real figures appear once they are entered from the official reports.",
     "none": "No county figures have been entered yet.",
     "year": "Financial year",
@@ -1788,6 +1788,7 @@
       "dev": "Development money spent",
       "osr": "Own revenue collected",
       "bills": "Fewest pending bills",
+      "stalled": "Most stalled (by value)",
       "name": "County name"
     },
     "average": "Average across counties: {dev}% of development budget spent, {osr}% of revenue target collected.",
@@ -1806,7 +1807,11 @@
     "devHelp": "Share of the development budget (roads, water, clinics) actually spent in the year. Low means projects did not happen.",
     "osrHelp": "Share of the county's own revenue target (rates, permits, parking) actually collected.",
     "auditHelp": "The Auditor-General's verdict. Clean is best; adverse or disclaimer means the accounts could not be trusted.",
-    "counted": "{n} counties shown."
+    "counted": "{n} counties shown.",
+    "stalled": "Stalled projects",
+    "stalledCell": "{n}, worth {value}",
+    "stalledPaid": "{paid} already paid on them",
+    "stalledHelp": "Projects the county itself reported as stalled at the end of the year, with their value. A dash means the county reported no figure, not that it has none."
   },
   "polls": {
     "title": "Quick polls",

@@ -345,7 +345,7 @@ export type ChampionCheck = { verdict: 'as_shown' | 'not_as_shown'; comment: str
 export type ConcernKind = 'specs_tailored' | 'short_deadline' | 'single_bid' | 'price_inflated' | 'conflict_of_interest' | 'not_delivered' | 'other';
 export type TenderConcern = { id: string; reference: string; tender_id: string; kind: ConcernKind; body: string; status: 'submitted' | 'answered' | 'fixed' | 'dismissed' | 'escalated'; response: string | null; escalated_to: string | null; due_at: string; answered_at: string | null; created_at: string };
 
-export type CountyFinance = { county_code: number; fiscal_year: string; dev_budget: number | null; dev_spent: number | null; rec_budget: number | null; rec_spent: number | null; osr_target: number | null; osr_actual: number | null; pending_bills: number | null; audit_opinion: 'unqualified' | 'qualified' | 'adverse' | 'disclaimer' | null; source: string; source_url: string | null; updated_at: string };
+export type CountyFinance = { county_code: number; fiscal_year: string; dev_budget: number | null; dev_spent: number | null; rec_budget: number | null; rec_spent: number | null; osr_target: number | null; osr_actual: number | null; pending_bills: number | null; stalled_count: number | null; stalled_value: number | null; stalled_paid: number | null; audit_opinion: 'unqualified' | 'qualified' | 'adverse' | 'disclaimer' | null; source: string; source_url: string | null; updated_at: string };
 
 export type StatementResult = { id: number; body: string; created_at: string; agree: number; disagree: number; pass: number };
 export type StatementResults = { statements: StatementResult[]; participants: number; votes: [number, number, -1 | 0 | 1][] };

@@ -17,8 +17,9 @@ fetching this file from the repository and updating `public.wards`.
 ## Public record data (`supabase/data`)
 
 `supabase/data/nairobi_public_record.sql` loads Nairobi's real, sourced data: the governor's promises with their current
-status (promise tracker) and county finance figures from the Controller of Budget and the Auditor-General. Every row
-names its source and links to it; fields with no reliable published figure are left empty rather than estimated.
+status (promise tracker) and county projects: those the Auditor-General examined (2023/24 and 2024/25 reports, cited by
+paragraph) and the stalled projects the county treasury reported to the Controller of Budget for 2025/26. Every row
+names its source; fields with no reliable published figure are left empty rather than estimated.
 Load it only into the Nairobi project. It is safe to run again (rows are updated by slug, or by county and year).
 Refresh statuses through the console (Promise tracker) so each change is kept in the public history.
 
@@ -27,4 +28,4 @@ for 2023/24, 2024/25 and 2025/26, read from the Controller of Budget's annual Co
 Review Reports (cob.go.ke), with the Auditor-General's audit opinion for each county executive (2023/24 and 2024/25).
 It is national data, so it can be loaded into any county's project; load it after the county's own public record file.
 Pending bills are left empty where the report says a county did not report, reported for a different date, or sent
-inconsistent figures. When a new annual report is out, add its year the same way rather than editing figures by hand.
+inconsistent figures. Stalled projects (2025/26 only, Table 2.6) are left empty where the county reported no figure. When a new annual report is out, add its year the same way rather than editing figures by hand.

@@ -10,7 +10,7 @@ import { Button } from '@/shared/ui/Button';
 import { toast } from '@/shared/ui/Toast';
 import { PageHeader, Panel } from '../ui/Page';
 
-const template = `${FINANCE_COLUMNS.join(',')}\nNairobi,2024/25,44000000000,26400000000,,,20000000000,13800000000,90000000000,qualified,Controller of Budget CGBIRR FY 2024/25,https://cob.go.ke/\n`;
+const template = `${FINANCE_COLUMNS.join(',')}\nNairobi,2024/25,44000000000,26400000000,,,20000000000,13800000000,90000000000,,,,qualified,Controller of Budget CGBIRR FY 2024/25,https://cob.go.ke/\n`;
 
 /** Load every county's spending, revenue and audit figures from a spreadsheet, for the public comparison at /counties. */
 export default function CountyFinance() {
@@ -33,7 +33,7 @@ export default function CountyFinance() {
       <div className="space-y-6">
         <Panel title="Load a spreadsheet">
           <ol className="list-decimal space-y-1 pl-5 text-sm text-ink-2">
-            <li>Download the template and fill one row per county and year. Amounts in shillings; leave a cell empty if the report does not give it.</li>
+            <li>Download the template and fill one row per county and year. Amounts in shillings; leave a cell empty if the report does not give it. Stalled projects are the count, value and amount paid from the report's stalled projects table.</li>
             <li>Save it as CSV and choose it below. Nothing is saved until you check the preview.</li>
             <li>Loading a county and year that already exists replaces it.</li>
           </ol>
@@ -51,11 +51,12 @@ export default function CountyFinance() {
               {parsed.rows.length > 0 && (
                 <div className="max-h-72 overflow-auto rounded-xl border border-line">
                   <table className="w-full min-w-[40rem] text-sm">
-                    <thead><tr className="bg-bg-2 text-left text-xs text-muted"><th className="px-3 py-2">County</th><th className="px-3 py-2">Year</th><th className="px-3 py-2 text-right">Dev budget</th><th className="px-3 py-2 text-right">Dev spent</th><th className="px-3 py-2 text-right">Pending bills</th><th className="px-3 py-2">Audit</th></tr></thead>
+                    <thead><tr className="bg-bg-2 text-left text-xs text-muted"><th className="px-3 py-2">County</th><th className="px-3 py-2">Year</th><th className="px-3 py-2 text-right">Dev budget</th><th className="px-3 py-2 text-right">Dev spent</th><th className="px-3 py-2 text-right">Pending bills</th><th className="px-3 py-2 text-right">Stalled projects</th><th className="px-3 py-2">Audit</th></tr></thead>
                     <tbody className="divide-y divide-line">{parsed.rows.map((r) => (
                       <tr key={`${r.county_code}-${r.fiscal_year}`}><td className="px-3 py-1.5">{countyName.get(r.county_code)}</td><td className="px-3 py-1.5">{r.fiscal_year}</td>
                         <td className="px-3 py-1.5 text-right font-data">{r.dev_budget === null ? '-' : kes(r.dev_budget, { compact: true })}</td><td className="px-3 py-1.5 text-right font-data">{r.dev_spent === null ? '-' : kes(r.dev_spent, { compact: true })}</td>
-                        <td className="px-3 py-1.5 text-right font-data">{r.pending_bills === null ? '-' : kes(r.pending_bills, { compact: true })}</td><td className="px-3 py-1.5">{r.audit_opinion ?? '-'}</td></tr>
+                        <td className="px-3 py-1.5 text-right font-data">{r.pending_bills === null ? '-' : kes(r.pending_bills, { compact: true })}</td>
+                        <td className="px-3 py-1.5 text-right font-data">{r.stalled_count === null ? '-' : `${number(r.stalled_count)}${r.stalled_value === null ? '' : `, ${kes(r.stalled_value, { compact: true })}`}`}</td><td className="px-3 py-1.5">{r.audit_opinion ?? '-'}</td></tr>
                     ))}</tbody>
                   </table>
                 </div>

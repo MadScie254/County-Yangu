@@ -47,4 +47,12 @@ describe('county finance CSV', () => {
     expect(parseFinanceCsv('county,source\n', KENYA_COUNTIES).errors[0]).toMatch(/no data/);
     expect(parseFinanceCsv('county,source\nNairobi,x\n', KENYA_COUNTIES).errors[0]).toMatch(/fiscal_year/);
   });
+
+  it('reads stalled projects, keeps an empty cell as not reported and wants a whole number of projects', () => {
+    const csv = 'county,fiscal_year,stalled_count,stalled_value,stalled_paid,source\nNairobi,2025/26,57,"2,235,270,000",208880000,CoB 2.6\nBomet,2025/26,,,,CoB 2.6\nKisii,2025/26,2.5,1,1,CoB 2.6\n';
+    const { rows, errors } = parseFinanceCsv(csv, KENYA_COUNTIES);
+    expect(rows[0]).toMatchObject({ county_code: 47, stalled_count: 57, stalled_value: 2_235_270_000, stalled_paid: 208_880_000 });
+    expect(rows[1]).toMatchObject({ county_code: 36, stalled_count: null, stalled_value: null, stalled_paid: null });
+    expect(errors).toEqual(['Row 4: stalled_count must be a whole number.']);
+  });
 });
