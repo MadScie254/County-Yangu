@@ -57,3 +57,6 @@ public/swe-worker*
 
 # production browser config is committed on purpose (public values only)
 !.env.production
+
+# local Cloudflare dev output (wrangler dev)
+.wrangler/
